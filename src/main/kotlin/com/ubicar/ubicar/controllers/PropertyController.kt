@@ -1,7 +1,9 @@
 package com.ubicar.ubicar.controllers
 
+import com.ubicar.ubicar.dtos.CreatePropertyDTO
 import com.ubicar.ubicar.dtos.PropertyDTO
 import com.ubicar.ubicar.entities.Entities
+import com.ubicar.ubicar.entities.Property
 import com.ubicar.ubicar.services.PropertyService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -10,20 +12,20 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 
 @Controller
-class PropertyController(private val service: PropertyService) {
+class PropertyController(private val propertyService: PropertyService) {
 
     @GetMapping("/list")
-    fun getProperties(): ResponseEntity<List<PropertyDTO.PropertyDTO>> {
-        return ResponseEntity.ok(service.findAll().map { it.render() })
+    fun getProperties(): List<PropertyDTO> {
+        return propertyService.findAll().map { it.render() }
     }
 
     @PostMapping("/create")
-    fun createProperty(@RequestBody propertyDTO: PropertyDTO.CreatePropertyDTO): ResponseEntity<PropertyDTO.PropertyDTO> {
-        val property : Entities.Property = service.save(propertyDTO.render())
-        return ResponseEntity.ok(property.render())
+    fun createProperty(@RequestBody propertyDTO: CreatePropertyDTO): PropertyDTO {
+        val property: Property = propertyService.save(propertyDTO.render())
+        return property.render()
     }
 
-    fun Entities.Property.render() = PropertyDTO.PropertyDTO(
+    fun Property.render() = PropertyDTO(
         id,
         price,
         condition,
@@ -36,9 +38,10 @@ class PropertyController(private val service: PropertyService) {
         halfBaths,
         threeQuarterBaths,
         fullBaths,
-        expenses)
+        expenses
+    )
 
-    fun PropertyDTO.CreatePropertyDTO.render() = Entities.Property(
+    fun CreatePropertyDTO.render() = Property(
         0,
         price,
         condition,
