@@ -4,61 +4,108 @@ import javax.persistence.*
 
 @Table(name = "property")
 @Entity
-class Property(
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private var id: Long = 0,
+data class Property(
 
     // REQUIRED FEATURES
 
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    private var id: Long,
+
     @Column(nullable = false)
-    var price: Int,
+    private var title: String,
+
+    @Column(nullable = false)
+    private var price: Int,
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    var condition: Condition,
-
-    @Column(nullable = false)
-    var address: String,
-
-    @Column(nullable = false)
-    var squareFoot: Int,
-
-    @Column(nullable = false)
-    var constructionDate: Int,
+    private var condition: Condition,
 
     @OneToOne(cascade = [CascadeType.ALL])
-    var style: Style,
+    private var address: Address,
 
     @Column(nullable = false)
-    var rooms: Int,
+    private var squareFoot: Int,
 
     @Column(nullable = false)
-    var quarterBaths: Int,
+    private var constructionDate: Int,
+
+    @ManyToOne
+    private var style: Style,
 
     @Column(nullable = false)
-    var halfBaths: Int,
+    private var rooms: Int,
 
     @Column(nullable = false)
-    var threeQuarterBaths: Int,
+    private var quarterBaths: Int,
 
     @Column(nullable = false)
-    var fullBaths: Int,
+    private var halfBaths: Int,
 
     @Column(nullable = false)
-    var expenses: Int,
+    private var threeQuarterBaths: Int,
 
-)
+    @Column(nullable = false)
+    private var fullBaths: Int,
+
+    @Column(nullable = false)
+    private var expenses: Int
+) {
+    fun getId(): Long = id
+    fun getTitle(): String = title
+    fun getPrice(): Int = price
+    fun getCondition(): Condition = condition
+    fun getAddress(): Address = address
+    fun getSquareFoot(): Int = squareFoot
+    fun getConstructionDate(): Int = constructionDate
+    fun getStyle(): Style = style
+    fun getRooms(): Int = rooms
+    fun getQuarterBaths(): Int = quarterBaths
+    fun getHalfBaths(): Int = halfBaths
+    fun getThreeQuarterBaths(): Int = threeQuarterBaths
+    fun getFullBaths(): Int = fullBaths
+    fun getExpenses(): Int = expenses
+}
 
 @Table(name = "style")
 @Entity
 class Style(
 
-    @Column(name = "id")
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long? = null,
+    private var id: Long,
 
     @Column(nullable = false)
-    var label: String
+    private var label: String
+)
+
+@Table(name = "address")
+@Entity
+class Address(
+
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    private var id: Long,
+
+    @Column(nullable = false)
+    private var country: String,
+
+    @Column(nullable = false)
+    private var state: String,
+
+    @Column(nullable = false)
+    private var city: String,
+
+    @Column(nullable = false)
+    private var neighbourhood: String,
+
+    @Column(nullable = false)
+    private var postalCode: String,
+
+    @Column(nullable = false)
+    private var street: String,
+
+    @Column(nullable = false)
+    private var number: Int,
+
+    @Column(nullable = false)
+    private var department: String
 )

@@ -1,35 +1,41 @@
 package com.ubicar.ubicar.dtos
 
+import com.ubicar.ubicar.entities.Address
 import com.ubicar.ubicar.entities.Condition
+import com.ubicar.ubicar.entities.Property
 import com.ubicar.ubicar.entities.Style
 
 data class CreatePropertyDTO(
-    var price: Int,
-    var condition: Condition,
-    var address: String,
-    var squareFoot: Int,
-    var constructionDate: Int,
-    var style: Style,
-    var rooms: Int,
-    var quarterBaths: Int,
-    var halfBaths: Int,
-    var threeQuarterBaths: Int,
-    var fullBaths: Int,
-    var expenses: Int
-)
+    private var title: String,
+    private var price: Int,
+    private var condition: Condition,
+    private var address: Address,
+    private var squareFoot: Int,
+    private var constructionDate: Int,
+    private var style: Style,
+    private var rooms: Int,
+    private var quarterBaths: Int,
+    private var halfBaths: Int,
+    private var threeQuarterBaths: Int,
+    private var fullBaths: Int,
+    private var expenses: Int
+) {
+    fun render() = Property(0, title, price, condition, address, squareFoot, constructionDate, style, rooms, quarterBaths, halfBaths, threeQuarterBaths, fullBaths, expenses)
+}
 
 data class PropertyDTO(
-    val id: Long,
-    var price: Int,
-    var condition: Condition,
-    var address: String,
-    var squareFoot: Int,
-    var constructionDate: Int,
-    var style: Style,
-    var rooms: Int,
-    var quarterBaths: Int,
-    var halfBaths: Int,
-    var threeQuarterBaths: Int,
-    var fullBaths: Int,
-    var expenses: Int
+    private var id: Long,
+    private var title: String,
+    private var price: Int,
+    private var condition: Condition,
+    private var address: Address,
+    private var squareFoot: Int,
+    private var constructionDate: Int,
+    private var style: Style,
+    private var rooms: Int,
+    private var quarterBaths: Int,
+    private var halfBaths: Int,
+    private var threeQuarterBaths: Int,
+    private var fullBaths: Int,
+    private var expenses: Int
 )
