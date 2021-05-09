@@ -5,17 +5,21 @@ import com.ubicar.ubicar.repositories.AddressRepository
 import org.springframework.stereotype.Service
 
 @Service
-class AddressServiceImpl(private val repository: AddressRepository): AddressService {
+class AddressServiceImpl(private val addressRepository: AddressRepository): AddressService {
+
+    override fun findAll(): List<Address> {
+        return addressRepository.findAll()
+    }
 
     override fun save(address: Address): Address {
-        return repository.save(address)
+        return addressRepository.save(address)
     }
 
     override fun findById(id: Long): Address {
-        return repository.findById(id).orElseThrow()
+        return addressRepository.findById(id).orElseThrow()
     }
 
     override fun delete(address: Long) {
-        repository.delete(findById(address))
+        addressRepository.delete(findById(address))
     }
 }

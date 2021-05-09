@@ -11,8 +11,10 @@ class PropertyFactory: AbstractFactory<Property, PropertyDTO> {
             input.getTitle(),
             input.getPrice(),
             input.getCondition(),
+            input.getType(),
             input.getAddress(),
             input.getSquareFoot(),
+            input.getLevels(),
             input.getConstructionDate(),
             input.getStyle(),
             input.getRooms(),
@@ -20,7 +22,15 @@ class PropertyFactory: AbstractFactory<Property, PropertyDTO> {
             input.getHalfBaths(),
             input.getThreeQuarterBaths(),
             input.getFullBaths(),
-            input.getExpenses()
+            input.getExpenses(),
+            input.getAmenities(),
+            input.getMaterials(),
+            input.getSecurity(),
+            input.getParkDescription(),
+            input.getLinks(),
+            input.getContacts(),
+            input.getOpenHouse(),
+            input.getComments()
         )
     }
 }

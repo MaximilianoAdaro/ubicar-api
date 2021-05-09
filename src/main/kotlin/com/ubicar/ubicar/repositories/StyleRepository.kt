@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository
 
 interface StyleRepository : CrudRepository<Style, Long> {
 
-    @Query(value = "select * from style", nativeQuery = true)
+    @Query(value = "select s from Style s")
     override fun findAll() : List<Style>
 }
