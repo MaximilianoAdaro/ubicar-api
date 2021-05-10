@@ -1,11 +1,9 @@
 package com.ubicar.ubicar.entities
 
 import com.fasterxml.jackson.annotation.JsonBackReference
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import java.time.LocalDate
 import java.time.LocalTime
-import java.util.*
 import javax.persistence.*
 
 @Table(name = "property")
@@ -36,6 +34,9 @@ data class Property(
 
     @Column(nullable = false)
     private var squareFoot: Int,
+
+    @Column(nullable = false)
+    private var coveredSquareFoot: Int,
 
     @Column(nullable = false)
     private var levels: Int,
@@ -108,6 +109,7 @@ data class Property(
     fun getType(): TypeOfProperty = type
     fun getAddress(): Address = address
     fun getSquareFoot(): Int = squareFoot
+    fun getCoveredSquareFoot(): Int = coveredSquareFoot
     fun getLevels(): Int = levels
     fun getConstructionDate(): Int = constructionDate
     fun getStyle(): Style = style

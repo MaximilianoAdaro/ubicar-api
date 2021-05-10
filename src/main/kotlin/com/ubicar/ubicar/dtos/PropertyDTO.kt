@@ -9,6 +9,7 @@ data class CreatePropertyDTO(
     private var type: TypeOfProperty,
     private var address: Address,
     private var squareFoot: Int,
+    private var coveredSquareFoot: Int,
     private var levels: Int,
     private var constructionDate: Int,
     private var style: Style,
@@ -27,7 +28,7 @@ data class CreatePropertyDTO(
     private var openHouse: MutableList<OpenHouseDate>,
     private var comments: String
 ) {
-    fun render() = Property(0, title, price, condition, type, address, squareFoot, levels, constructionDate, style, rooms, quarterBaths, halfBaths, threeQuarterBaths, fullBaths, expenses, amenities, materials, security, parkDescription, links, contacts, openHouse, comments)
+    fun render() = Property(0, title, price, condition, type, address, squareFoot, coveredSquareFoot, levels, constructionDate, style, rooms, quarterBaths, halfBaths, threeQuarterBaths, fullBaths, expenses, amenities, materials, security, parkDescription, links, contacts, openHouse, comments)
 }
 
 data class PropertyDTO(
@@ -38,6 +39,7 @@ data class PropertyDTO(
     private var type: TypeOfProperty,
     private var address: Address,
     private var squareFoot: Int,
+    private var coveredSquareFoot: Int,
     private var levels: Int,
     private var constructionDate: Int,
     private var style: Style,
