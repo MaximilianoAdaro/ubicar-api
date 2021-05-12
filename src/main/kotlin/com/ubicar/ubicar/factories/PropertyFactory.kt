@@ -14,6 +14,7 @@ class PropertyFactory: AbstractFactory<Property, PropertyDTO> {
             input.getType(),
             input.getAddress(),
             input.getSquareFoot(),
+            input.getCoveredSquareFoot(),
             input.getLevels(),
             input.getConstructionDate(),
             input.getStyle(),
