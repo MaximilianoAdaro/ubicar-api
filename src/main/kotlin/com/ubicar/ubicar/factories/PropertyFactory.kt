@@ -18,6 +18,7 @@ class PropertyFactory: AbstractFactory<Property, PropertyDTO> {
             input.getLevels(),
             input.getConstructionDate(),
             input.getStyle(),
+            input.getEnvironments(),
             input.getRooms(),
             input.getQuarterBaths(),
             input.getHalfBaths(),
