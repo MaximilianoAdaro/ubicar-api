@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface CityRepository : CrudRepository<City, Long> {
 
-    @Query(value = "select a from City")
+    @Query(value = "select a from City a")
     override fun findAll() : List<City>
 }

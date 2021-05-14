@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface SecurityRepository : CrudRepository<SecurityMeasure, Long> {
 
-    @Query(value = "select a from SecurityMeasure")
+    @Query(value = "select a from SecurityMeasure a")
     override fun findAll() : List<SecurityMeasure>
 }

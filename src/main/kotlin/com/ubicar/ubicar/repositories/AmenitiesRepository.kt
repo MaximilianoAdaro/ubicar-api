@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface AmenitiesRepository : CrudRepository<Amenity, Long> {
 
-    @Query(value = "select a from Amenity")
+    @Query(value = "select a from Amenity a")
     override fun findAll() : List<Amenity>
 }
