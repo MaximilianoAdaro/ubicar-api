@@ -18,8 +18,8 @@ class PropertyController(private val propertyService: PropertyService) {
     private val propertyPreviewFactory = PropertyPreviewFactory()
 
     @GetMapping("/preview")
-    fun getProperties(@RequestParam page: Int): ResponseEntity<Page<PropertyPreviewDTO>> {
-        return ResponseEntity.ok(propertyService.findAll(PageRequest.of(page, 16)).map { propertyPreviewFactory.convert(it) })
+    fun getProperties(@RequestParam page: Int): Page<PropertyPreviewDTO> {
+        return propertyService.findAll(PageRequest.of(page, 16)).map { propertyPreviewFactory.convert(it) }
     }
 
     @PostMapping("/create")
