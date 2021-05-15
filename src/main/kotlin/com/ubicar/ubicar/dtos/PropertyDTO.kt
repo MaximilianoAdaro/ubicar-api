@@ -15,9 +15,7 @@ data class CreatePropertyDTO(
     private var style: Style,
     private var environments: Int,
     private var rooms: Int,
-    private var quarterBaths: Int,
-    private var halfBaths: Int,
-    private var threeQuarterBaths: Int,
+    private var toilettes: Int,
     private var fullBaths: Int,
     private var expenses: Int,
     private var amenities:MutableList<Amenity>,
@@ -29,7 +27,7 @@ data class CreatePropertyDTO(
     private var openHouse: MutableList<OpenHouseDate>,
     private var comments: String
 ) {
-    fun render() = Property(0, title, price, condition, type, address, squareFoot, coveredSquareFoot, levels, constructionDate, style, environments, rooms, quarterBaths, halfBaths, threeQuarterBaths, fullBaths, expenses, amenities, materials, security, parkDescription, links, contacts, openHouse, comments)
+    fun render() = Property(0, title, price, condition, type, address, squareFoot, coveredSquareFoot, levels, constructionDate, style, environments, rooms, toilettes, fullBaths, expenses, amenities, materials, security, parkDescription, links, contacts, openHouse, comments)
 }
 
 data class PropertyDTO(
@@ -46,9 +44,7 @@ data class PropertyDTO(
     private var style: Style,
     private var environments: Int,
     private var rooms: Int,
-    private var quarterBaths: Int,
-    private var halfBaths: Int,
-    private var threeQuarterBaths: Int,
+    private var toilettes: Int,
     private var fullBaths: Int,
     private var expenses: Int,
     private var amenities:MutableList<Amenity>,
