@@ -67,6 +67,6 @@ data class PropertyPreviewDTO(
     private var squareFoot: Int,
     private var coveredSquareFoot: Int,
     private var rooms: Int,
-    private var halfBaths: Int,
+    private var toilettes: Int,
     private var fullBaths: Int,
 )

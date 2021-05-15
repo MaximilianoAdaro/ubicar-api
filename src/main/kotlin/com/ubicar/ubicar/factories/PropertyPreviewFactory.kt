@@ -16,7 +16,7 @@ class PropertyPreviewFactory: AbstractFactory<Property, PropertyPreviewDTO> {
             input.getSquareFoot(),
             input.getCoveredSquareFoot(),
             input.getRooms(),
-            input.getHalfBaths(),
+            input.getToilettes(),
             input.getFullBaths()
         )
     }
