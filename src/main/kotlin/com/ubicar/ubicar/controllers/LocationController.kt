@@ -9,11 +9,13 @@ import com.ubicar.ubicar.factories.location.TownFactory
 import com.ubicar.ubicar.repositories.CityRepository
 import com.ubicar.ubicar.repositories.StateRepository
 import com.ubicar.ubicar.repositories.TownRepository
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
+@CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class LocationController(private val townRepository: TownRepository,
                          private val cityRepository: CityRepository,
                          private val stateRepository: StateRepository) {

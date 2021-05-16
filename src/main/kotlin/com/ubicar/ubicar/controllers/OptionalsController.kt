@@ -13,10 +13,12 @@ import com.ubicar.ubicar.repositories.AmenityRepository
 import com.ubicar.ubicar.repositories.MaterialRepository
 import com.ubicar.ubicar.repositories.SecurityRepository
 import com.ubicar.ubicar.repositories.StyleRepository
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
+@CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class OptionalsController(private val amenityRepository: AmenityRepository,
                           private val materialRepository: MaterialRepository,
                           private val securityRepository: SecurityRepository,
