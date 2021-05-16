@@ -5,6 +5,8 @@ import com.ubicar.ubicar.repositories.PropertyRepository
 import com.ubicar.ubicar.services.address.AddressService
 import com.ubicar.ubicar.services.contact.ContactService
 import com.ubicar.ubicar.services.openHouseDate.OpenHouseDateService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 @Service
@@ -13,8 +15,8 @@ class PropertyServiceImpl(private val propertyRepository: PropertyRepository,
                           private val contactService: ContactService,
                           private val openHouseDateService: OpenHouseDateService): PropertyService {
 
-    override fun findAll() : List<Property> {
-        return propertyRepository.findAll()
+    override fun findAll(pageable: Pageable) : Page<Property> {
+        return propertyRepository.findAll(pageable)
     }
 
     override fun save(property: Property) : Property {

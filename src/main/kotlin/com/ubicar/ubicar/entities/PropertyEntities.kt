@@ -48,6 +48,9 @@ data class Property(
     private var style: Style,
 
     @Column(nullable = false)
+    private var environments: Int,
+
+    @Column(nullable = false)
     private var rooms: Int,
 
     @Column(nullable = false)
@@ -107,6 +110,7 @@ data class Property(
     fun getLevels(): Int = levels
     fun getConstructionDate(): Int = constructionDate
     fun getStyle(): Style = style
+    fun getEnvironments(): Int = environments
     fun getRooms(): Int = rooms
     fun getToilettes(): Int = toilettes
     fun getFullBaths(): Int = fullBaths
