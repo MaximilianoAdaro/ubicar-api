@@ -48,16 +48,13 @@ data class Property(
     private var style: Style,
 
     @Column(nullable = false)
+    private var environments: Int,
+
+    @Column(nullable = false)
     private var rooms: Int,
 
     @Column(nullable = false)
-    private var quarterBaths: Int,
-
-    @Column(nullable = false)
-    private var halfBaths: Int,
-
-    @Column(nullable = false)
-    private var threeQuarterBaths: Int,
+    private var toilets: Int,
 
     @Column(nullable = false)
     private var fullBaths: Int,
@@ -113,10 +110,9 @@ data class Property(
     fun getLevels(): Int = levels
     fun getConstructionDate(): Int = constructionDate
     fun getStyle(): Style = style
+    fun getEnvironments(): Int = environments
     fun getRooms(): Int = rooms
-    fun getQuarterBaths(): Int = quarterBaths
-    fun getHalfBaths(): Int = halfBaths
-    fun getThreeQuarterBaths(): Int = threeQuarterBaths
+    fun getToilets(): Int = toilets
     fun getFullBaths(): Int = fullBaths
     fun getExpenses(): Int = expenses
     fun getAmenities(): MutableList<Amenity> = amenities
@@ -134,10 +130,10 @@ data class Property(
 class Style(
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private var id: Long,
+    var id: Long,
 
     @Column(nullable = false)
-    private var label: String
+    var label: String
 )
 
 @Table(name = "country")
@@ -145,10 +141,10 @@ class Style(
 class Country(
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private var id: Long,
+    var id: Long,
 
     @Column(nullable = false)
-    private var name: String
+    var name: String
 )
 
 @Table(name = "state")
@@ -156,13 +152,13 @@ class Country(
 class State(
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private var id: Long,
+    var id: Long,
 
     @Column(nullable = false)
-    private var name: String,
+    var name: String,
 
     @ManyToOne
-    private var country: Country
+    var country: Country
 )
 
 @Table(name = "city")
@@ -170,13 +166,13 @@ class State(
 class City(
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private var id: Long,
+    var id: Long,
 
     @Column(nullable = false)
-    private var name: String,
+    var name: String,
 
     @ManyToOne
-    private var state: State
+    var state: State
 )
 
 @Table(name = "town")
@@ -184,13 +180,13 @@ class City(
 class Town(
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private var id: Long,
+    var id: Long,
 
     @Column(nullable = false)
-    private var name: String,
+    var name: String,
 
     @ManyToOne
-    private var city: City
+    var city: City
 )
 
 @Table(name = "address")
@@ -198,22 +194,22 @@ class Town(
 class Address(
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private var id: Long,
+    var id: Long,
 
     @ManyToOne
-    private var town: Town,
+    var town: Town,
 
     @Column(nullable = false)
-    private var postalCode: String,
+    var postalCode: String,
 
     @Column(nullable = false)
-    private var street: String,
+    var street: String,
 
     @Column(nullable = false)
-    private var number: Int,
+    var number: Int,
 
     @Column(nullable = false)
-    private var department: String
+    var department: String
 )
 
 @Table(name = "amenity")
@@ -221,13 +217,12 @@ class Address(
 data class Amenity(
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private var id: Long,
+    var id: Long,
 
     @Column(nullable = false)
-    private var label: String,
+    var label: String,
 
     @ManyToMany(mappedBy = "amenities")
-//    @JsonIgnoreProperties("amenities")
     @JsonBackReference
     private var properties: MutableList<Property> = mutableListOf()
 )
@@ -237,13 +232,12 @@ data class Amenity(
 data class ConstructionMaterial (
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private var id: Long,
+    var id: Long,
 
     @Column(nullable = false)
-    private var label: String,
+    var label: String,
 
     @ManyToMany(mappedBy = "materials")
-//    @JsonIgnoreProperties("materials")
     @JsonBackReference
     private var properties: MutableList<Property> = mutableListOf()
 )
@@ -253,13 +247,12 @@ data class ConstructionMaterial (
 data class SecurityMeasure (
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private var id: Long,
+    var id: Long,
 
     @Column(nullable = false)
-    private var label: String,
+    var label: String,
 
     @ManyToMany(mappedBy = "security")
-//    @JsonIgnoreProperties("security")
     @JsonBackReference
     private var properties: MutableList<Property> = mutableListOf()
 )
@@ -269,13 +262,13 @@ data class SecurityMeasure (
 class Contact (
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private var id: Long,
+    var id: Long,
 
     @Column(nullable = false)
-    private var label: String,
+    var label: String,
 
     @Column(nullable = false)
-    private var email: String
+    var email: String
 )
 
 @Table(name = "open_house_date")
@@ -283,14 +276,14 @@ class Contact (
 class OpenHouseDate (
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private var id: Long,
+    var id: Long,
 
     @Column(nullable = false)
-    private var day: LocalDate,
+    var day: LocalDate,
 
     @Column(nullable = false)
-    private var initialTime: LocalTime,
+    var initialTime: LocalTime,
 
     @Column(nullable = false)
-    private var finalTime: LocalTime
+    var finalTime: LocalTime
 )
