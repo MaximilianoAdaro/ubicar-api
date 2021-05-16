@@ -3,8 +3,8 @@ package com.ubicar.ubicar.controllers
 import com.ubicar.ubicar.dtos.CreatePropertyDTO
 import com.ubicar.ubicar.dtos.PropertyDTO
 import com.ubicar.ubicar.dtos.PropertyPreviewDTO
-import com.ubicar.ubicar.factories.PropertyFactory
-import com.ubicar.ubicar.factories.PropertyPreviewFactory
+import com.ubicar.ubicar.factories.property.PropertyFactory
+import com.ubicar.ubicar.factories.property.PropertyPreviewFactory
 import com.ubicar.ubicar.services.property.PropertyService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest

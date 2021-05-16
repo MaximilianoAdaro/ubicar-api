@@ -1,7 +1,8 @@
-package com.ubicar.ubicar.factories
+package com.ubicar.ubicar.factories.property
 
 import com.ubicar.ubicar.dtos.PropertyDTO
 import com.ubicar.ubicar.entities.Property
+import com.ubicar.ubicar.factories.AbstractFactory
 
 class PropertyFactory: AbstractFactory<Property, PropertyDTO> {
 
