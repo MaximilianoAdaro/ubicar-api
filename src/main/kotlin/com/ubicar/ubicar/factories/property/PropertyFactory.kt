@@ -21,7 +21,7 @@ class PropertyFactory: AbstractFactory<Property, PropertyDTO> {
             input.getStyle(),
             input.getEnvironments(),
             input.getRooms(),
-            input.getToilettes(),
+            input.getToilets(),
             input.getFullBaths(),
             input.getExpenses(),
             input.getAmenities(),

@@ -54,7 +54,7 @@ data class Property(
     private var rooms: Int,
 
     @Column(nullable = false)
-    private var toilettes: Int,
+    private var toilets: Int,
 
     @Column(nullable = false)
     private var fullBaths: Int,
@@ -112,7 +112,7 @@ data class Property(
     fun getStyle(): Style = style
     fun getEnvironments(): Int = environments
     fun getRooms(): Int = rooms
-    fun getToilettes(): Int = toilettes
+    fun getToilets(): Int = toilets
     fun getFullBaths(): Int = fullBaths
     fun getExpenses(): Int = expenses
     fun getAmenities(): MutableList<Amenity> = amenities
