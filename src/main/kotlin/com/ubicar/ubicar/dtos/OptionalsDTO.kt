@@ -14,3 +14,8 @@ data class SecurityDTO(
     val id: Long,
     val label: String
 )
+
+data class StyleDTO(
+    val id: Long,
+    val label: String
+)
