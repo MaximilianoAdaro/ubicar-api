@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 class AddressServiceImpl(private val addressRepository: AddressRepository): AddressService {
 
     override fun findAll(): List<Address> {
-        return addressRepository.findAll()
+        return addressRepository.findAll().toList()
     }
 
     override fun save(address: Address): Address {

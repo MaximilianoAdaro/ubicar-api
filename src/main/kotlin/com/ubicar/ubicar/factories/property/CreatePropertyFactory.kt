@@ -7,10 +7,12 @@ import com.ubicar.ubicar.repositories.MaterialRepository
 import com.ubicar.ubicar.repositories.SecurityRepository
 import com.ubicar.ubicar.repositories.StyleRepository
 
-class CreatePropertyFactory(private val styleRepository: StyleRepository,
-                            private val amenityRepository: AmenityRepository,
-                            private val materialRepository: MaterialRepository,
-                            private val securityRepository: SecurityRepository) {
+class CreatePropertyFactory(
+    private val styleRepository: StyleRepository,
+    private val amenityRepository: AmenityRepository,
+    private val materialRepository: MaterialRepository,
+    private val securityRepository: SecurityRepository
+) {
 
     fun convert(input: CreatePropertyDTO): Property {
         val amenities: MutableList<Amenity> = mutableListOf()
