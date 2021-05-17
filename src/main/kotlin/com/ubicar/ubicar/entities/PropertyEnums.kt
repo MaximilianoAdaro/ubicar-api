@@ -6,9 +6,20 @@ enum class Condition {
 }
 
 enum class TypeOfProperty {
-    HOUSE,
-    DEPARTMENT,
-    LAND,
-    COMMERCE,
-    PH
+    Casa,
+    Quinta,
+    Galpon,
+    Cochera,
+    Departamento,
+    Terreno,
+    Hotel,
+    Compartido,
+    PH,
+    Local,
+    Edificio,
+    Loft,
+    Oficina,
+    Consultorio,
+    Country,
+    Flat
 }

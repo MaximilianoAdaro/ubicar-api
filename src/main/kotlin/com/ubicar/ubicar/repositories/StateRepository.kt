@@ -1,6 +1,6 @@
 package com.ubicar.ubicar.repositories
 
-import com.ubicar.ubicar.entities.Style
+import com.ubicar.ubicar.entities.State
 import org.springframework.data.repository.CrudRepository
 
-interface StyleRepository : CrudRepository<Style, Long> {}
+interface StateRepository: CrudRepository<State, Long> {}

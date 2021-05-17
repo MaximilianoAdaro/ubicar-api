@@ -1,7 +1,8 @@
-package com.ubicar.ubicar.factories
+package com.ubicar.ubicar.factories.property
 
 import com.ubicar.ubicar.dtos.PropertyPreviewDTO
 import com.ubicar.ubicar.entities.Property
+import com.ubicar.ubicar.factories.AbstractFactory
 
 class PropertyPreviewFactory: AbstractFactory<Property, PropertyPreviewDTO> {
 
@@ -16,7 +17,7 @@ class PropertyPreviewFactory: AbstractFactory<Property, PropertyPreviewDTO> {
             input.getSquareFoot(),
             input.getCoveredSquareFoot(),
             input.getRooms(),
-            input.getToilettes(),
+            input.getToilets(),
             input.getFullBaths()
         )
     }
