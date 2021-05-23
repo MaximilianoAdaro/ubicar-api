@@ -4,9 +4,3 @@ spring:
       name: 'admin'
       password: 'admin'
       roles: 'manager'
-
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: https://securetoken.google.com/ubicar-3872e
-          jwk-set-uri: https://www.googleapis.com/robot/v1/metadata/jwk/securetoken@system.gserviceaccount.com
