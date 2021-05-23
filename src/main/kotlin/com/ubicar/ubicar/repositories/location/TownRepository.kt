@@ -1,4 +1,4 @@
-package com.ubicar.ubicar.repositories
+package com.ubicar.ubicar.repositories.location
 
 import com.ubicar.ubicar.entities.Town
 import org.springframework.data.jpa.repository.Query

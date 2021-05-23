@@ -1,7 +1,7 @@
 package com.ubicar.ubicar.services.openHouseDate
 
 import com.ubicar.ubicar.entities.OpenHouseDate
-import com.ubicar.ubicar.repositories.OpenHouseDateRepository
+import com.ubicar.ubicar.repositories.property.OpenHouseDateRepository
 import org.springframework.stereotype.Service
 
 @Service

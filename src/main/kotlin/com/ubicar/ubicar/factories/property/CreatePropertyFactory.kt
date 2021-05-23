@@ -2,13 +2,18 @@ package com.ubicar.ubicar.factories.property
 
 import com.ubicar.ubicar.dtos.CreatePropertyDTO
 import com.ubicar.ubicar.entities.*
-import com.ubicar.ubicar.repositories.*
+import com.ubicar.ubicar.repositories.location.TownRepository
+import com.ubicar.ubicar.repositories.property.AmenityRepository
+import com.ubicar.ubicar.repositories.property.MaterialRepository
+import com.ubicar.ubicar.repositories.property.SecurityRepository
+import com.ubicar.ubicar.repositories.property.StyleRepository
 
 class CreatePropertyFactory(private val styleRepository: StyleRepository,
                             private val amenityRepository: AmenityRepository,
                             private val materialRepository: MaterialRepository,
                             private val securityRepository: SecurityRepository,
-                            private val townRepository: TownRepository) {
+                            private val townRepository: TownRepository
+) {
 
     fun convert(input: CreatePropertyDTO): Property {
         val amenities: MutableList<Amenity> = mutableListOf()

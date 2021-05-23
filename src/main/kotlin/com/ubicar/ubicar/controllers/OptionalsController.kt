@@ -9,10 +9,10 @@ import com.ubicar.ubicar.factories.optionals.AmenityFactory
 import com.ubicar.ubicar.factories.optionals.MaterialFactory
 import com.ubicar.ubicar.factories.optionals.SecurityFactory
 import com.ubicar.ubicar.factories.optionals.StyleFactory
-import com.ubicar.ubicar.repositories.AmenityRepository
-import com.ubicar.ubicar.repositories.MaterialRepository
-import com.ubicar.ubicar.repositories.SecurityRepository
-import com.ubicar.ubicar.repositories.StyleRepository
+import com.ubicar.ubicar.repositories.property.AmenityRepository
+import com.ubicar.ubicar.repositories.property.MaterialRepository
+import com.ubicar.ubicar.repositories.property.SecurityRepository
+import com.ubicar.ubicar.repositories.property.StyleRepository
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
@@ -22,7 +22,8 @@ import org.springframework.web.bind.annotation.RestController
 class OptionalsController(private val amenityRepository: AmenityRepository,
                           private val materialRepository: MaterialRepository,
                           private val securityRepository: SecurityRepository,
-                          private val styleRepository: StyleRepository) {
+                          private val styleRepository: StyleRepository
+) {
 
     private val amenityFactory: AmenityFactory = AmenityFactory()
     private val materialFactory: MaterialFactory = MaterialFactory()

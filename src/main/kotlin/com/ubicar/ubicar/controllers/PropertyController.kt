@@ -6,7 +6,11 @@ import com.ubicar.ubicar.dtos.PropertyPreviewDTO
 import com.ubicar.ubicar.factories.property.CreatePropertyFactory
 import com.ubicar.ubicar.factories.property.PropertyFactory
 import com.ubicar.ubicar.factories.property.PropertyPreviewFactory
-import com.ubicar.ubicar.repositories.*
+import com.ubicar.ubicar.repositories.location.TownRepository
+import com.ubicar.ubicar.repositories.property.AmenityRepository
+import com.ubicar.ubicar.repositories.property.MaterialRepository
+import com.ubicar.ubicar.repositories.property.SecurityRepository
+import com.ubicar.ubicar.repositories.property.StyleRepository
 import com.ubicar.ubicar.services.property.PropertyService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -19,7 +23,8 @@ class PropertyController(private val propertyService: PropertyService,
                          styleRepository: StyleRepository,
                          materialRepository: MaterialRepository,
                          securityRepository: SecurityRepository,
-                         townRepository: TownRepository) {
+                         townRepository: TownRepository
+) {
 
     private val propertyFactory: PropertyFactory = PropertyFactory()
     private val propertyPreviewFactory: PropertyPreviewFactory = PropertyPreviewFactory()

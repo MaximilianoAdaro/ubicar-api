@@ -1,4 +1,4 @@
-package com.ubicar.ubicar.repositories
+package com.ubicar.ubicar.repositories.property
 
 import com.ubicar.ubicar.entities.SecurityMeasure
 import org.springframework.data.repository.CrudRepository

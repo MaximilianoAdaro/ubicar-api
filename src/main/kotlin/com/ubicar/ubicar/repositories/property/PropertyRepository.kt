@@ -1,4 +1,4 @@
-package com.ubicar.ubicar.repositories
+package com.ubicar.ubicar.repositories.property
 
 import com.ubicar.ubicar.entities.Property
 import org.springframework.data.domain.Page

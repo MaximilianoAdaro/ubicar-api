@@ -1,4 +1,4 @@
-package com.ubicar.ubicar.repositories
+package com.ubicar.ubicar.repositories.location
 
 import com.ubicar.ubicar.entities.State
 import org.springframework.data.repository.CrudRepository
