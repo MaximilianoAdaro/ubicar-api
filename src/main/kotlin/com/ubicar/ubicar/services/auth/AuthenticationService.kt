@@ -1,6 +1,7 @@
 package com.ubicar.ubicar.services.auth
 
 import com.ubicar.ubicar.entities.User
+import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 interface AuthenticationService {
