@@ -17,7 +17,6 @@ import org.springframework.web.server.ResponseStatusException
 import javax.servlet.http.HttpServletResponse
 
 @RestController
-@CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class AuthController(private val userService: UserService,
                      private val authenticationService: AuthenticationService) {
 

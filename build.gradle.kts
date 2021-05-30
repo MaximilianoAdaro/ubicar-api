@@ -30,7 +30,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("io.jsonwebtoken:jjwt-api:0.11.2")
+    implementation("io.jsonwebtoken:jjwt:0.9.1")
     implementation("com.google.firebase:firebase-admin:6.12.2")
     runtimeOnly("com.h2database:h2")
     runtimeOnly("org.postgresql:postgresql")

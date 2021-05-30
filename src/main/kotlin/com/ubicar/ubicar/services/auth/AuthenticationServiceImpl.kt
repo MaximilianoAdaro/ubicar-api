@@ -22,6 +22,8 @@ class AuthenticationServiceImpl(private val userService: UserService,
         SecurityContextHolder.getContext().authentication = authentication
         val jwt: String = jwtUtils.generateJwtToken(authentication)
         response.setHeader("Set-Cookie", "jwt=$jwt; HttpOnly; SameSite=strict;")
+        response.setHeader("Set-Cookie", "google-auth=false; httpOnly; SameSite=strict;")
+
         return userService.findByEmail(authentication.name).orElseThrow{NotFoundException("User not found")}
     }
 
@@ -32,10 +34,11 @@ class AuthenticationServiceImpl(private val userService: UserService,
             userService.save(logInUser)
         }
         val authentication = authenticationManager.authenticate(
-            UsernamePasswordAuthenticationToken(logInUser.getEmail(), logInUser.getPassword())
+            UsernamePasswordAuthenticationToken(logInUser.getEmail(), "password")
         )
         SecurityContextHolder.getContext().authentication = authentication
         response.setHeader("Set-Cookie", "jwt=$token; httpOnly; SameSite=strict;")
+        response.setHeader("Set-Cookie", "google-auth=true; httpOnly; SameSite=strict;")
         return user
     }
 }

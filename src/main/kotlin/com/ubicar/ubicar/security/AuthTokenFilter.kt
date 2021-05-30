@@ -44,12 +44,15 @@ class AuthTokenFilter(
         filterChain.doFilter(request, response)
     }
 
-    private fun parseJwt(request: HttpServletRequest): String? {
+    private fun parseJwt(request: HttpServletRequest): Pair<String, Boolean>? {
         if (request.cookies != null) {
             val jwtCookie = Arrays.stream(request.cookies).filter { cookie: Cookie -> cookie.name == "jwt" }
                 .findFirst()
+            val jwtGoogle = Arrays.stream(request.cookies).filter { cookie: Cookie -> cookie.name == "google-auth" }
+                .findFirst()
             if (jwtCookie.isPresent) {
-                return jwtCookie.get().value
+                val bool = if (jwtGoogle.isPresent) jwtGoogle.get().value.toBoolean() else false
+                return Pair(jwtCookie.get().value, bool)
             }
         }
         return null
