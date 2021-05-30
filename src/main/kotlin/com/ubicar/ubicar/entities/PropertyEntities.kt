@@ -12,9 +12,6 @@ class Property(
 
     // REQUIRED FEATURES
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private var id: Long,
-
     @Column(nullable = false)
     private var title: String,
 
@@ -98,8 +95,7 @@ class Property(
 
     private var comments: String
 
-) {
-    fun getId(): Long = id
+): AbstractEntity() {
     fun getTitle(): String = title
     fun getPrice(): Int = price
     fun getCondition(): Condition = condition
@@ -129,73 +125,51 @@ class Property(
 @Entity
 class Style(
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long,
-
     @Column(nullable = false)
     var label: String
-)
+): AbstractEntity()
 
 @Table(name = "country")
 @Entity
 class Country(
-
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long,
-
     @Column(nullable = false)
     var name: String
-)
+): AbstractEntity()
 
 @Table(name = "state")
 @Entity
 class State(
-
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long,
-
     @Column(nullable = false)
     var name: String,
 
     @ManyToOne
     var country: Country
-)
+): AbstractEntity()
 
 @Table(name = "city")
 @Entity
 class City(
-
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long,
 
     @Column(nullable = false)
     var name: String,
 
     @ManyToOne
     var state: State
-)
+): AbstractEntity()
 
 @Table(name = "town")
 @Entity
 class Town(
-
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long,
-
     @Column(nullable = false)
     var name: String,
 
     @ManyToOne
     var city: City
-)
+): AbstractEntity()
 
 @Table(name = "address")
 @Entity
 class Address(
-
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long,
-
     @ManyToOne
     var town: Town,
 
@@ -210,74 +184,54 @@ class Address(
 
     @Column(nullable = false)
     var department: String
-)
+): AbstractEntity()
 
 @Table(name = "amenity")
 @Entity
 class Amenity(
-
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long,
-
     @Column(nullable = false)
     var label: String,
 
     @ManyToMany(mappedBy = "amenities")
     @JsonBackReference
     private var properties: MutableList<Property> = mutableListOf()
-)
+): AbstractEntity()
 
 @Table(name = "material")
 @Entity
 class ConstructionMaterial (
-
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long,
-
     @Column(nullable = false)
     var label: String,
 
     @ManyToMany(mappedBy = "materials")
     @JsonBackReference
     private var properties: MutableList<Property> = mutableListOf()
-)
+): AbstractEntity()
 
 @Table(name = "security")
 @Entity
 class SecurityMeasure (
-
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long,
-
     @Column(nullable = false)
     var label: String,
 
     @ManyToMany(mappedBy = "security")
     @JsonBackReference
     private var properties: MutableList<Property> = mutableListOf()
-)
+): AbstractEntity()
 
 @Table(name = "contact")
 @Entity
 class Contact (
-
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long,
-
     @Column(nullable = false)
     var label: String,
 
     @Column(nullable = false)
     var email: String
-)
+): AbstractEntity()
 
 @Table(name = "open_house_date")
 @Entity
 class OpenHouseDate (
-
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long,
-
     @Column(nullable = false)
     var day: LocalDate,
 
@@ -286,4 +240,4 @@ class OpenHouseDate (
 
     @Column(nullable = false)
     var finalTime: LocalTime
-)
+): AbstractEntity()

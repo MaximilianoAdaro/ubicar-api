@@ -18,17 +18,12 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
-class PropertyController(private val propertyService: PropertyService,
-                         amenityRepository: AmenityRepository,
-                         styleRepository: StyleRepository,
-                         materialRepository: MaterialRepository,
-                         securityRepository: SecurityRepository,
-                         townRepository: TownRepository
+class PropertyController(
+    private val propertyService: PropertyService,
+    private val propertyFactory: PropertyFactory,
+    private val propertyPreviewFactory: PropertyPreviewFactory,
+    private val createPropertyFactory: CreatePropertyFactory
 ) {
-
-    private val propertyFactory: PropertyFactory = PropertyFactory()
-    private val propertyPreviewFactory: PropertyPreviewFactory = PropertyPreviewFactory()
-    private val createPropertyFactory: CreatePropertyFactory = CreatePropertyFactory(styleRepository, amenityRepository, materialRepository, securityRepository, townRepository)
 
     @GetMapping("/preview")
     fun getProperties(@RequestParam page: Int): Page<PropertyPreviewDTO> {

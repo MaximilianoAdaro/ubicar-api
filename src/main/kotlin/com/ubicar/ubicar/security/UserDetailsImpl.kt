@@ -17,9 +17,9 @@ class UserDetailsImpl(
 
         fun build(user: User): UserDetailsImpl {
             return UserDetailsImpl(
-                user.getId(),
-                user.getEmail(),
-                user.getPassword(),
+                user.id,
+                user.email,
+                user.password,
                 listOf()
             )
         }

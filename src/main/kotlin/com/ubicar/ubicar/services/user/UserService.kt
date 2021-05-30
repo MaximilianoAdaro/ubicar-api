@@ -1,5 +1,7 @@
 package com.ubicar.ubicar.services.user
 
+import com.ubicar.ubicar.dtos.GoogleLoginUserDTO
+import com.ubicar.ubicar.dtos.UserCreationDTO
 import com.ubicar.ubicar.entities.User
 import java.util.*
 
@@ -7,7 +9,9 @@ interface UserService {
 
     fun findAll() : List<User>
 
-    fun save(user: User) : User
+    fun saveUser(userCreationDto: UserCreationDTO) : User
+
+    fun saveUserWithGoogle(userCreationDto: GoogleLoginUserDTO) : User
 
     fun findById(id: Long) : User
 

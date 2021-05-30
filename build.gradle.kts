@@ -1,10 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
     id("org.springframework.boot") version "2.4.5"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
+//    id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
     kotlin("jvm") version "1.4.32"
     kotlin("plugin.spring") version "1.4.32"
     kotlin("plugin.jpa") version "1.4.32"
@@ -30,7 +29,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("io.jsonwebtoken:jjwt-api:0.11.2")
+    implementation("io.jsonwebtoken:jjwt:0.9.1")
     implementation("com.google.firebase:firebase-admin:6.12.2")
     runtimeOnly("com.h2database:h2")
     runtimeOnly("org.postgresql:postgresql")
@@ -55,16 +54,16 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-ktlint {
-    verbose.set(true)
-    outputToConsole.set(true)
-    coloredOutput.set(true)
-    reporters {
-        reporter(ReporterType.CHECKSTYLE)
-        reporter(ReporterType.JSON)
-        reporter(ReporterType.HTML)
-    }
-    filter {
-//        exclude("**/style-violations.kt")
-    }
-}
+//ktlint {
+//    verbose.set(true)
+//    outputToConsole.set(true)
+//    coloredOutput.set(true)
+//    reporters {
+//        reporter(ReporterType.CHECKSTYLE)
+//        reporter(ReporterType.JSON)
+//        reporter(ReporterType.HTML)
+//    }
+//    filter {
+////        exclude("**/style-violations.kt")
+//    }
+//}
