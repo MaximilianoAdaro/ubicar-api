@@ -2,8 +2,8 @@ package com.ubicar.ubicar.loaders
 
 import com.ubicar.ubicar.entities.City
 import com.ubicar.ubicar.entities.Town
-import com.ubicar.ubicar.repositories.CityRepository
-import com.ubicar.ubicar.repositories.TownRepository
+import com.ubicar.ubicar.repositories.location.CityRepository
+import com.ubicar.ubicar.repositories.location.TownRepository
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Profile
 import org.springframework.core.Ordered

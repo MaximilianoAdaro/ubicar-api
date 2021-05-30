@@ -1,7 +1,7 @@
 package com.ubicar.ubicar.loaders
 
 import com.ubicar.ubicar.entities.SecurityMeasure
-import com.ubicar.ubicar.repositories.SecurityRepository
+import com.ubicar.ubicar.repositories.property.SecurityRepository
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Profile
 import org.springframework.core.Ordered

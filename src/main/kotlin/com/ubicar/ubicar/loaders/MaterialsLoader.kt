@@ -1,7 +1,7 @@
 package com.ubicar.ubicar.loaders
 
 import com.ubicar.ubicar.entities.ConstructionMaterial
-import com.ubicar.ubicar.repositories.MaterialRepository
+import com.ubicar.ubicar.repositories.property.MaterialRepository
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Profile
 import org.springframework.core.Ordered

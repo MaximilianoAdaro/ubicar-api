@@ -2,8 +2,8 @@ package com.ubicar.ubicar.loaders
 
 import com.ubicar.ubicar.entities.Country
 import com.ubicar.ubicar.entities.State
-import com.ubicar.ubicar.repositories.CountryRepository
-import com.ubicar.ubicar.repositories.StateRepository
+import com.ubicar.ubicar.repositories.location.CountryRepository
+import com.ubicar.ubicar.repositories.location.StateRepository
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Profile
 import org.springframework.core.Ordered
