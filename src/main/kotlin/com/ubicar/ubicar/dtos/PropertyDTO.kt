@@ -7,7 +7,7 @@ data class CreatePropertyDTO(
     val price: Int,
     val condition: String,
     val type: String,
-    val address: Address,
+    val address: AddressDTO,
     val squareFoot: Int,
     val coveredSquareFoot: Int,
     val levels: Int,
@@ -26,6 +26,14 @@ data class CreatePropertyDTO(
     val contacts: MutableList<Contact>,
     val openHouse: MutableList<OpenHouseDate>,
     val comments: String
+)
+
+data class AddressDTO(
+    val town_id: Long,
+    val postalCode: String,
+    val street: String,
+    val number: Int,
+    val department: String
 )
 
 data class PropertyDTO(
