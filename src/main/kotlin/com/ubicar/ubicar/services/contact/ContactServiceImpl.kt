@@ -1,7 +1,7 @@
 package com.ubicar.ubicar.services.contact
 
 import com.ubicar.ubicar.entities.Contact
-import com.ubicar.ubicar.repositories.ContactRepository
+import com.ubicar.ubicar.repositories.property.ContactRepository
 import org.springframework.stereotype.Service
 
 @Service

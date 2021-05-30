@@ -8,7 +8,7 @@ import javax.persistence.*
 
 @Table(name = "property")
 @Entity
-data class Property(
+class Property(
 
     // REQUIRED FEATURES
 
@@ -214,7 +214,7 @@ class Address(
 
 @Table(name = "amenity")
 @Entity
-data class Amenity(
+class Amenity(
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long,
@@ -229,7 +229,7 @@ data class Amenity(
 
 @Table(name = "material")
 @Entity
-data class ConstructionMaterial (
+class ConstructionMaterial (
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long,
@@ -244,7 +244,7 @@ data class ConstructionMaterial (
 
 @Table(name = "security")
 @Entity
-data class SecurityMeasure (
+class SecurityMeasure (
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long,

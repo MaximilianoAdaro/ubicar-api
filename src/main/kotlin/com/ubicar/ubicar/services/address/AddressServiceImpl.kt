@@ -1,7 +1,7 @@
 package com.ubicar.ubicar.services.address
 
 import com.ubicar.ubicar.entities.Address
-import com.ubicar.ubicar.repositories.AddressRepository
+import com.ubicar.ubicar.repositories.location.AddressRepository
 import org.springframework.stereotype.Service
 
 @Service

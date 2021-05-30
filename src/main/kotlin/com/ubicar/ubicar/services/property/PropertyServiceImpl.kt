@@ -1,7 +1,7 @@
 package com.ubicar.ubicar.services.property
 
 import com.ubicar.ubicar.entities.Property
-import com.ubicar.ubicar.repositories.PropertyRepository
+import com.ubicar.ubicar.repositories.property.PropertyRepository
 import com.ubicar.ubicar.services.address.AddressService
 import com.ubicar.ubicar.services.contact.ContactService
 import com.ubicar.ubicar.services.openHouseDate.OpenHouseDateService
