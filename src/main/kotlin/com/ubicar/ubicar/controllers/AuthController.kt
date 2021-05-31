@@ -7,14 +7,14 @@ import com.ubicar.ubicar.dtos.LogInUserDTO
 import com.ubicar.ubicar.services.user.UserService
 import com.ubicar.ubicar.factories.user.UserFactory
 import com.ubicar.ubicar.services.auth.AuthenticationService
-import com.ubicar.ubicar.services.auth.FirebaseService
 import javassist.NotFoundException
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletResponse
 
-@RestController("/auth")
+@RestController
+@RequestMapping("/auth")
 class AuthController(private val userService: UserService,
                      private val authenticationService: AuthenticationService) {
 
