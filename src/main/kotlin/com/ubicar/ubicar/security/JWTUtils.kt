@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component
 import java.util.*
 import java.security.SignatureException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 
 
 @Component
@@ -28,18 +29,15 @@ class JwtUtils {
 
     fun getUserNameFromJwtToken(token: Pair<String, Boolean>): String {
         return if (token.second) {
-//            val decodedToken = FirebaseAuth.getInstance().verifyIdToken(token.first)
-//            println(decodedToken.uid)
-//            decodedToken.email
-            "asdf"
+            val decodedToken = FirebaseAuth.getInstance().verifyIdToken(token.first)
+            decodedToken.email
         } else Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token.first).body.subject
     }
 
     fun validateJwtToken(authToken: Pair<String, Boolean>): Boolean {
         try {
             if (authToken.second) {
-//                val decodedToken = FirebaseAuth.getInstance().verifyIdToken(authToken.first)
-//                println(decodedToken.uid)
+                FirebaseAuth.getInstance().verifyIdToken(authToken.first)
             } else Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken.first)
             return true
         } catch (e: SignatureException) {
@@ -52,6 +50,8 @@ class JwtUtils {
             logger.error("JWT token is unsupported: {}", e.message)
         } catch (e: IllegalArgumentException) {
             logger.error("JWT claims string is empty: {}", e.message)
+        } catch (e: FirebaseAuthException) {
+            logger.error("Could not verify firebase token: {}", e.message)
         }
         return false
     }
