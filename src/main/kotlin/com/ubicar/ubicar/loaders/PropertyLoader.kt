@@ -1,5 +1,5 @@
-//package com.ubicar.ubicar.loaders
-//
+package com.ubicar.ubicar.loaders
+
 //import com.ubicar.ubicar.entities.*
 //import com.ubicar.ubicar.repositories.*
 //import com.ubicar.ubicar.repositories.location.TownRepository

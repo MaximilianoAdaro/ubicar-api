@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
 class CountryLoader(private val countryRepository: CountryRepository): CommandLineRunner, Ordered {
 
     override fun run(vararg args: String?) {
-        countryRepository.save(Country(50, "Argentina"))
+        countryRepository.save(Country("Argentina"))
     }
 
     override fun getOrder(): Int {

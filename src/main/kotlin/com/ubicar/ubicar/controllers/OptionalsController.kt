@@ -13,21 +13,20 @@ import com.ubicar.ubicar.repositories.property.AmenityRepository
 import com.ubicar.ubicar.repositories.property.MaterialRepository
 import com.ubicar.ubicar.repositories.property.SecurityRepository
 import com.ubicar.ubicar.repositories.property.StyleRepository
-import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class OptionalsController(private val amenityRepository: AmenityRepository,
-                          private val materialRepository: MaterialRepository,
-                          private val securityRepository: SecurityRepository,
-                          private val styleRepository: StyleRepository
+class OptionalsController(
+    private val amenityRepository: AmenityRepository,
+    private val materialRepository: MaterialRepository,
+    private val securityRepository: SecurityRepository,
+    private val styleRepository: StyleRepository,
+    private val amenityFactory: AmenityFactory,
+    private val materialFactory: MaterialFactory,
+    private val securityFactory: SecurityFactory,
+    private val styleFactory: StyleFactory
 ) {
-
-    private val amenityFactory: AmenityFactory = AmenityFactory()
-    private val materialFactory: MaterialFactory = MaterialFactory()
-    private val securityFactory: SecurityFactory = SecurityFactory()
-    private val styleFactory: StyleFactory = StyleFactory()
 
     @GetMapping("/amenities")
     fun getAmenities(): List<AmenityDTO> {

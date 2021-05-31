@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class LocationController(private val townRepository: TownRepository,
-                         private val cityRepository: CityRepository,
-                         private val stateRepository: StateRepository
+class LocationController(
+    private val townRepository: TownRepository,
+    private val cityRepository: CityRepository,
+    private val stateRepository: StateRepository,
+    private val stateFactory: StateFactory,
+    private val cityFactory: CityFactory,
+    private val townFactory: TownFactory
 ) {
-
-    private val stateFactory: StateFactory = StateFactory()
-    private val cityFactory: CityFactory = CityFactory()
-    private val townFactory: TownFactory = TownFactory()
 
     @GetMapping("/states")
     fun getStates(): List<StateDTO> {

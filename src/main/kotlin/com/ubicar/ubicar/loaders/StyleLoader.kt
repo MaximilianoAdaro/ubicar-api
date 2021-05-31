@@ -13,12 +13,12 @@ class StyleLoader(private val styleRepository: StyleRepository): CommandLineRunn
 
     override fun run(vararg args: String?) {
         val styles: MutableList<Style> = mutableListOf()
-        styles.add(Style(44, "Contemporaneo"))
-        styles.add(Style(45, "Mediterraneo"))
-        styles.add(Style(46, "Minimalista"))
-        styles.add(Style(47, "Colonial"))
-        styles.add(Style(48, "Cottages"))
-        styles.add(Style(49, "Tudor"))
+        styles.add(Style("Contemporaneo"))
+        styles.add(Style("Mediterraneo"))
+        styles.add(Style("Minimalista"))
+        styles.add(Style("Colonial"))
+        styles.add(Style("Cottages"))
+        styles.add(Style("Tudor"))
 
         styles.map { styleRepository.save(it) }
     }
