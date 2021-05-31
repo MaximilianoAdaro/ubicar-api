@@ -3,8 +3,13 @@ package com.ubicar.ubicar.factories.user
 import com.ubicar.ubicar.dtos.GoogleLoginUserDTO
 import com.ubicar.ubicar.dtos.UserCreationDTO
 import com.ubicar.ubicar.dtos.UserDTO
+import com.ubicar.ubicar.dtos.UserRoleDto
 import com.ubicar.ubicar.entities.User
+import com.ubicar.ubicar.entities.UserOrigin
+import com.ubicar.ubicar.entities.UserRole
 import com.ubicar.ubicar.factories.AbstractFactory
+import com.ubicar.ubicar.repositories.user.UserRoleRepository
+import com.ubicar.ubicar.services.user.UserRoleService
 import org.springframework.stereotype.Component
 
 @Component
@@ -20,27 +25,37 @@ class UserDtoFactory : AbstractFactory<User, UserDTO> {
 }
 
 @Component
-class UserCreationFactory : AbstractFactory<User, UserCreationDTO> {
+class UserCreationFactory(
+    val userRoleDtoFactory: UserRoleDtoFactory,
+    val userRoleRepository: UserRoleRepository,
+    val userRoleService: UserRoleService
+) : AbstractFactory<User, UserCreationDTO> {
 
     override fun convert(input: User): UserCreationDTO {
         return UserCreationDTO(
             input.email,
             input.userName,
-            input.password
+            input.password,
+            userRoleDtoFactory.convert(input.userRole)
         )
     }
 
     fun from(input: UserCreationDTO): User {
+        val userRole: UserRole = if (input.userRole != null) userRoleRepository.findById(input.userRole!!.id).get() else userRoleService.getDefault()
         return User(
             input.email,
             input.userName,
-            input.password
+            input.password,
+            UserOrigin.UBICAR,
+            userRole
         )
     }
 }
 
 @Component
-class UserCreationGoogleFactory : AbstractFactory<User, GoogleLoginUserDTO> {
+class UserCreationGoogleFactory(
+    val userRoleService: UserRoleService
+) : AbstractFactory<User, GoogleLoginUserDTO> {
 
     override fun convert(input: User): GoogleLoginUserDTO {
         return GoogleLoginUserDTO(
@@ -53,7 +68,36 @@ class UserCreationGoogleFactory : AbstractFactory<User, GoogleLoginUserDTO> {
         return User(
             input.name,
             input.email,
-            password
+            password,
+            UserOrigin.GOOGLE,
+            userRoleService.getDefault()
+        )
+    }
+
+}
+
+
+@Component
+class UserRoleDtoFactory : AbstractFactory<UserRole, UserRoleDto> {
+
+    override fun convert(input: UserRole): UserRoleDto {
+        return UserRoleDto(
+            input.id,
+            input.title,
+            input.slug,
+            input.description,
+            input.active,
+            input.creationDate,
+        )
+    }
+
+    fun from(input: UserRoleDto): UserRole {
+        return UserRole(
+            input.title,
+            input.slug,
+            input.description,
+            input.active,
+            input.creationDate,
         )
     }
 
