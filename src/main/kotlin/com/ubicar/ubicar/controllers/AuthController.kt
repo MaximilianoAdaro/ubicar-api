@@ -16,7 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletResponse
 
-@RestController
+@RestController("/auth")
 class AuthController(private val userService: UserService,
                      private val authenticationService: AuthenticationService) {
 
@@ -37,7 +37,7 @@ class AuthController(private val userService: UserService,
         return userDtoFactory.convert(userService.saveUser(userCreation))
     }
 
-    @GetMapping("/users/me")
+    @GetMapping("/me")
     fun getLogged() : UserDTO {
         val authentication: Authentication = SecurityContextHolder.getContext().authentication
         return userDtoFactory.convert(userService.findByEmail(authentication.name).orElseThrow{NotFoundException("User not found")})

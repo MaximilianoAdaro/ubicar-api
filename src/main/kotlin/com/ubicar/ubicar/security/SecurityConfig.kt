@@ -43,7 +43,7 @@ class SecurityConfig @Autowired constructor(private val userDetailsService: User
         http.csrf().disable()
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-            .authorizeRequests().antMatchers("/google-login").permitAll()
+            .authorizeRequests().antMatchers("/auth/*").permitAll()
             .anyRequest().authenticated()
             .and().headers().xssProtection()
 
