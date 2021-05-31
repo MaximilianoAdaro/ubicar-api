@@ -12,5 +12,7 @@ interface PropertyService {
 
     fun findById(id: Long) : Property
 
+    fun update(id: Long, property: Property): Property
+
     fun delete(property: Long)
 }

@@ -38,4 +38,9 @@ class PropertyController(private val propertyService: PropertyService,
     fun createProperty(@RequestBody propertyDTO: CreatePropertyDTO): PropertyDTO {
         return propertyFactory.convert(propertyService.save(createPropertyFactory.convert(propertyDTO)))
     }
+
+    @PutMapping("/property/{id}")
+    fun editProperty(@PathVariable id: Long, @RequestBody propertyDTO: CreatePropertyDTO) : PropertyDTO {
+        return propertyFactory.convert(propertyService.update(id, createPropertyFactory.convert(propertyDTO)))
+    }
 }
