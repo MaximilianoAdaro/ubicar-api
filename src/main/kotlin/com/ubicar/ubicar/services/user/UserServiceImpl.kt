@@ -37,6 +37,6 @@ class UserServiceImpl(private val userRepository: UserRepository): UserService {
     }
 
     override fun checkPassword(password: String, user: User): Boolean {
-        return passwordEncoder.matches(user.getPassword(), password)
+        return passwordEncoder.matches(password, user.getPassword())
     }
 }

@@ -5,15 +5,18 @@ import org.slf4j.LoggerFactory
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 import java.util.*
+import java.security.SignatureException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
+
 
 @Component
 class JwtUtils {
 
-//    @Value("\${JJ_SECRET}")
-    private val jwtSecret: String = "njksnceucscnkskdicidsicndj"
+    private val jwtSecret: String = "secret_key"
 
-//    @Value("\${JJ_EXPIRATION}")
-    private val jwtExpirationMs = 10000000
+    private val jwtExpirationMs = 1000000000000000000
+
     fun generateJwtToken(authentication: Authentication): String {
         val userPrincipal = authentication.principal as UserDetailsImpl
         return Jwts.builder()
@@ -24,13 +27,18 @@ class JwtUtils {
             .compact()
     }
 
-    fun getUserNameFromJwtToken(token: String?): String {
-        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).body.subject
+    fun getUserNameFromJwtToken(token: Pair<String, Boolean>): String {
+        return if (token.second) {
+            val decodedToken = FirebaseAuth.getInstance().verifyIdToken(token.first)
+            decodedToken.email
+        } else Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token.first).body.subject
     }
 
-    fun validateJwtToken(authToken: String?): Boolean {
+    fun validateJwtToken(authToken: Pair<String, Boolean>): Boolean {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken)
+            if (authToken.second) {
+                FirebaseAuth.getInstance().verifyIdToken(authToken.first)
+            } else Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken.first)
             return true
         } catch (e: SignatureException) {
             logger.error("Invalid JWT signature: {}", e.message)
@@ -42,6 +50,8 @@ class JwtUtils {
             logger.error("JWT token is unsupported: {}", e.message)
         } catch (e: IllegalArgumentException) {
             logger.error("JWT claims string is empty: {}", e.message)
+        } catch (e: FirebaseAuthException) {
+            logger.error("Could not verify firebase token: {}", e.message)
         }
         return false
     }

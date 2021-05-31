@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 
 @EnableWebSecurity
 @Configuration
@@ -38,16 +37,19 @@ class SecurityConfig @Autowired constructor(private val userDetailsService: User
     }
 
     override fun configure(http: HttpSecurity) {
-        val repository = CookieCsrfTokenRepository()
-        repository.setCookieHttpOnly(true)
-        repository.setSecure(true)
+//        val repository = CookieCsrfTokenRepository()
+//        repository.setCookieHttpOnly(true)
+//        repository.setSecure(true)
         http.csrf().disable()
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests().antMatchers("/google-login").permitAll()
             .anyRequest().authenticated()
             .and().headers().xssProtection()
+
         http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
+
+        http.oauth2ResourceServer().jwt()
     }
 }
 
