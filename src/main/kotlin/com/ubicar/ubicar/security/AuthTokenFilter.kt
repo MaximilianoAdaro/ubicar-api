@@ -16,8 +16,7 @@ import javax.servlet.http.HttpServletResponse
 
 @Component
 class AuthTokenFilter(
-    @Autowired val jwtUtils: JwtUtils,
-    @Autowired val userDetailsService: UserDetailsServiceImpl
+    @Autowired val jwtUtils: JwtUtils
 ) : OncePerRequestFilter() {
 
     companion object {
@@ -31,9 +30,8 @@ class AuthTokenFilter(
             val jwt = parseJwt(request)
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 val username: String = jwtUtils.getUserNameFromJwtToken(jwt)
-//                val userDetails: UserDetails = userDetailsService.loadUserByUsername(username)
                 val authentication = UsernamePasswordAuthenticationToken(
-                    username, "password")
+                    username, null, listOf())
                 authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
                 SecurityContextHolder.getContext().authentication = authentication
             }
