@@ -16,7 +16,8 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletResponse
 
-@RestController("/auth")
+@RestController
+@RequestMapping("/auth")
 class AuthController(private val userService: UserService,
                      private val authenticationService: AuthenticationService) {
 
