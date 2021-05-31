@@ -44,7 +44,7 @@ class SecurityConfig @Autowired constructor(private val userDetailsService: User
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests().antMatchers("/google-login").permitAll()
-//            .authorizeRequests().antMatchers("/**").permitAll()
+            .and().authorizeRequests().antMatchers("/**").permitAll()
             .anyRequest().authenticated()
             .and().headers().xssProtection()
         http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter::class.java)

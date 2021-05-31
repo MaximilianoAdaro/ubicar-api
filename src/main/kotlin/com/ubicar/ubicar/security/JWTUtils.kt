@@ -28,17 +28,18 @@ class JwtUtils {
 
     fun getUserNameFromJwtToken(token: Pair<String, Boolean>): String {
         return if (token.second) {
-            val decodedToken = FirebaseAuth.getInstance().verifyIdToken(token.first)
-            println(decodedToken.uid)
-            decodedToken.email
+//            val decodedToken = FirebaseAuth.getInstance().verifyIdToken(token.first)
+//            println(decodedToken.uid)
+//            decodedToken.email
+            "asdf"
         } else Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token.first).body.subject
     }
 
     fun validateJwtToken(authToken: Pair<String, Boolean>): Boolean {
         try {
             if (authToken.second) {
-                val decodedToken = FirebaseAuth.getInstance().verifyIdToken(authToken.first)
-                println(decodedToken.uid)
+//                val decodedToken = FirebaseAuth.getInstance().verifyIdToken(authToken.first)
+//                println(decodedToken.uid)
             } else Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken.first)
             return true
         } catch (e: SignatureException) {
