@@ -22,31 +22,25 @@ class AuthenticationServiceImpl(
 ) : AuthenticationService {
 
     override fun login(userDto: LogInUserDTO, response: HttpServletResponse): User {
-        val user: User = verifyUser(userDto)
         val authentication = authenticationManager.authenticate(
-            UsernamePasswordAuthenticationToken(user.email, user.password)
+            UsernamePasswordAuthenticationToken(userDto.email, userDto.password)
         )
         SecurityContextHolder.getContext().authentication = authentication
         val jwt: String = jwtUtils.generateJwtToken(authentication)
-        response.setHeader("Set-Cookie", "jwt=$jwt; HttpOnly; SameSite=strict;")
+        response.addHeader("Set-Cookie", "jwt=$jwt; HttpOnly; SameSite=strict;")
+        response.addHeader("Set-Cookie", "google-auth=false; httpOnly; SameSite=strict;")
+
         return userService.findByEmail(authentication.name).orElseThrow { NotFoundException("User not found") }
     }
 
-    override fun loginGoogle(logInUser: GoogleLoginUserDTO, response: HttpServletResponse, token: String): User {
-        val user: User = userService.findByEmail(logInUser.email)
-            .orElseGet { userService.saveUserWithGoogle(logInUser) }
+    override fun loginGoogle(logInUser: User, response: HttpServletResponse, token: String): User {
+        val user: User = userService.findByEmail(logInUser.getEmail()).orElseGet { userService.save(logInUser) }
         val authentication = authenticationManager.authenticate(
-            UsernamePasswordAuthenticationToken(user.email, user.password)
+            UsernamePasswordAuthenticationToken(logInUser.getEmail(), "password")
         )
         SecurityContextHolder.getContext().authentication = authentication
-        response.setHeader("Set-Cookie", "jwt=$token; httpOnly; SameSite=strict;")
-        return user
-    }
-
-    private fun verifyUser(logInUser: LogInUserDTO): User {
-        val user: User = userService.findByEmail(logInUser.email).orElseThrow { NotFoundException("User not found") }
-        if (!userService.checkPassword(logInUser.password, user))
-            throw ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Bad credentials")
+        response.addHeader("Set-Cookie", "jwt=$token; httpOnly; SameSite=strict;")
+        response.addHeader("Set-Cookie", "google-auth=true; httpOnly; SameSite=strict;")
         return user
     }
 }

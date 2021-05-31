@@ -1,22 +1,13 @@
 package com.ubicar.ubicar.services.user
 
-import com.ubicar.ubicar.dtos.GoogleLoginUserDTO
-import com.ubicar.ubicar.dtos.UserCreationDTO
 import com.ubicar.ubicar.entities.User
-import com.ubicar.ubicar.entities.User.Companion.DEFAULT_PASSWORD
-import com.ubicar.ubicar.factories.user.UserCreationFactory
-import com.ubicar.ubicar.factories.user.UserCreationGoogleFactory
 import com.ubicar.ubicar.repositories.user.UserRepository
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class UserServiceImpl(
-    private val userRepository: UserRepository,
-    private val userCreationFactory: UserCreationFactory,
-    private val userCreationGoogleFactory: UserCreationGoogleFactory
-    ): UserService {
+class UserServiceImpl(private val userRepository: UserRepository): UserService {
 
     private val passwordEncoder = BCryptPasswordEncoder()
 
@@ -24,14 +15,9 @@ class UserServiceImpl(
         return userRepository.findAll()
     }
 
-    override fun saveUser(userCreationDto: UserCreationDTO): User {
-        userCreationDto.password = passwordEncoder.encode(userCreationDto.password)
-        return userRepository.save(userCreationFactory.from(userCreationDto))
-    }
-
-    override fun saveUserWithGoogle(userCreationDto: GoogleLoginUserDTO): User {
-        val from = userCreationGoogleFactory.from(userCreationDto, DEFAULT_PASSWORD)
-        return userRepository.save(from)
+    override fun save(user: User): User {
+        user.setPassword(passwordEncoder.encode(user.getPassword()))
+        return userRepository.save(user)
     }
 
     override fun findById(id: Long): User {
@@ -51,6 +37,6 @@ class UserServiceImpl(
     }
 
     override fun checkPassword(password: String, user: User): Boolean {
-        return passwordEncoder.matches(user.password, password)
+        return passwordEncoder.matches(password, user.getPassword())
     }
 }

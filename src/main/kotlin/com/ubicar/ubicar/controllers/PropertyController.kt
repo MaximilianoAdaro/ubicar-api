@@ -17,7 +17,6 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class PropertyController(
     private val propertyService: PropertyService,
     private val propertyFactory: PropertyFactory,

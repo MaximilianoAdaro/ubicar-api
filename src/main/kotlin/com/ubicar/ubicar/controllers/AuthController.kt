@@ -2,10 +2,13 @@ package com.ubicar.ubicar.controllers
 
 import com.ubicar.ubicar.dtos.GoogleLoginUserDTO
 import com.ubicar.ubicar.dtos.LogInUserDTO
+import com.ubicar.ubicar.services.user.UserService
+import com.ubicar.ubicar.factories.user.UserFactory
 import com.ubicar.ubicar.dtos.UserCreationDTO
 import com.ubicar.ubicar.dtos.UserDTO
 import com.ubicar.ubicar.factories.user.UserDtoFactory
 import com.ubicar.ubicar.services.auth.AuthenticationService
+import com.ubicar.ubicar.services.auth.FirebaseService
 import com.ubicar.ubicar.services.user.UserService
 import javassist.NotFoundException
 import org.springframework.security.core.Authentication
@@ -14,7 +17,6 @@ import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletResponse
 
 @RestController
-@CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class AuthController(private val userService: UserService,
                      private val authenticationService: AuthenticationService) {
 
