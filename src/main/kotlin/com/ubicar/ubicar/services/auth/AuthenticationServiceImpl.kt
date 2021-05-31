@@ -27,8 +27,8 @@ class AuthenticationServiceImpl(
         )
         SecurityContextHolder.getContext().authentication = authentication
         val jwt: String = jwtUtils.generateJwtToken(authentication)
-        response.addHeader("Set-Cookie", "jwt=$jwt; HttpOnly; SameSite=strict;")
-        response.addHeader("Set-Cookie", "google-auth=false; httpOnly; SameSite=strict;")
+        response.addHeader("Set-Cookie", "jwt=$jwt; HttpOnly; Path=/; SameSite=strict;")
+        response.addHeader("Set-Cookie", "google-auth=false; httpOnly; Path=/; SameSite=strict;")
 
         return userService.findByEmail(authentication.name).orElseThrow { NotFoundException("User not found") }
     }
@@ -39,8 +39,8 @@ class AuthenticationServiceImpl(
             UsernamePasswordAuthenticationToken(logInUser.getEmail(), "password")
         )
         SecurityContextHolder.getContext().authentication = authentication
-        response.addHeader("Set-Cookie", "jwt=$token; httpOnly; SameSite=strict;")
-        response.addHeader("Set-Cookie", "google-auth=true; httpOnly; SameSite=strict;")
+        response.addHeader("Set-Cookie", "jwt=$token; httpOnly; Path=/; SameSite=strict;")
+        response.addHeader("Set-Cookie", "google-auth=true; httpOnly; Path=/; SameSite=strict;")
         return user
     }
 }
