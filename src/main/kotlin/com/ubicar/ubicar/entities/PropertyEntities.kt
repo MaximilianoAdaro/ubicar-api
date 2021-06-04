@@ -12,9 +12,6 @@ class Property(
 
     // REQUIRED FEATURES
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long,
-
     @Column(nullable = false)
     var title: String,
 
@@ -96,7 +93,12 @@ class Property(
     @OneToMany
     var openHouse: MutableList<OpenHouseDate>,
 
-    var comments: String
+    var comments: String,
+
+    @ManyToMany(mappedBy = "likedProperties")
+    @JsonBackReference
+    var likes: MutableList<User> = mutableListOf()
+
 ): AbstractEntity()
 
 @Table(name = "style")

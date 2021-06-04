@@ -21,7 +21,14 @@ class User(
     var userOrigin: UserOrigin,
 
     @ManyToOne(cascade = [CascadeType.ALL])
-    var userRole: UserRole
+    var userRole: UserRole,
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_property",
+        joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
+        inverseJoinColumns = [JoinColumn(name = "property_id", referencedColumnName = "id")])
+    @JsonManagedReference
+    var likedProperties: MutableList<Property> = mutableListOf()
 
 ) : AbstractEntity() {
     companion object {

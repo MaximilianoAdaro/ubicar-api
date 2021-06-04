@@ -36,7 +36,7 @@ class AuthController(
     }
 
     @PostMapping("/register")
-    fun login(@RequestBody userCreation: UserCreationDTO): UserDTO {
+    fun register(@RequestBody userCreation: UserCreationDTO): UserDTO {
         return userDtoFactory.convert(userService.saveUser(userCreation))
     }
 

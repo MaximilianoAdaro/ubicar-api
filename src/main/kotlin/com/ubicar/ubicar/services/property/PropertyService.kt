@@ -15,4 +15,8 @@ interface PropertyService {
     fun update(id: Long, property: Property): Property
 
     fun delete(property: Long)
+
+    fun like(id: Long): Property
+
+    fun dislike(id: Long): Property
 }
