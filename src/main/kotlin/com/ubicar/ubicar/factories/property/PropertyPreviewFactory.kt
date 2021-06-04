@@ -11,16 +11,16 @@ class PropertyPreviewFactory: AbstractFactory<Property, PropertyPreviewDTO> {
     override fun convert(input: Property): PropertyPreviewDTO {
         return PropertyPreviewDTO(
             input.id,
-            input.getTitle(),
-            input.getPrice(),
-            input.getCondition(),
-            input.getType(),
-            input.getAddress(),
-            input.getSquareFoot(),
-            input.getCoveredSquareFoot(),
-            input.getRooms(),
-            input.getToilets(),
-            input.getFullBaths()
+            input.title,
+            input.price,
+            input.condition,
+            input.type,
+            input.address,
+            input.squareFoot,
+            input.coveredSquareFoot,
+            input.rooms,
+            input.toilets,
+            input.fullBaths
         )
     }
 }

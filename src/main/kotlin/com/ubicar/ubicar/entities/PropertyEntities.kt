@@ -12,52 +12,55 @@ class Property(
 
     // REQUIRED FEATURES
 
-    @Column(nullable = false)
-    private var title: String,
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    var id: Long,
 
     @Column(nullable = false)
-    private var price: Int,
+    var title: String,
+
+    @Column(nullable = false)
+    var price: Int,
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private var condition: Condition,
+    var condition: Condition,
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private var type: TypeOfProperty,
+    var type: TypeOfProperty,
 
     @OneToOne(cascade = [CascadeType.ALL])
-    private var address: Address,
+    var address: Address,
 
     @Column(nullable = false)
-    private var squareFoot: Int,
+    var squareFoot: Int,
 
     @Column(nullable = false)
-    private var coveredSquareFoot: Int,
+    var coveredSquareFoot: Int,
 
     @Column(nullable = false)
-    private var levels: Int,
+    var levels: Int,
 
     @Column(nullable = false)
-    private var constructionDate: Int,
+    var constructionDate: Int,
 
     @ManyToOne
-    private var style: Style,
+    var style: Style,
 
     @Column(nullable = false)
-    private var environments: Int,
+    var environments: Int,
 
     @Column(nullable = false)
-    private var rooms: Int,
+    var rooms: Int,
 
     @Column(nullable = false)
-    private var toilets: Int,
+    var toilets: Int,
 
     @Column(nullable = false)
-    private var fullBaths: Int,
+    var fullBaths: Int,
 
     @Column(nullable = false)
-    private var expenses: Int,
+    var expenses: Int,
 
     // OPTIONAL FEATURES
 
@@ -66,60 +69,35 @@ class Property(
         joinColumns = [JoinColumn(name = "property_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "amenity_id", referencedColumnName = "id")])
     @JsonManagedReference
-    private var amenities: MutableList<Amenity> = mutableListOf(),
+    var amenities: MutableList<Amenity> = mutableListOf(),
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "property_material",
         joinColumns = [JoinColumn(name = "property_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "material_id", referencedColumnName = "id")])
     @JsonManagedReference
-    private var materials: MutableList<ConstructionMaterial> = mutableListOf(),
+    var materials: MutableList<ConstructionMaterial> = mutableListOf(),
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "property_security",
         joinColumns = [JoinColumn(name = "property_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "security_id", referencedColumnName = "id")])
     @JsonManagedReference
-    private var security: MutableList<SecurityMeasure> = mutableListOf(),
+    var security: MutableList<SecurityMeasure> = mutableListOf(),
 
-    private var parkDescription: String,
+    var parkDescription: String,
 
     @ElementCollection
-    private var links: MutableList<String>,
+    var links: MutableList<String>,
 
     @OneToMany
-    private var contacts: MutableList<Contact>,
+    var contacts: MutableList<Contact>,
 
     @OneToMany
-    private var openHouse: MutableList<OpenHouseDate>,
+    var openHouse: MutableList<OpenHouseDate>,
 
-    private var comments: String
-
-): AbstractEntity() {
-    fun getTitle(): String = title
-    fun getPrice(): Int = price
-    fun getCondition(): Condition = condition
-    fun getType(): TypeOfProperty = type
-    fun getAddress(): Address = address
-    fun getSquareFoot(): Int = squareFoot
-    fun getCoveredSquareFoot(): Int = coveredSquareFoot
-    fun getLevels(): Int = levels
-    fun getConstructionDate(): Int = constructionDate
-    fun getStyle(): Style = style
-    fun getEnvironments(): Int = environments
-    fun getRooms(): Int = rooms
-    fun getToilets(): Int = toilets
-    fun getFullBaths(): Int = fullBaths
-    fun getExpenses(): Int = expenses
-    fun getAmenities(): MutableList<Amenity> = amenities
-    fun getMaterials(): MutableList<ConstructionMaterial> = materials
-    fun getSecurity(): MutableList<SecurityMeasure> = security
-    fun getParkDescription(): String = parkDescription
-    fun getLinks(): MutableList<String> = links
-    fun getContacts(): MutableList<Contact> = contacts
-    fun getOpenHouse(): MutableList<OpenHouseDate> = openHouse
-    fun getComments(): String = comments
-}
+    var comments: String
+): AbstractEntity()
 
 @Table(name = "style")
 @Entity

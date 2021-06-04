@@ -61,7 +61,9 @@ data class PropertyDTO(
     val contacts: MutableList<Contact>,
     val openHouse: MutableList<OpenHouseDate>,
     val comments: String
-)
+) {
+    fun render() = Property(id, title, price, condition, type, address, squareFoot, coveredSquareFoot, levels, constructionDate, style, environments, rooms, toilets, fullBaths, expenses, amenities, materials, security, parkDescription, links, contacts, openHouse, comments)
+}
 
 data class PropertyPreviewDTO(
     val id: Long,
