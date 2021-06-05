@@ -8,6 +8,7 @@ import com.ubicar.ubicar.services.user.UserService
 import javassist.NotFoundException
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import javax.servlet.http.HttpServletResponse
@@ -35,7 +36,7 @@ class AuthenticationServiceImpl(
         val user: User = userService.findByEmail(logInUser.email)
             .orElseGet { userService.saveUserWithGoogle(logInUser) }
         val authentication = authenticationManager.authenticate(
-            UsernamePasswordAuthenticationToken(logInUser.email, "password")
+            UsernamePasswordAuthenticationToken(logInUser.email, "password", listOf(SimpleGrantedAuthority(user.userRole.slug)))
         )
         SecurityContextHolder.getContext().authentication = authentication
         response.addHeader("Set-Cookie", "jwt=$token; httpOnly; Path=/; SameSite=strict;")

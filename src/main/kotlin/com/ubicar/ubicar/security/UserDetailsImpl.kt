@@ -2,13 +2,16 @@ package com.ubicar.ubicar.security
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.ubicar.ubicar.entities.User
+import com.ubicar.ubicar.entities.UserOrigin
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 class UserDetailsImpl(
     val id: String,
     val email: String,
-    @JsonIgnore private val password: String,
+    @JsonIgnore private val password: String?,
+    val userOrigin: UserOrigin,
     private val authorities: Collection<GrantedAuthority>
 ) : UserDetails {
 
@@ -20,7 +23,8 @@ class UserDetailsImpl(
                 user.id,
                 user.email,
                 user.password,
-                listOf()
+                user.userOrigin,
+                listOf(SimpleGrantedAuthority(user.userRole.slug))
             )
         }
     }
@@ -29,7 +33,7 @@ class UserDetailsImpl(
         return authorities
     }
 
-    override fun getPassword(): String {
+    override fun getPassword(): String? {
         return password
     }
 
