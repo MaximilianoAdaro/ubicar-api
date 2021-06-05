@@ -8,6 +8,7 @@ import com.ubicar.ubicar.services.user.UserService
 import com.ubicar.ubicar.factories.user.UserFactory
 import com.ubicar.ubicar.services.auth.AuthenticationService
 import javassist.NotFoundException
+import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
@@ -40,4 +41,12 @@ class AuthController(private val userService: UserService,
         val authentication: Authentication = SecurityContextHolder.getContext().authentication
         return userFactory.convert(userService.findByEmail(authentication.name).orElseThrow{NotFoundException("User not found")})
     }
+
+    @PostMapping("/logout")
+    fun logOut(response: HttpServletResponse): ResponseEntity<Unit> {
+        response.addHeader("Set-Cookie", "jwt=deleted; httpOnly; SameSite=strict; Path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT")
+        response.addHeader("Set-Cookie", "google-auth=deleted; httpOnly; SameSite=strict; Path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT")
+        return ResponseEntity.noContent().build()
+    }
+
 }
