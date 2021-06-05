@@ -6,7 +6,7 @@ interface AmenityService {
 
     fun save(amenity: Amenity) : Amenity
 
-    fun findById(id: Long) : Amenity
+    fun findById(id: String) : Amenity
 
-    fun delete(amenity: Long)
+    fun delete(id: String)
 }

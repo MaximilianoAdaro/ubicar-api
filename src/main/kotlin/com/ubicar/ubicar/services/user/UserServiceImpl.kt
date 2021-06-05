@@ -34,7 +34,7 @@ class UserServiceImpl(
         return userRepository.save(from)
     }
 
-    override fun findById(id: Long): User {
+    override fun findById(id: String): User {
         return userRepository.findById(id).get()
     }
 
@@ -42,8 +42,8 @@ class UserServiceImpl(
         return userRepository.findByEmail(email)
     }
 
-    override fun delete(user: Long) {
-        userRepository.delete(findById(user))
+    override fun delete(id: String) {
+        userRepository.delete(findById(id))
     }
 
     override fun existsByEmail(email: String): Boolean {

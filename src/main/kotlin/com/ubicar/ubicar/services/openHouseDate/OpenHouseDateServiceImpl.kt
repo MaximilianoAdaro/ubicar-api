@@ -5,17 +5,19 @@ import com.ubicar.ubicar.repositories.property.OpenHouseDateRepository
 import org.springframework.stereotype.Service
 
 @Service
-class OpenHouseDateServiceImpl(private val openHouseDateRepository: OpenHouseDateRepository): OpenHouseDateService {
+class OpenHouseDateServiceImpl(
+    private val openHouseDateRepository: OpenHouseDateRepository
+) : OpenHouseDateService {
 
     override fun save(openHouseDate: OpenHouseDate): OpenHouseDate {
         return openHouseDateRepository.save(openHouseDate)
     }
 
-    override fun findById(id: Long): OpenHouseDate {
+    override fun findById(id: String): OpenHouseDate {
         return openHouseDateRepository.findById(id).orElseThrow()
     }
 
-    override fun delete(openHouseDate: Long) {
-        openHouseDateRepository.delete(findById(openHouseDate))
+    override fun delete(id: String) {
+        openHouseDateRepository.delete(findById(id))
     }
 }

@@ -3,7 +3,7 @@ package com.ubicar.ubicar.dtos
 import java.time.LocalDate
 
 data class UserDTO(
-    var id: Long,
+    var id: String,
     var email: String,
     var userName: String
 )
@@ -26,7 +26,7 @@ data class UserCreationDTO(
 )
 
 data class UserRoleDto(
-    var id: Long,
+    var id: String,
     var title: String,
     var slug: String,
     var description: String,

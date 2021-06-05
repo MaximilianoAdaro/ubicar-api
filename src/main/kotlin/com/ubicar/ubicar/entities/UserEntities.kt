@@ -24,9 +24,11 @@ class User(
     var userRole: UserRole,
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_property",
+    @JoinTable(
+        name = "user_property",
         joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
-        inverseJoinColumns = [JoinColumn(name = "property_id", referencedColumnName = "id")])
+        inverseJoinColumns = [JoinColumn(name = "property_id", referencedColumnName = "id")]
+    )
     @JsonManagedReference
     var likedProperties: MutableList<Property> = mutableListOf()
 

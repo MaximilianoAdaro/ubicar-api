@@ -11,11 +11,11 @@ class ContactServiceImpl(private val contactRepository: ContactRepository): Cont
         return contactRepository.save(contact)
     }
 
-    override fun findById(id: Long): Contact {
+    override fun findById(id: String): Contact {
         return contactRepository.findById(id).orElseThrow()
     }
 
-    override fun delete(contact: Long) {
-        contactRepository.delete(findById(contact))
+    override fun delete(id: String) {
+        contactRepository.delete(findById(id))
     }
 }

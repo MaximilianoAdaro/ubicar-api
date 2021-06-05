@@ -8,5 +8,5 @@ import javax.persistence.MappedSuperclass
 @MappedSuperclass
 abstract class AbstractEntity(
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long = 0
+    var id: String = ""
 )
