@@ -34,3 +34,8 @@ data class UserRoleDto(
     var creationDate: LocalDate,
 )
 
+data class RoleDTO(
+    var id: Long,
+    var title: String
+)
+
