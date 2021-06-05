@@ -7,6 +7,7 @@ import com.ubicar.ubicar.security.JwtUtils
 import com.ubicar.ubicar.services.user.UserService
 import javassist.NotFoundException
 import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
@@ -20,6 +21,7 @@ class AuthenticationServiceImpl(
 ) : AuthenticationService {
 
     override fun login(userDto: LogInUserDTO, response: HttpServletResponse): User {
+        val user: User = verifyUser(userDto)
         val authentication = authenticationManager.authenticate(
             UsernamePasswordAuthenticationToken(userDto.email, userDto.password)
         )
@@ -28,7 +30,14 @@ class AuthenticationServiceImpl(
         response.addHeader("Set-Cookie", "jwt=$jwt; HttpOnly; Path=/; SameSite=strict;")
         response.addHeader("Set-Cookie", "google-auth=false; httpOnly; Path=/; SameSite=strict;")
 
-        return userService.findByEmail(authentication.name).orElseThrow { NotFoundException("User not found") }
+        return user
+    }
+
+    private fun verifyUser(logInUser: LogInUserDTO): User {
+        val user: User = userService.findByEmail(logInUser.email).orElseThrow { NotFoundException("User not found") }
+        if (!userService.checkPassword(logInUser.password, user))
+            throw BadCredentialsException("Password is incorrect")
+        return user
     }
 
     override fun loginGoogle(logInUser: GoogleLoginUserDTO, response: HttpServletResponse, token: String): User {
