@@ -46,6 +46,13 @@ class SecurityConfig @Autowired constructor(
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests().antMatchers("/auth/**").permitAll().and()
             .authorizeRequests().antMatchers("/property/*").permitAll()
+            // SWAGGER CONFIG
+            .antMatchers(
+                "/v3/api-docs", "/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security",
+                "/swagger-ui/**", "/swagger-ui.html", "/swagger-ui.html**", "/swagger-ui.html/**",
+                "/swagger-ui.html#/**", "/webjars/**", "/swagger-resources/configuration/ui", "/swagger-ui/**",
+                "/v3/api-docs/**", "/v2/api-docs/**"
+            ).permitAll()
             .anyRequest().authenticated()
             .and().headers().xssProtection()
 
