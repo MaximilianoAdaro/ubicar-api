@@ -35,7 +35,7 @@ data class UserRoleDto(
 )
 
 data class RoleDTO(
-    var id: Long,
+    var id: String,
     var title: String
 )
 
