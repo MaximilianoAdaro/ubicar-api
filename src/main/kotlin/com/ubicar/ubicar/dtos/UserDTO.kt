@@ -22,7 +22,7 @@ data class UserCreationDTO(
     var email: String,
     var userName: String,
     var password: String,
-    var userRole: UserRoleDto?
+    var userRole: String
 )
 
 data class UserRoleDto(

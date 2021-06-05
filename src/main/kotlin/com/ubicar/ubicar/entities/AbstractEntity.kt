@@ -1,12 +1,12 @@
 package com.ubicar.ubicar.entities
 
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.MappedSuperclass
+import org.hibernate.annotations.GenericGenerator
+import javax.persistence.*
 
 @MappedSuperclass
 abstract class AbstractEntity(
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
     var id: String = ""
 )

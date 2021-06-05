@@ -26,9 +26,7 @@ class UserDtoFactory : AbstractFactory<User, UserDTO> {
 
 @Component
 class UserCreationFactory(
-    val userRoleDtoFactory: UserRoleDtoFactory,
     val userRoleRepository: UserRoleRepository,
-    val userRoleService: UserRoleService
 ) : AbstractFactory<User, UserCreationDTO> {
 
     override fun convert(input: User): UserCreationDTO {
@@ -36,12 +34,12 @@ class UserCreationFactory(
             email = input.email,
             userName = input.userName,
             password = input.password,
-            userRole = userRoleDtoFactory.convert(input.userRole)
+            userRole = input.userRole.id
         )
     }
 
     fun from(input: UserCreationDTO): User {
-        val userRole: UserRole = if (input.userRole != null) userRoleRepository.findById(input.userRole!!.id).get() else userRoleService.getDefault()
+        val userRole: UserRole = userRoleRepository.findById(input.userRole).get()
         return User(
             userName = input.userName,
             email = input.email,
@@ -73,7 +71,6 @@ class UserCreationGoogleFactory(
             userRole = userRoleService.getDefault()
         )
     }
-
 }
 
 
