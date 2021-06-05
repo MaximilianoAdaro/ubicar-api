@@ -41,7 +41,7 @@ class Property(
     @Column(nullable = false)
     var constructionDate: Int,
 
-    @ManyToOne
+    @ManyToOne(cascade = [CascadeType.ALL])
     var style: Style,
 
     @Column(nullable = false)
@@ -87,10 +87,10 @@ class Property(
     @ElementCollection
     var links: MutableList<String>,
 
-    @OneToMany
+    @OneToMany(cascade = [CascadeType.ALL])
     var contacts: MutableList<Contact>,
 
-    @OneToMany
+    @OneToMany(cascade = [CascadeType.ALL])
     var openHouse: MutableList<OpenHouseDate>,
 
     var comments: String,
