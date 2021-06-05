@@ -7,6 +7,7 @@ import com.ubicar.ubicar.entities.User.Companion.DEFAULT_PASSWORD
 import com.ubicar.ubicar.factories.user.UserCreationFactory
 import com.ubicar.ubicar.factories.user.UserCreationGoogleFactory
 import com.ubicar.ubicar.repositories.user.UserRepository
+import com.ubicar.ubicar.utils.AlreadyExistsException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
@@ -26,7 +27,9 @@ class UserServiceImpl(
 
     override fun saveUser(userCreationDto: UserCreationDTO): User {
         userCreationDto.password = passwordEncoder.encode(userCreationDto.password)
-        return userRepository.save(userCreationFactory.from(userCreationDto))
+        val user: User = userCreationFactory.from(userCreationDto)
+        userRepository.findByEmail(user.email).ifPresent { throw AlreadyExistsException("There is already a user with this email") }
+        return userRepository.save(user)
     }
 
     override fun saveUserWithGoogle(userCreationDto: GoogleLoginUserDTO): User {

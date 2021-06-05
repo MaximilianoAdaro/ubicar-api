@@ -68,7 +68,7 @@ class UserCreationGoogleFactory(
             email = input.email,
             password = password,
             userOrigin = UserOrigin.GOOGLE,
-            userRole = userRoleService.getDefault()
+            userRole = userRoleService.getBySlug("comprador_vendedor")
         )
     }
 }

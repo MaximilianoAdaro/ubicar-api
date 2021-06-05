@@ -6,7 +6,7 @@ import com.ubicar.ubicar.factories.user.UserDtoFactory
 import com.ubicar.ubicar.repositories.user.UserRoleRepository
 import com.ubicar.ubicar.services.auth.AuthenticationService
 import com.ubicar.ubicar.services.user.UserService
-import javassist.NotFoundException
+import com.ubicar.ubicar.utils.NotFoundException
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder

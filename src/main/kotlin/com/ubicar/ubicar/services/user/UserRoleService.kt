@@ -4,6 +4,5 @@ import com.ubicar.ubicar.entities.UserRole
 
 interface UserRoleService {
 
-    fun getDefault(): UserRole
-
+    fun getBySlug(slug: String): UserRole
 }

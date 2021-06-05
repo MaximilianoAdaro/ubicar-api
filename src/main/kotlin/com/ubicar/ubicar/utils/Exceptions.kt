@@ -11,3 +11,6 @@ class NotFoundException(message: String?) : RuntimeException(message)
 
 @ResponseStatus(HttpStatus.UNAUTHORIZED)
 class UnauthorizedException(message: String?) : RuntimeException(message)
+
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+class AlreadyExistsException(message: String?) : RuntimeException(message)

@@ -2,6 +2,7 @@ package com.ubicar.ubicar.services.user
 
 import com.ubicar.ubicar.entities.UserRole
 import com.ubicar.ubicar.repositories.user.UserRoleRepository
+import com.ubicar.ubicar.utils.BadRequestException
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
@@ -10,17 +11,8 @@ class UserRoleServiceImpl(
     val userRoleRepository: UserRoleRepository
 ) : UserRoleService {
 
-    override fun getDefault(): UserRole {
-        val defaultSlug = "default_role"
-        return userRoleRepository.findFirstBySlug(defaultSlug)
-            .orElseGet { userRoleRepository.save(defaultRole()) }
-    }
-
-    private fun defaultRole(): UserRole {
-        return UserRole(
-            "Default Role", "default_role", "Default role permit all",
-            true, LocalDate.now(), mutableListOf()
-        )
+    override fun getBySlug(slug: String): UserRole {
+        return userRoleRepository.findFirstBySlug(slug).orElseThrow { BadRequestException("Role not found") }
     }
 
 }
