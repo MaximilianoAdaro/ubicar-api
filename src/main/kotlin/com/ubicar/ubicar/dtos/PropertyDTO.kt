@@ -12,15 +12,15 @@ data class CreatePropertyDTO(
     val coveredSquareFoot: Int,
     val levels: Int,
     val constructionDate: Int,
-    val style: Long,
+    val style: String,
     val environments: Int,
     val rooms: Int,
     val toilets: Int,
     val fullBaths: Int,
     val expenses: Int,
-    val amenities:MutableList<Long>,
-    val materials: MutableList<Long>,
-    val security: MutableList<Long>,
+    val amenities: MutableList<String>,
+    val materials: MutableList<String>,
+    val security: MutableList<String>,
     val parkDescription: String,
     val links: MutableList<String>,
     val contacts: MutableList<Contact>,
@@ -29,7 +29,7 @@ data class CreatePropertyDTO(
 )
 
 data class AddressDTO(
-    val town_id: Long,
+    val town_id: String,
     val postalCode: String,
     val street: String,
     val number: Int,
@@ -37,7 +37,7 @@ data class AddressDTO(
 )
 
 data class PropertyDTO(
-    val id: Long,
+    val id: String,
     val title: String,
     val price: Int,
     val condition: Condition,
@@ -53,7 +53,7 @@ data class PropertyDTO(
     val toilets: Int,
     val fullBaths: Int,
     val expenses: Int,
-    val amenities:MutableList<Amenity>,
+    val amenities: MutableList<Amenity>,
     val materials: MutableList<ConstructionMaterial>,
     val security: MutableList<SecurityMeasure>,
     val parkDescription: String,
@@ -64,7 +64,7 @@ data class PropertyDTO(
 )
 
 data class PropertyPreviewDTO(
-    val id: Long,
+    val id: String,
     val title: String,
     val price: Int,
     val condition: Condition,

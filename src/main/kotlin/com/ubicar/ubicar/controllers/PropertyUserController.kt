@@ -14,12 +14,12 @@ class PropertyUserController(
 ) {
 
     @PutMapping("/like/{id}")
-    fun likeProperty(@PathVariable id: Long) : PropertyDTO {
+    fun likeProperty(@PathVariable id: String) : PropertyDTO {
         return propertyFactory.convert(propertyService.like(id))
     }
 
     @PutMapping("/dislike/{id}")
-    fun dislikeProperty(@PathVariable id: Long) : PropertyDTO {
+    fun dislikeProperty(@PathVariable id: String) : PropertyDTO {
         return propertyFactory.convert(propertyService.dislike(id))
     }
 }

@@ -6,11 +6,6 @@ import com.ubicar.ubicar.dtos.PropertyPreviewDTO
 import com.ubicar.ubicar.factories.property.CreatePropertyFactory
 import com.ubicar.ubicar.factories.property.PropertyFactory
 import com.ubicar.ubicar.factories.property.PropertyPreviewFactory
-import com.ubicar.ubicar.repositories.location.TownRepository
-import com.ubicar.ubicar.repositories.property.AmenityRepository
-import com.ubicar.ubicar.repositories.property.MaterialRepository
-import com.ubicar.ubicar.repositories.property.SecurityRepository
-import com.ubicar.ubicar.repositories.property.StyleRepository
 import com.ubicar.ubicar.services.property.PropertyService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -35,7 +30,7 @@ class PropertyController(
     }
 
     @PutMapping("/property/{id}")
-    fun editProperty(@PathVariable id: Long, @RequestBody propertyDTO: CreatePropertyDTO) : PropertyDTO {
+    fun editProperty(@PathVariable id: String, @RequestBody propertyDTO: CreatePropertyDTO) : PropertyDTO {
         return propertyFactory.convert(propertyService.update(id, createPropertyFactory.convert(propertyDTO)))
     }
 }

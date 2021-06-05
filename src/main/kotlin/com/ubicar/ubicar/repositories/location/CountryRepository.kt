@@ -4,6 +4,6 @@ import com.ubicar.ubicar.entities.Country
 import org.springframework.data.repository.CrudRepository
 import java.util.*
 
-interface CountryRepository: CrudRepository<Country, Long> {
+interface CountryRepository: CrudRepository<Country, String> {
     fun findFirstByName(name: String): Optional<Country>
 }

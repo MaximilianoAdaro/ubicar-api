@@ -5,7 +5,7 @@ import com.ubicar.ubicar.entities.OpenHouseDate
 interface OpenHouseDateService {
     fun save(openHouseDate: OpenHouseDate) : OpenHouseDate
 
-    fun findById(id: Long) : OpenHouseDate
+    fun findById(id: String) : OpenHouseDate
 
-    fun delete(openHouseDate: Long)
+    fun delete(id: String)
 }

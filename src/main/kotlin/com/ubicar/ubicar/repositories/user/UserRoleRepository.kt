@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface UserRoleRepository : CrudRepository<UserRole, Long> {
+interface UserRoleRepository : CrudRepository<UserRole, String> {
 
     override fun findAll(): List<UserRole>
 

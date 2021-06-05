@@ -10,13 +10,13 @@ interface PropertyService {
 
     fun save(property: Property) : Property
 
-    fun findById(id: Long) : Property
+    fun findById(id: String) : Property
 
-    fun update(id: Long, property: Property): Property
+    fun update(id: String, property: Property): Property
 
-    fun delete(property: Long)
+    fun delete(id: String)
 
-    fun like(id: Long): Property
+    fun like(id: String): Property
 
-    fun dislike(id: Long): Property
+    fun dislike(id: String): Property
 }

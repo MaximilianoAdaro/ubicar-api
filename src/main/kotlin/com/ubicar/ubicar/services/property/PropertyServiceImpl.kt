@@ -9,13 +9,10 @@ import com.ubicar.ubicar.services.openHouseDate.OpenHouseDateService
 import com.ubicar.ubicar.services.user.UserService
 import com.ubicar.ubicar.utils.BadRequestException
 import com.ubicar.ubicar.utils.NotFoundException
-import org.springframework.data.crossstore.ChangeSetPersister
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
-import java.lang.reflect.Field
 
 @Service
 class PropertyServiceImpl(private val propertyRepository: PropertyRepository,
@@ -35,11 +32,11 @@ class PropertyServiceImpl(private val propertyRepository: PropertyRepository,
         return propertyRepository.save(property)
     }
 
-    override fun findById(id: Long) : Property {
+    override fun findById(id: String) : Property {
         return propertyRepository.findById(id).orElseThrow()
     }
 
-    override fun update(id: Long, property: Property): Property {
+    override fun update(id: String, property: Property): Property {
         return propertyRepository
             .findById(id)
             .map { old ->
@@ -76,9 +73,9 @@ class PropertyServiceImpl(private val propertyRepository: PropertyRepository,
             .orElseThrow { NotFoundException("User not found") }
     }
 
-    override fun delete(property: Long) = propertyRepository.delete(findById(property))
+    override fun delete(id: String) = propertyRepository.delete(findById(id))
 
-    override fun like(id: Long): Property {
+    override fun like(id: String): Property {
         val property: Property = findById(id)
         val logged: User = userService.findByEmail(SecurityContextHolder.getContext().authentication.name).get()
         property.likes.map { if (it.id == logged.id) throw BadRequestException("You already liked this property") }
@@ -86,7 +83,7 @@ class PropertyServiceImpl(private val propertyRepository: PropertyRepository,
         return propertyRepository.save(property)
     }
 
-    override fun dislike(id: Long): Property {
+    override fun dislike(id: String): Property {
         val property: Property = findById(id)
         val logged: User = userService.findByEmail(SecurityContextHolder.getContext().authentication.name).get()
         property.likes.map { if (it.id != logged.id) throw BadRequestException("You never liked this property") }

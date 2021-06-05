@@ -29,12 +29,12 @@ class LocationController(
     }
 
     @GetMapping("/cities/{stateId}")
-    fun getCities(@PathVariable stateId: Long): List<CityDTO> {
+    fun getCities(@PathVariable stateId: String): List<CityDTO> {
         return cityRepository.findAllByStateId(stateId).map { cityFactory.convert(it) }
     }
 
     @GetMapping("/towns/{cityId}")
-    fun getTowns(@PathVariable cityId: Long): List<TownDTO> {
+    fun getTowns(@PathVariable cityId: String): List<TownDTO> {
         return townRepository.findAllByCityId(cityId).map { townFactory.convert(it) }
     }
 }

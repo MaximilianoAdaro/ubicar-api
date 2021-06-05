@@ -15,11 +15,11 @@ class AddressServiceImpl(private val addressRepository: AddressRepository): Addr
         return addressRepository.save(address)
     }
 
-    override fun findById(id: Long): Address {
+    override fun findById(id: String): Address {
         return addressRepository.findById(id).orElseThrow()
     }
 
-    override fun delete(address: Long) {
-        addressRepository.delete(findById(address))
+    override fun delete(id: String) {
+        addressRepository.delete(findById(id))
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 class UserDetailsImpl(
-    val id: Long,
+    val id: String,
     val email: String,
     @JsonIgnore private val password: String,
     private val authorities: Collection<GrantedAuthority>

@@ -11,11 +11,11 @@ class AmenityServiceImpl(private val amenitiesRepository: AmenityRepository): Am
         return amenitiesRepository.save(amenity)
     }
 
-    override fun findById(id: Long): Amenity {
+    override fun findById(id: String): Amenity {
         return amenitiesRepository.findById(id).orElseThrow()
     }
 
-    override fun delete(amenity: Long) {
-        amenitiesRepository.delete(findById(amenity))
+    override fun delete(id: String) {
+        amenitiesRepository.delete(findById(id))
     }
 }

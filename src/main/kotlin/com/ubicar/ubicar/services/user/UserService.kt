@@ -13,11 +13,11 @@ interface UserService {
 
     fun saveUserWithGoogle(userCreationDto: GoogleLoginUserDTO) : User
 
-    fun findById(id: Long) : User
+    fun findById(id: String) : User
 
     fun findByEmail(email: String): Optional<User>
 
-    fun delete(user: Long)
+    fun delete(id: String)
 
     fun existsByEmail(email: String): Boolean
 

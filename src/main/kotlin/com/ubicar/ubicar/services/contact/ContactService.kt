@@ -5,7 +5,7 @@ import com.ubicar.ubicar.entities.Contact
 interface ContactService {
     fun save(contact: Contact) : Contact
 
-    fun findById(id: Long) : Contact
+    fun findById(id: String) : Contact
 
-    fun delete(contact: Long)
+    fun delete(id: String)
 }
