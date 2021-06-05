@@ -44,7 +44,8 @@ class SecurityConfig @Autowired constructor(
         http.csrf().disable()
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-            .authorizeRequests().antMatchers("/auth/**").permitAll()
+            .authorizeRequests().antMatchers("/auth/**").permitAll().and()
+            .authorizeRequests().antMatchers("/property/*").permitAll()
             .anyRequest().authenticated()
             .and().headers().xssProtection()
 
