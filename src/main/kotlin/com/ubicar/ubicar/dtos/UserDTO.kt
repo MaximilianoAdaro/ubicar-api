@@ -1,29 +1,36 @@
 package com.ubicar.ubicar.dtos
 
-import com.ubicar.ubicar.entities.User
+import java.time.LocalDate
 
 data class UserDTO(
-    val id: Long,
-    val email: String
+    var id: Long,
+    var email: String,
+    var userName: String
 )
 
 data class GoogleLoginUserDTO(
-    val name: String,
-    val email: String
-) {
-    fun render() = User(0, email, "password")
-}
+    var name: String,
+    var email: String
+)
 
 data class LogInUserDTO(
-    val email: String,
-    val password: String
-) {
-    fun render() = User(0, email, password)
-}
+    var email: String,
+    var password: String
+)
 
-data class CreateUserDTO(
-    val email: String,
-    val password: String
-) {
-    fun render() = User(0, email, password)
-}
+data class UserCreationDTO(
+    var email: String,
+    var userName: String,
+    var password: String,
+    var userRole: UserRoleDto?
+)
+
+data class UserRoleDto(
+    var id: Long,
+    var title: String,
+    var slug: String,
+    var description: String,
+    var active: Boolean = true,
+    var creationDate: LocalDate,
+)
+

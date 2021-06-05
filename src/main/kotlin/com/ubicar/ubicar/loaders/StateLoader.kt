@@ -14,14 +14,14 @@ import org.springframework.stereotype.Component
 class StateLoader(private val stateRepository: StateRepository, private val countryRepository: CountryRepository): CommandLineRunner, Ordered {
 
     override fun run(vararg args: String?) {
-        val country: Country = countryRepository.findById(50).get()
+        val country: Country = countryRepository.findFirstByName("Argentina").get()
         val states: MutableList<State> = mutableListOf()
-        states.add(State(51, "Buenos Aires", country))
-        states.add(State(52, "Córdoba", country))
-        states.add(State(53, "Neuquén", country))
-        states.add(State(54, "Santa Fé", country))
-        states.add(State(55, "Entre Rios", country))
-        states.add(State(56, "Catamarca", country))
+        states.add(State("Buenos Aires", country))
+        states.add(State("Córdoba", country))
+        states.add(State("Neuquén", country))
+        states.add(State("Santa Fé", country))
+        states.add(State("Entre Rios", country))
+        states.add(State("Catamarca", country))
 
         states.map { stateRepository.save(it) }
     }

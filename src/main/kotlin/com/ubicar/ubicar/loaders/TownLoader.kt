@@ -14,14 +14,14 @@ import org.springframework.stereotype.Component
 class TownLoader(private val townRepository: TownRepository, private val cityRepository: CityRepository): CommandLineRunner, Ordered {
 
     override fun run(vararg args: String?) {
-        val city: City = cityRepository.findById(57).get()
+        val city: City = cityRepository.findByName("CABA").get()
         val towns: MutableList<Town> = mutableListOf()
-        towns.add(Town(62, "Belgrano", city))
-        towns.add(Town(63, "Caballito", city))
-        towns.add(Town(64, "Colegiales", city))
-        towns.add(Town(65, "Recoleta", city))
-        towns.add(Town(66, "Flores", city))
-        towns.add(Town(67, "Retiro", city))
+        towns.add(Town("Belgrano", city))
+        towns.add(Town("Caballito", city))
+        towns.add(Town("Colegiales", city))
+        towns.add(Town("Recoleta", city))
+        towns.add(Town("Flores", city))
+        towns.add(Town("Retiro", city))
 
         towns.map { townRepository.save(it) }
     }

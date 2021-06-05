@@ -13,12 +13,12 @@ class MaterialsLoader(private val materialRepository: MaterialRepository): Comma
 
     override fun run(vararg args: String?) {
         val materials: MutableList<ConstructionMaterial> = mutableListOf()
-        materials.add(ConstructionMaterial(34, "Ladrillo"))
-        materials.add(ConstructionMaterial(35, "Ladrillo Hueco"))
-        materials.add(ConstructionMaterial(36, "Cemento"))
-        materials.add(ConstructionMaterial(37, "Piedra"))
-        materials.add(ConstructionMaterial(38, "Chapa"))
-        materials.add(ConstructionMaterial(39, "Madera"))
+        materials.add(ConstructionMaterial("Ladrillo"))
+        materials.add(ConstructionMaterial("Ladrillo Hueco"))
+        materials.add(ConstructionMaterial("Cemento"))
+        materials.add(ConstructionMaterial("Piedra"))
+        materials.add(ConstructionMaterial("Chapa"))
+        materials.add(ConstructionMaterial("Madera"))
 
         materials.map { materialRepository.save(it) }
     }

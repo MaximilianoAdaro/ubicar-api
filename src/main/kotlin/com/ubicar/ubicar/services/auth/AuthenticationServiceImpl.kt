@@ -1,5 +1,6 @@
 package com.ubicar.ubicar.services.auth
 
+import com.ubicar.ubicar.dtos.GoogleLoginUserDTO
 import com.ubicar.ubicar.dtos.LogInUserDTO
 import com.ubicar.ubicar.entities.User
 import com.ubicar.ubicar.security.JwtUtils
@@ -30,10 +31,11 @@ class AuthenticationServiceImpl(
         return userService.findByEmail(authentication.name).orElseThrow { NotFoundException("User not found") }
     }
 
-    override fun loginGoogle(logInUser: User, response: HttpServletResponse, token: String): User {
-        val user: User = userService.findByEmail(logInUser.getEmail()).orElseGet { userService.save(logInUser) }
+    override fun loginGoogle(logInUser: GoogleLoginUserDTO, response: HttpServletResponse, token: String): User {
+        val user: User = userService.findByEmail(logInUser.email)
+            .orElseGet { userService.saveUserWithGoogle(logInUser) }
         val authentication = authenticationManager.authenticate(
-            UsernamePasswordAuthenticationToken(logInUser.getEmail(), "password")
+            UsernamePasswordAuthenticationToken(logInUser.email, "password")
         )
         SecurityContextHolder.getContext().authentication = authentication
         response.addHeader("Set-Cookie", "jwt=$token; httpOnly; Path=/; SameSite=strict;")

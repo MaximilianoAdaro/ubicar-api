@@ -13,10 +13,10 @@ class SecurityLoader(private val securityRepository: SecurityRepository): Comman
 
     override fun run(vararg args: String?) {
         val securities: MutableList<SecurityMeasure> = mutableListOf()
-        securities.add(SecurityMeasure(40, "Rejas"))
-        securities.add(SecurityMeasure(41, "Camaras"))
-        securities.add(SecurityMeasure(42, "Alarma de entrada"))
-        securities.add(SecurityMeasure(43, "Alarma de humo"))
+        securities.add(SecurityMeasure("Rejas"))
+        securities.add(SecurityMeasure("Camaras"))
+        securities.add(SecurityMeasure("Alarma de entrada"))
+        securities.add(SecurityMeasure("Alarma de humo"))
 
         securities.map { securityRepository.save(it) }
     }

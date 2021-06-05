@@ -7,7 +7,9 @@ import com.ubicar.ubicar.repositories.property.AmenityRepository
 import com.ubicar.ubicar.repositories.property.MaterialRepository
 import com.ubicar.ubicar.repositories.property.SecurityRepository
 import com.ubicar.ubicar.repositories.property.StyleRepository
+import org.springframework.stereotype.Component
 
+@Component
 class CreatePropertyFactory(private val styleRepository: StyleRepository,
                             private val amenityRepository: AmenityRepository,
                             private val materialRepository: MaterialRepository,
@@ -26,10 +28,9 @@ class CreatePropertyFactory(private val styleRepository: StyleRepository,
         input.security.map { securities.add(securityRepository.findById(it).get()) }
 
         val town: Town = townRepository.findById(input.address.town_id).get()
-        val address = Address(0, town, input.address.postalCode, input.address.street, input.address.number, input.address.department)
+        val address = Address(town, input.address.postalCode, input.address.street, input.address.number, input.address.department)
 
         return Property(
-            0,
             input.title,
             input.price,
             Condition.valueOf(input.condition),

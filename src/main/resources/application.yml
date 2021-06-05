@@ -1,10 +1,23 @@
 spring:
-  security:
-    user:
-      name: 'admin'
-      password: 'admin'
-      roles: 'manager'
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database: postgresql
+    show-sql: true
 
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ubicar
+    username: root
+    password: password
+    driver-class-name: org.postgresql.Driver
+    initialization-mode: always
+
+  # Pretty-print JSON responses
+  jackson:
+    serialization:
+      indent_output: true
+
+  security:
     oauth2:
       resourceserver:
         jwt:
