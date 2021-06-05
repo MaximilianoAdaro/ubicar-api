@@ -33,21 +33,21 @@ class UserCreationFactory(
 
     override fun convert(input: User): UserCreationDTO {
         return UserCreationDTO(
-            input.email,
-            input.userName,
-            input.password,
-            userRoleDtoFactory.convert(input.userRole)
+            email = input.email,
+            userName = input.userName,
+            password = input.password,
+            userRole = userRoleDtoFactory.convert(input.userRole)
         )
     }
 
     fun from(input: UserCreationDTO): User {
         val userRole: UserRole = if (input.userRole != null) userRoleRepository.findById(input.userRole!!.id).get() else userRoleService.getDefault()
         return User(
-            input.email,
-            input.userName,
-            input.password,
-            UserOrigin.UBICAR,
-            userRole
+            userName = input.userName,
+            email = input.email,
+            password = input.password,
+            userOrigin = UserOrigin.UBICAR,
+            userRole = userRole
         )
     }
 }
@@ -59,18 +59,18 @@ class UserCreationGoogleFactory(
 
     override fun convert(input: User): GoogleLoginUserDTO {
         return GoogleLoginUserDTO(
-            input.email,
-            input.userName
+            name = input.userName,
+            email = input.email
         )
     }
 
     fun from(input: GoogleLoginUserDTO, password: String): User {
         return User(
-            input.name,
-            input.email,
-            password,
-            UserOrigin.GOOGLE,
-            userRoleService.getDefault()
+            userName = input.name,
+            email = input.email,
+            password = password,
+            userOrigin = UserOrigin.GOOGLE,
+            userRole = userRoleService.getDefault()
         )
     }
 

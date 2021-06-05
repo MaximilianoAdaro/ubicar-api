@@ -10,8 +10,5 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(private val userRoleRepository: UserRoleRepository,
                      private val roleFactory: RoleFactory) {
 
-    @GetMapping("/roles")
-    fun getProperties(): List<RoleDTO> {
-        return userRoleRepository.findAll().map { roleFactory.convert(it) }
-    }
+
 }

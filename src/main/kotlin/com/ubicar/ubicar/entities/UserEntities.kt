@@ -48,12 +48,7 @@ class UserRole(
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL]) @JsonManagedReference
     var permissions: MutableList<Permission> = mutableListOf()
-) : AbstractEntity() {
-    companion object DEFAULT : UserRole(
-        "Default Role", "default_role", "Default role permit all",
-        true, LocalDate.now(), mutableListOf()
-    )
-}
+) : AbstractEntity()
 
 @Table(name = "permission")
 @Entity

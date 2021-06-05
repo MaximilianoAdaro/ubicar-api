@@ -1,10 +1,9 @@
 package com.ubicar.ubicar.controllers
 
-import com.ubicar.ubicar.dtos.GoogleLoginUserDTO
-import com.ubicar.ubicar.dtos.LogInUserDTO
-import com.ubicar.ubicar.dtos.UserCreationDTO
-import com.ubicar.ubicar.dtos.UserDTO
+import com.ubicar.ubicar.dtos.*
+import com.ubicar.ubicar.factories.user.RoleFactory
 import com.ubicar.ubicar.factories.user.UserDtoFactory
+import com.ubicar.ubicar.repositories.user.UserRoleRepository
 import com.ubicar.ubicar.services.auth.AuthenticationService
 import com.ubicar.ubicar.services.user.UserService
 import javassist.NotFoundException
@@ -19,7 +18,9 @@ import javax.servlet.http.HttpServletResponse
 class AuthController(
     private val userService: UserService,
     private val authenticationService: AuthenticationService,
-    private val userDtoFactory: UserDtoFactory
+    private val userDtoFactory: UserDtoFactory,
+    private val userRoleRepository: UserRoleRepository,
+    private val roleFactory: RoleFactory
 ) {
 
     @PostMapping("/login")
@@ -46,6 +47,11 @@ class AuthController(
         val authentication: Authentication = SecurityContextHolder.getContext().authentication
         return userDtoFactory.convert(
             userService.findByEmail(authentication.name).orElseThrow { NotFoundException("User not found") })
+    }
+
+    @GetMapping("/roles")
+    fun getProperties(): List<RoleDTO> {
+        return userRoleRepository.findAll().map { roleFactory.convert(it) }
     }
 
     @PostMapping("/logout")
