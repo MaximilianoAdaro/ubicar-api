@@ -29,7 +29,7 @@ class UserServiceImpl(
     }
 
     override fun saveUserWithGoogle(userCreationDto: GoogleLoginUserDTO): User {
-        val from = userCreationGoogleFactory.from(userCreationDto, null)
+        val from = userCreationGoogleFactory.from(userCreationDto, passwordEncoder.encode("password".plus(userCreationDto.email.plus("password"))))
         return userRepository.save(from)
     }
 

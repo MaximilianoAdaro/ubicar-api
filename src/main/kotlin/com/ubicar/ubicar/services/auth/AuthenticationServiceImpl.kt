@@ -36,7 +36,10 @@ class AuthenticationServiceImpl(
         val user: User = userService.findByEmail(logInUser.email)
             .orElseGet { userService.saveUserWithGoogle(logInUser) }
         val authentication = authenticationManager.authenticate(
-            UsernamePasswordAuthenticationToken(logInUser.email, "password", listOf(SimpleGrantedAuthority(user.userRole.slug)))
+            UsernamePasswordAuthenticationToken(
+                logInUser.email, "password".plus(logInUser.email.plus("password")),
+                listOf(SimpleGrantedAuthority(user.userRole.slug))
+            )
         )
         SecurityContextHolder.getContext().authentication = authentication
         response.addHeader("Set-Cookie", "jwt=$token; httpOnly; Path=/; SameSite=strict;")

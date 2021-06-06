@@ -50,7 +50,7 @@ class AuthController(
     }
 
     @GetMapping("/roles")
-    fun getProperties(): List<RoleDTO> {
+    fun getRoles(): List<RoleDTO> {
         return userRoleRepository.findAll().map { roleFactory.convert(it) }
     }
 

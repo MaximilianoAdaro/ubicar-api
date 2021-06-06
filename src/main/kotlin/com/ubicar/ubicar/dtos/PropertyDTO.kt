@@ -1,6 +1,8 @@
 package com.ubicar.ubicar.dtos
 
 import com.ubicar.ubicar.entities.*
+import java.time.LocalDate
+import java.time.LocalTime
 
 data class CreatePropertyDTO(
     val title: String,
@@ -23,8 +25,8 @@ data class CreatePropertyDTO(
     val security: MutableList<String>,
     val parkDescription: String,
     val links: MutableList<String>,
-    val contacts: MutableList<Contact>,
-    val openHouse: MutableList<OpenHouseDate>,
+    val contacts: MutableList<ContactDto>,
+    val openHouse: MutableList<OpenHouseDateDto>,
     val comments: String
 )
 
@@ -75,4 +77,15 @@ data class PropertyPreviewDTO(
     val rooms: Int,
     val toilets: Int,
     val fullBaths: Int
+)
+
+data class ContactDto(
+    var label: String,
+    var email: String
+)
+
+data class OpenHouseDateDto(
+    var day: LocalDate,
+    var initialTime: LocalTime,
+    var finalTime: LocalTime
 )
