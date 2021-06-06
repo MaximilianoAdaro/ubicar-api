@@ -3,7 +3,6 @@ package com.ubicar.ubicar.services.user
 import com.ubicar.ubicar.dtos.GoogleLoginUserDTO
 import com.ubicar.ubicar.dtos.UserCreationDTO
 import com.ubicar.ubicar.entities.User
-import com.ubicar.ubicar.entities.User.Companion.DEFAULT_PASSWORD
 import com.ubicar.ubicar.factories.user.UserCreationFactory
 import com.ubicar.ubicar.factories.user.UserCreationGoogleFactory
 import com.ubicar.ubicar.repositories.user.UserRepository
@@ -30,7 +29,7 @@ class UserServiceImpl(
     }
 
     override fun saveUserWithGoogle(userCreationDto: GoogleLoginUserDTO): User {
-        val from = userCreationGoogleFactory.from(userCreationDto, DEFAULT_PASSWORD)
+        val from = userCreationGoogleFactory.from(userCreationDto, passwordEncoder.encode("password".plus(userCreationDto.email.plus("password"))))
         return userRepository.save(from)
     }
 

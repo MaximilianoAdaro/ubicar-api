@@ -11,14 +11,14 @@ class UserRoleServiceImpl(
 ) : UserRoleService {
 
     override fun getDefault(): UserRole {
-        val defaultSlug = "default_role"
+        val defaultSlug = "ROLE_comprador_vendedor"
         return userRoleRepository.findFirstBySlug(defaultSlug)
             .orElseGet { userRoleRepository.save(defaultRole()) }
     }
 
     private fun defaultRole(): UserRole {
         return UserRole(
-            "Default Role", "default_role", "Default role permit all",
+            "Comprador/Vendedor", "ROLE_comprador_vendedor", "comprador_vendedor",
             true, LocalDate.now(), mutableListOf()
         )
     }

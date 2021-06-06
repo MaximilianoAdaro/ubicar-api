@@ -9,13 +9,12 @@ import javax.persistence.*
 @Table(name = "user_data")
 @Entity
 class User(
-    @Column(unique = true)
     var userName: String,
 
     @Column(unique = true)
     var email: String,
 
-    var password: String,
+    var password: String? = null,
 
     @Enumerated(value = EnumType.STRING)
     var userOrigin: UserOrigin,
@@ -32,11 +31,7 @@ class User(
     @JsonManagedReference
     var likedProperties: MutableList<Property> = mutableListOf()
 
-) : AbstractEntity() {
-    companion object {
-        var DEFAULT_PASSWORD = "password"
-    }
-}
+) : AbstractEntity()
 
 @Table(name = "user_role")
 @Entity

@@ -62,7 +62,7 @@ class UserCreationGoogleFactory(
         )
     }
 
-    fun from(input: GoogleLoginUserDTO, password: String): User {
+    fun from(input: GoogleLoginUserDTO, password: String?): User {
         return User(
             userName = input.name,
             email = input.email,

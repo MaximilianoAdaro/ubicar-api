@@ -14,7 +14,9 @@ class CreatePropertyFactory(private val styleRepository: StyleRepository,
                             private val amenityRepository: AmenityRepository,
                             private val materialRepository: MaterialRepository,
                             private val securityRepository: SecurityRepository,
-                            private val townRepository: TownRepository
+                            private val townRepository: TownRepository,
+                            private val contactFactory: ContactFactory,
+                            private val openHouseDateFactory: OpenHouseDateFactory
 ) {
 
     fun convert(input: CreatePropertyDTO): Property {
@@ -29,6 +31,9 @@ class CreatePropertyFactory(private val styleRepository: StyleRepository,
 
         val town: Town = townRepository.findById(input.address.town_id).get()
         val address = Address(town, input.address.postalCode, input.address.street, input.address.number, input.address.department)
+
+        val contacts = input.contacts.map(contactFactory::from).toMutableList()
+        val openHouse = input.openHouse.map(openHouseDateFactory::from).toMutableList()
 
         return Property(
             input.title,
@@ -51,8 +56,8 @@ class CreatePropertyFactory(private val styleRepository: StyleRepository,
             securities,
             input.parkDescription,
             input.links,
-            input.contacts,
-            input.openHouse,
+            contacts,
+            openHouse,
             input.comments
         )
     }
