@@ -22,6 +22,7 @@ class User(
     @ManyToOne(cascade = [CascadeType.ALL])
     var userRole: UserRole,
 
+    var birthDate: LocalDate?,
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "user_property",

@@ -34,7 +34,8 @@ class UserCreationFactory(
             email = input.email,
             userName = input.userName,
             password = input.password,
-            userRole = input.userRole.id
+            userRole = input.userRole.id,
+            birthDate = input.birthDate
         )
     }
 
@@ -45,7 +46,8 @@ class UserCreationFactory(
             email = input.email,
             password = input.password,
             userOrigin = UserOrigin.UBICAR,
-            userRole = userRole
+            userRole = userRole,
+            birthDate = input.birthDate
         )
     }
 }
@@ -68,7 +70,8 @@ class UserCreationGoogleFactory(
             email = input.email,
             password = password,
             userOrigin = UserOrigin.GOOGLE,
-            userRole = userRoleService.getDefault()
+            userRole = userRoleService.getDefault(),
+            birthDate = null
         )
     }
 }
