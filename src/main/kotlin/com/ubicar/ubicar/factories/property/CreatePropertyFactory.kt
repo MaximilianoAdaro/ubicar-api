@@ -8,6 +8,7 @@ import com.ubicar.ubicar.repositories.property.MaterialRepository
 import com.ubicar.ubicar.repositories.property.SecurityRepository
 import com.ubicar.ubicar.repositories.property.StyleRepository
 import org.springframework.stereotype.Component
+import java.time.LocalDate
 
 @Component
 class CreatePropertyFactory(private val styleRepository: StyleRepository,
@@ -58,7 +59,8 @@ class CreatePropertyFactory(private val styleRepository: StyleRepository,
             input.links,
             contacts,
             openHouse,
-            input.comments
+            input.comments,
+            LocalDate.now()
         )
     }
 }
