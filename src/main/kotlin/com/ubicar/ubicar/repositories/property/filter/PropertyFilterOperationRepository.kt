@@ -3,20 +3,21 @@ package com.ubicar.ubicar.repositories.property.filter
 import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
 import com.ubicar.ubicar.entities.*
+import com.ubicar.ubicar.repositories.property.AmenityRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import java.util.*
 import javax.persistence.EntityManager
 import javax.persistence.TypedQuery
-import javax.persistence.criteria.CriteriaQuery
-import javax.persistence.criteria.Predicate
-import javax.persistence.criteria.Root
+import javax.persistence.criteria.*
 
 @Repository
 class PropertyFilterOperationRepository @Autowired constructor(
-    private val em: EntityManager
+    private val em: EntityManager,
+    private val amenityRepository: AmenityRepository,
 ) {
     fun getFilteredProperties(
         filter: PropertyFilterDto, user: User, pageable: Pageable, params: PropertyLazyTableDto, orderList: List<String>
@@ -56,6 +57,12 @@ class PropertyFilterOperationRepository @Autowired constructor(
             predicates.add(cb.greaterThanOrEqualTo(root.get("squareFoot"), filter.minAmountSquareMeter!!))
         if (filter.maxAmountSquareMeter != null)
             predicates.add(cb.lessThanOrEqualTo(root.get("squareFoot"), filter.maxAmountSquareMeter!!))
+
+        val yardAmenity: Optional<Amenity> = amenityRepository.findFirstByLabel("Jardín")
+        if(filter.containsYard != null && filter.containsYard!! && yardAmenity.isPresent) {
+            val propertyAmenityJoin: Join<Property, Amenity> = root.join("amenities", JoinType.INNER)
+            predicates.add(cb.equal(propertyAmenityJoin, yardAmenity.get()))
+        }
 
 //        Sorting and orders
 //        val orders: List<Order> = ArrayList()
