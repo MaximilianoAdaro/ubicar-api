@@ -1,5 +1,8 @@
 package com.ubicar.ubicar.services.property
 
+import com.ubicar.ubicar.dtos.filter.PROPERTY_SORT_PROPERTIES
+import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
+import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
 import com.ubicar.ubicar.entities.Property
 import com.ubicar.ubicar.entities.User
 import com.ubicar.ubicar.repositories.property.PropertyRepository
@@ -10,29 +13,33 @@ import com.ubicar.ubicar.services.user.UserService
 import com.ubicar.ubicar.utils.BadRequestException
 import com.ubicar.ubicar.utils.NotFoundException
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 
 @Service
-class PropertyServiceImpl(private val propertyRepository: PropertyRepository,
-                          private val addressService: AddressService,
-                          private val contactService: ContactService,
-                          private val openHouseDateService: OpenHouseDateService,
-                          private val userService: UserService): PropertyService {
+class PropertyServiceImpl(
+    private val propertyRepository: PropertyRepository,
+    private val addressService: AddressService,
+    private val contactService: ContactService,
+    private val openHouseDateService: OpenHouseDateService,
+    private val userService: UserService,
+    private val propertyFilterService: PropertyFilterService
+) : PropertyService {
 
-    override fun findAll(pageable: Pageable) : Page<Property> {
+    override fun findAll(pageable: Pageable): Page<Property> {
         return propertyRepository.findAll(pageable)
     }
 
-    override fun save(property: Property) : Property {
+    override fun save(property: Property): Property {
         addressService.save(property.address)
         property.contacts.map { contactService.save(it) }
         property.openHouse.map { openHouseDateService.save(it) }
         return propertyRepository.save(property)
     }
 
-    override fun findById(id: String) : Property {
+    override fun findById(id: String): Property {
         return propertyRepository.findById(id).orElseThrow()
     }
 
@@ -89,5 +96,13 @@ class PropertyServiceImpl(private val propertyRepository: PropertyRepository,
         property.likes.map { if (it.id != logged.id) throw BadRequestException("You never liked this property") }
         property.likes = property.likes.filter { it.id == logged.id }.toMutableList()
         return propertyRepository.save(property)
+    }
+
+    override fun getAllByFilterPageable(
+        filter: PropertyFilterDto, params: PropertyLazyTableDto
+    ): Page<Property> {
+        val orderList = PROPERTY_SORT_PROPERTIES[params.property]!!
+        val pageRequest = PageRequest.of(params.page, params.size)
+        return propertyFilterService.filterEvaluationsPaginated(filter, pageRequest, params, orderList)
     }
 }

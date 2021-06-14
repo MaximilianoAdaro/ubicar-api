@@ -2,6 +2,7 @@ package com.ubicar.ubicar.entities
 
 import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonManagedReference
+import org.hibernate.annotations.CreationTimestamp
 import java.time.LocalDate
 import java.time.LocalTime
 import javax.persistence.*
@@ -94,6 +95,9 @@ class Property(
     var openHouse: MutableList<OpenHouseDate>,
 
     var comments: String,
+
+    @CreationTimestamp
+    var creationDate: LocalDate,
 
     @ManyToMany(mappedBy = "likedProperties")
     @JsonBackReference
