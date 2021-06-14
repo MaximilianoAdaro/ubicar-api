@@ -29,6 +29,11 @@ class PropertyController(
         return propertyFactory.convert(propertyService.save(createPropertyFactory.convert(propertyDTO)))
     }
 
+    @GetMapping("/property/{id}")
+    fun getProperty(@PathVariable id: String) : PropertyDTO {
+        return propertyFactory.convert(propertyService.findById(id))
+    }
+
     @PutMapping("/property/{id}")
     fun editProperty(@PathVariable id: String, @RequestBody propertyDTO: CreatePropertyDTO) : PropertyDTO {
         return propertyFactory.convert(propertyService.update(id, createPropertyFactory.convert(propertyDTO)))
