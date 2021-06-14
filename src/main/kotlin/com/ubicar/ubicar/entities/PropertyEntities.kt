@@ -62,29 +62,14 @@ class Property(
     // OPTIONAL FEATURES
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "property_amenity",
-        joinColumns = [JoinColumn(name = "property_id", referencedColumnName = "id")],
-        inverseJoinColumns = [JoinColumn(name = "amenity_id", referencedColumnName = "id")]
-    )
     @JsonManagedReference
     var amenities: MutableList<Amenity> = mutableListOf(),
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "property_material",
-        joinColumns = [JoinColumn(name = "property_id", referencedColumnName = "id")],
-        inverseJoinColumns = [JoinColumn(name = "material_id", referencedColumnName = "id")]
-    )
     @JsonManagedReference
     var materials: MutableList<ConstructionMaterial> = mutableListOf(),
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "property_security",
-        joinColumns = [JoinColumn(name = "property_id", referencedColumnName = "id")],
-        inverseJoinColumns = [JoinColumn(name = "security_id", referencedColumnName = "id")]
-    )
     @JsonManagedReference
     var security: MutableList<SecurityMeasure> = mutableListOf(),
 
