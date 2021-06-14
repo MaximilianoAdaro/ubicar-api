@@ -62,23 +62,29 @@ class Property(
     // OPTIONAL FEATURES
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "property_amenity",
+    @JoinTable(
+        name = "property_amenity",
         joinColumns = [JoinColumn(name = "property_id", referencedColumnName = "id")],
-        inverseJoinColumns = [JoinColumn(name = "amenity_id", referencedColumnName = "id")])
+        inverseJoinColumns = [JoinColumn(name = "amenity_id", referencedColumnName = "id")]
+    )
     @JsonManagedReference
     var amenities: MutableList<Amenity> = mutableListOf(),
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "property_material",
+    @JoinTable(
+        name = "property_material",
         joinColumns = [JoinColumn(name = "property_id", referencedColumnName = "id")],
-        inverseJoinColumns = [JoinColumn(name = "material_id", referencedColumnName = "id")])
+        inverseJoinColumns = [JoinColumn(name = "material_id", referencedColumnName = "id")]
+    )
     @JsonManagedReference
     var materials: MutableList<ConstructionMaterial> = mutableListOf(),
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "property_security",
+    @JoinTable(
+        name = "property_security",
         joinColumns = [JoinColumn(name = "property_id", referencedColumnName = "id")],
-        inverseJoinColumns = [JoinColumn(name = "security_id", referencedColumnName = "id")])
+        inverseJoinColumns = [JoinColumn(name = "security_id", referencedColumnName = "id")]
+    )
     @JsonManagedReference
     var security: MutableList<SecurityMeasure> = mutableListOf(),
 
@@ -99,7 +105,7 @@ class Property(
     @JsonBackReference
     var likes: MutableList<User> = mutableListOf()
 
-): AbstractEntity()
+) : AbstractEntity()
 
 @Table(name = "style")
 @Entity
@@ -107,54 +113,23 @@ class Style(
 
     @Column(nullable = false)
     var label: String
-): AbstractEntity()
-
-@Table(name = "country")
-@Entity
-class Country(
-    @Column(nullable = false)
-    var name: String
-): AbstractEntity()
-
-@Table(name = "state")
-@Entity
-class State(
-    @Column(nullable = false)
-    var name: String,
-
-    @ManyToOne
-    var country: Country
-): AbstractEntity()
+) : AbstractEntity()
 
 @Table(name = "city")
 @Entity
 class City(
-
     @Column(nullable = false)
     var name: String,
-
-    @ManyToOne
-    var state: State
-): AbstractEntity()
-
-@Table(name = "town")
-@Entity
-class Town(
-    @Column(nullable = false)
-    var name: String,
-
-    @ManyToOne
-    var city: City
-): AbstractEntity()
+) : AbstractEntity()
 
 @Table(name = "address")
 @Entity
 class Address(
-    @ManyToOne
-    var town: Town,
-
     @Column(nullable = false)
-    var postalCode: String,
+    val name: String,
+
+    @ManyToOne(cascade = [CascadeType.ALL])
+    var city: City,
 
     @Column(nullable = false)
     var street: String,
@@ -162,9 +137,18 @@ class Address(
     @Column(nullable = false)
     var number: Int,
 
+    @OneToOne(cascade = [CascadeType.ALL])
+    var coordinates: Coordinates
+) : AbstractEntity()
+
+@Table(name = "coordinates")
+@Entity
+class Coordinates(
     @Column(nullable = false)
-    var department: String
-): AbstractEntity()
+    var lat: Double,
+    @Column(nullable = false)
+    var long: Double
+) : AbstractEntity()
 
 @Table(name = "amenity")
 @Entity
@@ -175,43 +159,43 @@ class Amenity(
     @ManyToMany(mappedBy = "amenities")
     @JsonBackReference
     private var properties: MutableList<Property> = mutableListOf()
-): AbstractEntity()
+) : AbstractEntity()
 
 @Table(name = "material")
 @Entity
-class ConstructionMaterial (
+class ConstructionMaterial(
     @Column(nullable = false)
     var label: String,
 
     @ManyToMany(mappedBy = "materials")
     @JsonBackReference
     private var properties: MutableList<Property> = mutableListOf()
-): AbstractEntity()
+) : AbstractEntity()
 
 @Table(name = "security")
 @Entity
-class SecurityMeasure (
+class SecurityMeasure(
     @Column(nullable = false)
     var label: String,
 
     @ManyToMany(mappedBy = "security")
     @JsonBackReference
     private var properties: MutableList<Property> = mutableListOf()
-): AbstractEntity()
+) : AbstractEntity()
 
 @Table(name = "contact")
 @Entity
-class Contact (
+class Contact(
     @Column(nullable = false)
     var label: String,
 
     @Column(nullable = false)
     var email: String
-): AbstractEntity()
+) : AbstractEntity()
 
 @Table(name = "open_house_date")
 @Entity
-class OpenHouseDate (
+class OpenHouseDate(
     @Column(nullable = false)
     var day: LocalDate,
 
@@ -220,4 +204,4 @@ class OpenHouseDate (
 
     @Column(nullable = false)
     var finalTime: LocalTime
-): AbstractEntity()
+) : AbstractEntity()
