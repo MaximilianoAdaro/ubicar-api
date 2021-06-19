@@ -1,4 +1,4 @@
-package com.ubicar.ubicar.controllers
+package com.ubicar.ubicar.controllers.property
 
 import com.ubicar.ubicar.dtos.PropertyDTO
 import com.ubicar.ubicar.factories.property.PropertyFactory
