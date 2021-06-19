@@ -1,12 +1,10 @@
-package com.ubicar.ubicar.controllers
+package com.ubicar.ubicar.controllers.property
 
-import com.ubicar.ubicar.dtos.CreatePropertyDTO
 import com.ubicar.ubicar.dtos.PropertyDTO
 import com.ubicar.ubicar.dtos.PropertyPreviewDTO
 import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
 import com.ubicar.ubicar.dtos.filter.PropertySort
-import com.ubicar.ubicar.factories.property.CreatePropertyFactory
 import com.ubicar.ubicar.factories.property.PropertyFactory
 import com.ubicar.ubicar.factories.property.PropertyPreviewFactory
 import com.ubicar.ubicar.services.property.PropertyService
@@ -17,11 +15,11 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
-class PropertyController(
+@RequestMapping("/property/public")
+class PropertyPublicController(
     private val propertyService: PropertyService,
     private val propertyFactory: PropertyFactory,
-    private val propertyPreviewFactory: PropertyPreviewFactory,
-    private val createPropertyFactory: CreatePropertyFactory
+    private val propertyPreviewFactory: PropertyPreviewFactory
 ) {
 
     @GetMapping("/preview")
@@ -46,18 +44,9 @@ class PropertyController(
         return propertyService.getAllByFilterPageable(filter, propertyLazyTableDto).map { propertyPreviewFactory.convert(it) }
     }
 
-    @PostMapping("/create")
-    fun createProperty(@RequestBody propertyDTO: CreatePropertyDTO): PropertyDTO {
-        return propertyFactory.convert(propertyService.save(createPropertyFactory.convert(propertyDTO)))
-    }
-
-    @GetMapping("/property/{id}")
+    @GetMapping("/{id}")
     fun getProperty(@PathVariable id: String) : PropertyDTO {
         return propertyFactory.convert(propertyService.findById(id))
     }
 
-    @PutMapping("/property/{id}")
-    fun editProperty(@PathVariable id: String, @RequestBody propertyDTO: CreatePropertyDTO) : PropertyDTO {
-        return propertyFactory.convert(propertyService.update(id, createPropertyFactory.convert(propertyDTO)))
-    }
 }
