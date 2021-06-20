@@ -27,7 +27,7 @@ class PropertyPublicController(
         return propertyService.findAll(PageRequest.of(page, 16)).map { propertyPreviewFactory.convert(it) }
     }
 
-    @GetMapping("/preview/by-filter")
+    @PostMapping("/preview/by-filter")
     fun getPropertiesFiltered(
         @RequestBody filter: PropertyFilterDto,
         @RequestParam(value = "page", required = false) page: Optional<Int>,
