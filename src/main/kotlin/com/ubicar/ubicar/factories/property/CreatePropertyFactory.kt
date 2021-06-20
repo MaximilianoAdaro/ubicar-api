@@ -7,6 +7,7 @@ import com.ubicar.ubicar.repositories.property.AmenityRepository
 import com.ubicar.ubicar.repositories.property.MaterialRepository
 import com.ubicar.ubicar.repositories.property.SecurityRepository
 import com.ubicar.ubicar.repositories.property.StyleRepository
+import com.ubicar.ubicar.utils.NotFoundException
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 
@@ -22,19 +23,21 @@ class CreatePropertyFactory(private val styleRepository: StyleRepository,
 
     fun convert(input: CreatePropertyDTO): Property {
         val amenities: MutableList<Amenity> = mutableListOf()
-        input.amenities.map { amenities.add(amenityRepository.findById(it).get()) }
+        input.amenities.map { amenities.add(amenityRepository.findById(it).orElseThrow { NotFoundException("Amenity not found") }) }
 
         val materials: MutableList<ConstructionMaterial> = mutableListOf()
-        input.materials.map { materials.add(materialRepository.findById(it).get()) }
+        input.materials.map { materials.add(materialRepository.findById(it).orElseThrow { NotFoundException("Material not found") }) }
 
         val securities: MutableList<SecurityMeasure> = mutableListOf()
-        input.security.map { securities.add(securityRepository.findById(it).get()) }
+        input.security.map { securities.add(securityRepository.findById(it).orElseThrow { NotFoundException("Security not found") }) }
 
-        val town: Town = townRepository.findById(input.address.town_id).get()
+        val town: Town = townRepository.findById(input.address.town_id).orElseThrow { NotFoundException("Town not found") }
         val address = Address(town, input.address.postalCode, input.address.street, input.address.number, input.address.department)
 
         val contacts = input.contacts.map(contactFactory::from).toMutableList()
         val openHouse = input.openHouse.map(openHouseDateFactory::from).toMutableList()
+
+        val style = styleRepository.findById(input.style).orElseThrow { NotFoundException("Style not found") }
 
         return Property(
             input.title,
@@ -46,7 +49,7 @@ class CreatePropertyFactory(private val styleRepository: StyleRepository,
             input.coveredSquareFoot,
             input.levels,
             input.constructionDate,
-            styleRepository.findById(input.style).get(),
+            style,
             input.environments,
             input.rooms,
             input.toilets,

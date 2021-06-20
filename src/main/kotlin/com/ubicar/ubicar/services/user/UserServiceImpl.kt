@@ -6,6 +6,7 @@ import com.ubicar.ubicar.entities.User
 import com.ubicar.ubicar.factories.user.UserCreationFactory
 import com.ubicar.ubicar.factories.user.UserCreationGoogleFactory
 import com.ubicar.ubicar.repositories.user.UserRepository
+import com.ubicar.ubicar.utils.NotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
@@ -34,7 +35,7 @@ class UserServiceImpl(
     }
 
     override fun findById(id: String): User {
-        return userRepository.findById(id).get()
+        return userRepository.findById(id).orElseThrow { NotFoundException("User not found") }
     }
 
     override fun findByEmail(email: String): Optional<User> {

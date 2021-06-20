@@ -4,6 +4,7 @@ import com.ubicar.ubicar.entities.City
 import com.ubicar.ubicar.entities.State
 import com.ubicar.ubicar.repositories.location.CityRepository
 import com.ubicar.ubicar.repositories.location.StateRepository
+import com.ubicar.ubicar.utils.NotFoundException
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Profile
 import org.springframework.core.Ordered
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component
 class CityLoader(private val cityRepository: CityRepository, private val stateRepository: StateRepository): CommandLineRunner, Ordered {
 
     override fun run(vararg args: String?) {
-        val state: State = stateRepository.findFirstByName("Buenos Aires").get()
+        val state: State = stateRepository.findFirstByName("Buenos Aires").orElseThrow { NotFoundException("State not found") }
         val cities: MutableList<City> = mutableListOf()
         cities.add(City("CABA", state))
         cities.add(City("GBA Norte", state))

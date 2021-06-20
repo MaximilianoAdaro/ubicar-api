@@ -84,7 +84,7 @@ class PropertyServiceImpl(
 
     override fun like(id: String): Property {
         val property: Property = findById(id)
-        val logged: User = userService.findByEmail(SecurityContextHolder.getContext().authentication.name).get()
+        val logged: User = userService.findByEmail(SecurityContextHolder.getContext().authentication.name).orElseThrow { NotFoundException("User not found") }
         property.likes.map { if (it.id == logged.id) throw BadRequestException("You already liked this property") }
         property.likes.add(logged)
         return propertyRepository.save(property)
@@ -92,7 +92,7 @@ class PropertyServiceImpl(
 
     override fun dislike(id: String): Property {
         val property: Property = findById(id)
-        val logged: User = userService.findByEmail(SecurityContextHolder.getContext().authentication.name).get()
+        val logged: User = userService.findByEmail(SecurityContextHolder.getContext().authentication.name).orElseThrow { NotFoundException("User not found") }
         property.likes.map { if (it.id != logged.id) throw BadRequestException("You never liked this property") }
         property.likes = property.likes.filter { it.id == logged.id }.toMutableList()
         return propertyRepository.save(property)

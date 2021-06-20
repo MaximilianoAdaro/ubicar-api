@@ -10,6 +10,7 @@ import com.ubicar.ubicar.entities.UserRole
 import com.ubicar.ubicar.factories.AbstractFactory
 import com.ubicar.ubicar.repositories.user.UserRoleRepository
 import com.ubicar.ubicar.services.user.UserRoleService
+import com.ubicar.ubicar.utils.NotFoundException
 import org.springframework.stereotype.Component
 
 @Component
@@ -40,7 +41,7 @@ class UserCreationFactory(
     }
 
     fun from(input: UserCreationDTO): User {
-        val userRole: UserRole = userRoleRepository.findById(input.userRole).get()
+        val userRole: UserRole = userRoleRepository.findById(input.userRole).orElseThrow { NotFoundException("User Role not found") }
         return User(
             userName = input.userName,
             email = input.email,

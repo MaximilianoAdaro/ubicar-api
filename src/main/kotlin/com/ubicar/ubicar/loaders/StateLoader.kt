@@ -4,6 +4,7 @@ import com.ubicar.ubicar.entities.Country
 import com.ubicar.ubicar.entities.State
 import com.ubicar.ubicar.repositories.location.CountryRepository
 import com.ubicar.ubicar.repositories.location.StateRepository
+import com.ubicar.ubicar.utils.NotFoundException
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Profile
 import org.springframework.core.Ordered
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component
 class StateLoader(private val stateRepository: StateRepository, private val countryRepository: CountryRepository): CommandLineRunner, Ordered {
 
     override fun run(vararg args: String?) {
-        val country: Country = countryRepository.findFirstByName("Argentina").get()
+        val country: Country = countryRepository.findFirstByName("Argentina").orElseThrow { NotFoundException("Country not found") }
         val states: MutableList<State> = mutableListOf()
         states.add(State("Buenos Aires", country))
         states.add(State("Córdoba", country))
