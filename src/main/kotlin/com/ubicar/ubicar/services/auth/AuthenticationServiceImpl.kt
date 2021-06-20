@@ -16,43 +16,45 @@ import javax.servlet.http.HttpServletResponse
 
 @Service
 class AuthenticationServiceImpl(
-    private val userService: UserService,
-    private val jwtUtils: JwtUtils,
-    private val authenticationManager: AuthenticationManager
+  private val userService: UserService,
+  private val jwtUtils: JwtUtils,
+  private val authenticationManager: AuthenticationManager
 ) : AuthenticationService {
 
-    override fun login(userDto: LogInUserDTO, response: HttpServletResponse): User {
-        val user: User = verifyUser(userDto)
-        val authentication = authenticationManager.authenticate(
-            UsernamePasswordAuthenticationToken(userDto.email, userDto.password)
-        )
-        SecurityContextHolder.getContext().authentication = authentication
-        val jwt: String = jwtUtils.generateJwtToken(authentication)
-        response.addHeader("Set-Cookie", "jwt=$jwt; HttpOnly; Path=/; SameSite=strict;")
-        response.addHeader("Set-Cookie", "google-auth=false; httpOnly; Path=/; SameSite=strict;")
+  override fun login(userDto: LogInUserDTO, response: HttpServletResponse): User {
+    val user: User = verifyUser(userDto)
+    val authentication = authenticationManager.authenticate(
+      UsernamePasswordAuthenticationToken(userDto.email, userDto.password)
+    )
+    SecurityContextHolder.getContext().authentication = authentication
+    val jwt: String = jwtUtils.generateJwtToken(authentication)
+    response.addHeader("Set-Cookie", "jwt=$jwt; HttpOnly; Path=/; SameSite=strict;")
+    response.addHeader("Set-Cookie", "google-auth=false; httpOnly; Path=/; SameSite=strict;")
 
-        return user
-    }
+    return user
+  }
 
-    private fun verifyUser(logInUser: LogInUserDTO): User {
-        val user: User = userService.findByEmail(logInUser.email).orElseThrow { NotFoundException("User not found") }
-        if (!userService.checkPassword(logInUser.password, user))
-            throw BadCredentialsException("Password is incorrect")
-        return user
+  private fun verifyUser(logInUser: LogInUserDTO): User {
+    val user: User = userService.findByEmail(logInUser.email).orElseThrow { NotFoundException("User not found") }
+    if (!userService.checkPassword(logInUser.password, user)) {
+      throw BadCredentialsException("Password is incorrect")
     }
+    return user
+  }
 
-    override fun loginGoogle(logInUser: GoogleLoginUserDTO, response: HttpServletResponse, token: String): User {
-        val user: User = userService.findByEmail(logInUser.email)
-            .orElseGet { userService.saveUserWithGoogle(logInUser) }
-        val authentication = authenticationManager.authenticate(
-            UsernamePasswordAuthenticationToken(
-                logInUser.email, "password".plus(logInUser.email.plus("password")),
-                listOf(SimpleGrantedAuthority(user.userRole.slug))
-            )
-        )
-        SecurityContextHolder.getContext().authentication = authentication
-        response.addHeader("Set-Cookie", "jwt=$token; httpOnly; Path=/; SameSite=strict;")
-        response.addHeader("Set-Cookie", "google-auth=true; httpOnly; Path=/; SameSite=strict;")
-        return user
-    }
+  override fun loginGoogle(logInUser: GoogleLoginUserDTO, response: HttpServletResponse, token: String): User {
+    val user: User = userService.findByEmail(logInUser.email)
+      .orElseGet { userService.saveUserWithGoogle(logInUser) }
+    val authentication = authenticationManager.authenticate(
+      UsernamePasswordAuthenticationToken(
+        logInUser.email,
+        "password".plus(logInUser.email.plus("password")),
+        listOf(SimpleGrantedAuthority(user.userRole.slug))
+      )
+    )
+    SecurityContextHolder.getContext().authentication = authentication
+    response.addHeader("Set-Cookie", "jwt=$token; httpOnly; Path=/; SameSite=strict;")
+    response.addHeader("Set-Cookie", "google-auth=true; httpOnly; Path=/; SameSite=strict;")
+    return user
+  }
 }

@@ -5,39 +5,39 @@ import com.ubicar.ubicar.entities.Condition
 import com.ubicar.ubicar.entities.TypeOfProperty
 import org.springframework.data.domain.Sort
 
-//- Condición
-//- Precio
-//- Número de habitaciones
-//- Tipo de propiedad (Casa, Depto, etc.)
-//- Estilo
-//- Número de baños
-//- Metros cuadrados
-//- Jardín (Si o No)
+// - Condición
+// - Precio
+// - Número de habitaciones
+// - Tipo de propiedad (Casa, Depto, etc.)
+// - Estilo
+// - Número de baños
+// - Metros cuadrados
+// - Jardín (Si o No)
 
 data class PropertyFilterDto(
-    var condition: Condition?,
-    var typeProperty: TypeOfProperty?,
-    var style: StyleDTO?,
-    var minPrice: Double?,
-    var maxPrice: Double?,
-    var minAmountRoom: Int?,
-    var maxAmountRoom: Int?,
-    var minAmountBathroom: Int?,
-    var maxAmountBathroom: Int?,
-    var minAmountSquareMeter: Int?,
-    var maxAmountSquareMeter: Int?,
-    var containsYard: Boolean?
+  var condition: Condition?,
+  var typeProperty: TypeOfProperty?,
+  var style: StyleDTO?,
+  var minPrice: Double?,
+  var maxPrice: Double?,
+  var minAmountRoom: Int?,
+  var maxAmountRoom: Int?,
+  var minAmountBathroom: Int?,
+  var maxAmountBathroom: Int?,
+  var minAmountSquareMeter: Int?,
+  var maxAmountSquareMeter: Int?,
+  var containsYard: Boolean?
 )
 
-enum class PropertySort{
-    ID,
-    PRICE,
-    CREATION_DATE
+enum class PropertySort {
+  ID,
+  PRICE,
+  CREATION_DATE
 }
 
 data class PropertyLazyTableDto(
-    val page: Int,
-    val size: Int,
-    val direction: Sort.Direction,
-    val property: PropertySort
+  val page: Int,
+  val size: Int,
+  val direction: Sort.Direction,
+  val property: PropertySort
 )

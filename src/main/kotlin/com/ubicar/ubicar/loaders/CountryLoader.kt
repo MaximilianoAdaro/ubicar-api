@@ -9,13 +9,13 @@ import org.springframework.stereotype.Component
 
 @Profile("!test")
 @Component
-class CountryLoader(private val countryRepository: CountryRepository): CommandLineRunner, Ordered {
+class CountryLoader(private val countryRepository: CountryRepository) : CommandLineRunner, Ordered {
 
-    override fun run(vararg args: String?) {
-        countryRepository.save(Country("Argentina"))
-    }
+  override fun run(vararg args: String?) {
+    countryRepository.save(Country("Argentina"))
+  }
 
-    override fun getOrder(): Int {
-        return 4
-    }
+  override fun getOrder(): Int {
+    return 4
+  }
 }

@@ -8,19 +8,19 @@ import org.springframework.data.domain.Pageable
 
 interface PropertyService {
 
-    fun findAll(pageable: Pageable) : Page<Property>
+  fun findAll(pageable: Pageable): Page<Property>
 
-    fun save(property: Property) : Property
+  fun save(property: Property): Property
 
-    fun findById(id: String) : Property
+  fun findById(id: String): Property
 
-    fun update(id: String, property: Property): Property
+  fun update(id: String, property: Property): Property
 
-    fun delete(id: String)
+  fun delete(id: String)
 
-    fun like(id: String): Property
+  fun like(id: String): Property
 
-    fun dislike(id: String): Property
+  fun dislike(id: String): Property
 
-    fun getAllByFilterPageable(filter: PropertyFilterDto, params: PropertyLazyTableDto): Page<Property>
+  fun getAllByFilterPageable(filter: PropertyFilterDto, params: PropertyLazyTableDto): Page<Property>
 }

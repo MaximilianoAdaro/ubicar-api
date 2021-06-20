@@ -6,21 +6,21 @@ import com.ubicar.ubicar.factories.AbstractFactory
 import org.springframework.stereotype.Component
 
 @Component
-class PropertyPreviewFactory: AbstractFactory<Property, PropertyPreviewDTO> {
+class PropertyPreviewFactory : AbstractFactory<Property, PropertyPreviewDTO> {
 
-    override fun convert(input: Property): PropertyPreviewDTO {
-        return PropertyPreviewDTO(
-            input.id,
-            input.title,
-            input.price,
-            input.condition,
-            input.type,
-            input.address,
-            input.squareFoot,
-            input.coveredSquareFoot,
-            input.rooms,
-            input.toilets,
-            input.fullBaths
-        )
-    }
+  override fun convert(input: Property): PropertyPreviewDTO {
+    return PropertyPreviewDTO(
+      input.id,
+      input.title,
+      input.price,
+      input.condition,
+      input.type,
+      input.address,
+      input.squareFoot,
+      input.coveredSquareFoot,
+      input.rooms,
+      input.toilets,
+      input.fullBaths
+    )
+  }
 }

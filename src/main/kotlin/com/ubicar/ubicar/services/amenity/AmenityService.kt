@@ -4,9 +4,9 @@ import com.ubicar.ubicar.entities.Amenity
 
 interface AmenityService {
 
-    fun save(amenity: Amenity) : Amenity
+  fun save(amenity: Amenity): Amenity
 
-    fun findById(id: String) : Amenity
+  fun findById(id: String): Amenity
 
-    fun delete(id: String)
+  fun delete(id: String)
 }

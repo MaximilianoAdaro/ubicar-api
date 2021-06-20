@@ -16,90 +16,89 @@ import org.springframework.stereotype.Component
 @Component
 class UserDtoFactory : AbstractFactory<User, UserDTO> {
 
-    override fun convert(input: User): UserDTO {
-        return UserDTO(
-            input.id,
-            input.email,
-            input.userName
-        )
-    }
+  override fun convert(input: User): UserDTO {
+    return UserDTO(
+      input.id,
+      input.email,
+      input.userName
+    )
+  }
 }
 
 @Component
 class UserCreationFactory(
-    val userRoleRepository: UserRoleRepository,
+  val userRoleRepository: UserRoleRepository,
 ) : AbstractFactory<User, UserCreationDTO> {
 
-    override fun convert(input: User): UserCreationDTO {
-        return UserCreationDTO(
-            email = input.email,
-            userName = input.userName,
-            password = input.password,
-            userRole = input.userRole.id,
-            birthDate = input.birthDate
-        )
-    }
+  override fun convert(input: User): UserCreationDTO {
+    return UserCreationDTO(
+      email = input.email,
+      userName = input.userName,
+      password = input.password,
+      userRole = input.userRole.id,
+      birthDate = input.birthDate
+    )
+  }
 
-    fun from(input: UserCreationDTO): User {
-        val userRole: UserRole = userRoleRepository.findById(input.userRole).orElseThrow { NotFoundException("User Role not found") }
-        return User(
-            userName = input.userName,
-            email = input.email,
-            password = input.password,
-            userOrigin = UserOrigin.UBICAR,
-            userRole = userRole,
-            birthDate = input.birthDate
-        )
-    }
+  fun from(input: UserCreationDTO): User {
+    val userRole: UserRole =
+      userRoleRepository.findById(input.userRole).orElseThrow { NotFoundException("User Role not found") }
+    return User(
+      userName = input.userName,
+      email = input.email,
+      password = input.password,
+      userOrigin = UserOrigin.UBICAR,
+      userRole = userRole,
+      birthDate = input.birthDate
+    )
+  }
 }
 
 @Component
 class UserCreationGoogleFactory(
-    val userRoleService: UserRoleService
+  val userRoleService: UserRoleService
 ) : AbstractFactory<User, GoogleLoginUserDTO> {
 
-    override fun convert(input: User): GoogleLoginUserDTO {
-        return GoogleLoginUserDTO(
-            name = input.userName,
-            email = input.email
-        )
-    }
+  override fun convert(input: User): GoogleLoginUserDTO {
+    return GoogleLoginUserDTO(
+      name = input.userName,
+      email = input.email
+    )
+  }
 
-    fun from(input: GoogleLoginUserDTO, password: String?): User {
-        return User(
-            userName = input.name,
-            email = input.email,
-            password = password,
-            userOrigin = UserOrigin.GOOGLE,
-            userRole = userRoleService.getDefault(),
-            birthDate = null
-        )
-    }
+  fun from(input: GoogleLoginUserDTO, password: String?): User {
+    return User(
+      userName = input.name,
+      email = input.email,
+      password = password,
+      userOrigin = UserOrigin.GOOGLE,
+      userRole = userRoleService.getDefault(),
+      birthDate = null
+    )
+  }
 }
-
 
 @Component
 class UserRoleDtoFactory : AbstractFactory<UserRole, UserRoleDto> {
 
-    override fun convert(input: UserRole): UserRoleDto {
-        return UserRoleDto(
-            input.id,
-            input.title,
-            input.slug,
-            input.description,
-            input.active,
-            input.creationDate,
-        )
-    }
+  override fun convert(input: UserRole): UserRoleDto {
+    return UserRoleDto(
+      input.id,
+      input.title,
+      input.slug,
+      input.description,
+      input.active,
+      input.creationDate,
+    )
+  }
 
-    fun from(input: UserRoleDto): UserRole {
-        return UserRole(
-            input.title,
-            input.slug,
-            input.description,
-            input.active,
-            input.creationDate,
-        )
-    }
-
+  fun from(input: UserRoleDto): UserRole {
+    return UserRole(
+      input.title,
+      input.slug,
+      input.description,
+      input.active,
+      input.creationDate,
+    )
+  }
 }

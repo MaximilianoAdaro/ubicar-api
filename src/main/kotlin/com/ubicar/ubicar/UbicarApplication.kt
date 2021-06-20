@@ -12,6 +12,5 @@ import org.springframework.scheduling.annotation.EnableScheduling
 class UbicarApplication
 
 fun main(args: Array<String>) {
-    runApplication<UbicarApplication>(*args)
+  runApplication<UbicarApplication>(*args)
 }
-

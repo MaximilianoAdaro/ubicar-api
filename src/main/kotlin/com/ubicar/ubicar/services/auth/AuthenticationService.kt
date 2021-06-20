@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse
 
 interface AuthenticationService {
 
-    fun login(userDto: LogInUserDTO, response: HttpServletResponse): User
+  fun login(userDto: LogInUserDTO, response: HttpServletResponse): User
 
-    fun loginGoogle(logInUser: GoogleLoginUserDTO, response: HttpServletResponse, token: String): User
+  fun loginGoogle(logInUser: GoogleLoginUserDTO, response: HttpServletResponse, token: String): User
 }

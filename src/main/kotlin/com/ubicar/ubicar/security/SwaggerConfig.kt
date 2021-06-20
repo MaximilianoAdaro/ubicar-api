@@ -8,21 +8,20 @@ import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2
 
-
 @Configuration
 @EnableSwagger2
 class SwaggerConfig {
-    @Bean
-    fun api(): Docket {
-        return Docket(DocumentationType.SWAGGER_2)
+  @Bean
+  fun api(): Docket {
+    return Docket(DocumentationType.SWAGGER_2)
 //            .apiInfo(apiInfo())
 //            .securityContexts(listOf(securityContext()))
 //            .securitySchemes(listOf(apiKey()))
-            .select()
-            .apis(RequestHandlerSelectors.any())
-            .paths(PathSelectors.any())
-            .build()
-    }
+      .select()
+      .apis(RequestHandlerSelectors.any())
+      .paths(PathSelectors.any())
+      .build()
+  }
 //
 //    private fun apiInfo(): ApiInfo {
 //        return ApiInfo(

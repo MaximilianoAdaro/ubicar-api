@@ -4,15 +4,15 @@ import com.ubicar.ubicar.entities.User
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.Optional
 
 @Repository
-interface UserRepository: CrudRepository<User, String> {
+interface UserRepository : CrudRepository<User, String> {
 
-    override fun findAll(): List<User>
+  override fun findAll(): List<User>
 
-    @Query("select u from User u where u.email= ?1")
-    fun findByEmail(email: String): Optional<User>
+  @Query("select u from User u where u.email= ?1")
+  fun findByEmail(email: String): Optional<User>
 
-    fun existsByEmail(email: String): Boolean
+  fun existsByEmail(email: String): Boolean
 }

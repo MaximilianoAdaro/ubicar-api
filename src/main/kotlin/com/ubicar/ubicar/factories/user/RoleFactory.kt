@@ -6,9 +6,9 @@ import com.ubicar.ubicar.factories.AbstractFactory
 import org.springframework.stereotype.Component
 
 @Component
-class RoleFactory: AbstractFactory<UserRole, RoleDTO> {
+class RoleFactory : AbstractFactory<UserRole, RoleDTO> {
 
-    override fun convert(input: UserRole): RoleDTO {
-        return RoleDTO(input.id, input.title)
-    }
+  override fun convert(input: UserRole): RoleDTO {
+    return RoleDTO(input.id, input.title)
+  }
 }

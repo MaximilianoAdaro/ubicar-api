@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository
 
 interface AddressRepository : CrudRepository<Address, String> {
 
-    @Query(value = "select a from Address a")
-    override fun findAll() : List<Address>
+  @Query(value = "select a from Address a")
+  override fun findAll(): List<Address>
 }

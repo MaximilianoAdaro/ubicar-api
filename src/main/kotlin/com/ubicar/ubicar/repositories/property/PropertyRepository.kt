@@ -7,5 +7,5 @@ import org.springframework.data.repository.CrudRepository
 
 interface PropertyRepository : CrudRepository<Property, String> {
 
-    fun findAll(pageable: Pageable) : Page<Property>
+  fun findAll(pageable: Pageable): Page<Property>
 }

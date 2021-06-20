@@ -6,9 +6,9 @@ import com.ubicar.ubicar.factories.AbstractFactory
 import org.springframework.stereotype.Component
 
 @Component
-class StyleFactory: AbstractFactory<Style, StyleDTO> {
+class StyleFactory : AbstractFactory<Style, StyleDTO> {
 
-    override fun convert(input: Style): StyleDTO {
-        return StyleDTO(input.id, input.label)
-    }
+  override fun convert(input: Style): StyleDTO {
+    return StyleDTO(input.id, input.label)
+  }
 }

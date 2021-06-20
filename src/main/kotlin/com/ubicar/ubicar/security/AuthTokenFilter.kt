@@ -7,7 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
-import java.util.*
+import java.util.Arrays
 import javax.servlet.FilterChain
 import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletRequest
@@ -15,42 +15,47 @@ import javax.servlet.http.HttpServletResponse
 
 @Component
 class AuthTokenFilter(
-    @Autowired val jwtUtils: JwtUtils
+  @Autowired val jwtUtils: JwtUtils
 ) : OncePerRequestFilter() {
 
-    companion object {
-        private val infoLogger = LoggerFactory.getLogger(AuthTokenFilter::class.java)
-    }
+  companion object {
+    private val infoLogger = LoggerFactory.getLogger(AuthTokenFilter::class.java)
+  }
 
-    override fun doFilterInternal(
-        request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain
-    ) {
-        try {
-            val jwt = parseJwt(request)
-            if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
-                val username: String = jwtUtils.getUserNameFromJwtToken(jwt)
-                val authentication = UsernamePasswordAuthenticationToken(
-                    username, null, listOf())
-                authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
-                SecurityContextHolder.getContext().authentication = authentication
-            }
-        } catch (e: Exception) {
-            infoLogger.error("Cannot set user authentication: {}", e)
-        }
-        filterChain.doFilter(request, response)
+  override fun doFilterInternal(
+    request: HttpServletRequest,
+    response: HttpServletResponse,
+    filterChain: FilterChain
+  ) {
+    try {
+      val jwt = parseJwt(request)
+      if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
+        val username: String = jwtUtils.getUserNameFromJwtToken(jwt)
+        val authentication = UsernamePasswordAuthenticationToken(
+          username,
+          null,
+          listOf()
+        )
+        authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
+        SecurityContextHolder.getContext().authentication = authentication
+      }
+    } catch (e: Exception) {
+      infoLogger.error("Cannot set user authentication: {}", e)
     }
+    filterChain.doFilter(request, response)
+  }
 
-    private fun parseJwt(request: HttpServletRequest): Pair<String, Boolean>? {
-        if (request.cookies != null) {
-            val jwtCookie = Arrays.stream(request.cookies).filter { cookie: Cookie -> cookie.name == "jwt" }
-                .findFirst()
-            val jwtGoogle = Arrays.stream(request.cookies).filter { cookie: Cookie -> cookie.name == "google-auth" }
-                .findFirst()
-            if (jwtCookie.isPresent) {
-                val bool = if (jwtGoogle.isPresent) jwtGoogle.get().value.toBoolean() else false
-                return Pair(jwtCookie.get().value, bool)
-            }
-        }
-        return null
+  private fun parseJwt(request: HttpServletRequest): Pair<String, Boolean>? {
+    if (request.cookies != null) {
+      val jwtCookie = Arrays.stream(request.cookies).filter { cookie: Cookie -> cookie.name == "jwt" }
+        .findFirst()
+      val jwtGoogle = Arrays.stream(request.cookies).filter { cookie: Cookie -> cookie.name == "google-auth" }
+        .findFirst()
+      if (jwtCookie.isPresent) {
+        val bool = if (jwtGoogle.isPresent) jwtGoogle.get().value.toBoolean() else false
+        return Pair(jwtCookie.get().value, bool)
+      }
     }
+    return null
+  }
 }
