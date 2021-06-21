@@ -107,4 +107,8 @@ class PropertyServiceImpl(
     val pageRequest = PageRequest.of(params.page, params.size)
     return propertyFilterService.filterEvaluationsPaginated(filter, pageRequest, params, orderList)
   }
+
+  override fun getAllFavoritePropertiesByUser(user: User): List<Property> {
+    return user.likedProperties
+  }
 }

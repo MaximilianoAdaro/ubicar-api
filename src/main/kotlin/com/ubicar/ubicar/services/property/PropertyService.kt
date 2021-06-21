@@ -3,6 +3,7 @@ package com.ubicar.ubicar.services.property
 import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
 import com.ubicar.ubicar.entities.Property
+import com.ubicar.ubicar.entities.User
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
@@ -23,4 +24,6 @@ interface PropertyService {
   fun dislike(id: String): Property
 
   fun getAllByFilterPageable(filter: PropertyFilterDto, params: PropertyLazyTableDto): Page<Property>
+
+  fun getAllFavoritePropertiesByUser(user: User): List<Property>
 }

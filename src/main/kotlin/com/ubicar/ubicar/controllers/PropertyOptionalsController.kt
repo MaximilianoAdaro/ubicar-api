@@ -14,10 +14,12 @@ import com.ubicar.ubicar.repositories.property.MaterialRepository
 import com.ubicar.ubicar.repositories.property.SecurityRepository
 import com.ubicar.ubicar.repositories.property.StyleRepository
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class OptionalsController(
+@RequestMapping("/public/info")
+class PropertyOptionalsController(
   private val amenityRepository: AmenityRepository,
   private val materialRepository: MaterialRepository,
   private val securityRepository: SecurityRepository,
