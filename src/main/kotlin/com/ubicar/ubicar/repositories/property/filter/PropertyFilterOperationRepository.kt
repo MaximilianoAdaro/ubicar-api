@@ -7,7 +7,6 @@ import com.ubicar.ubicar.entities.Condition
 import com.ubicar.ubicar.entities.Property
 import com.ubicar.ubicar.entities.Style
 import com.ubicar.ubicar.entities.TypeOfProperty
-import com.ubicar.ubicar.entities.User
 import com.ubicar.ubicar.repositories.property.AmenityRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -30,7 +29,6 @@ class PropertyFilterOperationRepository @Autowired constructor(
 ) {
   fun getFilteredProperties(
     filter: PropertyFilterDto,
-    user: User,
     pageable: Pageable,
     params: PropertyLazyTableDto,
     orderList: List<String>
