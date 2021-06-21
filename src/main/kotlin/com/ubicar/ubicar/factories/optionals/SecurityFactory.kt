@@ -6,9 +6,9 @@ import com.ubicar.ubicar.factories.AbstractFactory
 import org.springframework.stereotype.Component
 
 @Component
-class SecurityFactory: AbstractFactory<SecurityMeasure, SecurityDTO> {
+class SecurityFactory : AbstractFactory<SecurityMeasure, SecurityDTO> {
 
-    override fun convert(input: SecurityMeasure): SecurityDTO {
-        return SecurityDTO(input.id, input.label)
-    }
+  override fun convert(input: SecurityMeasure): SecurityDTO {
+    return SecurityDTO(input.id, input.label)
+  }
 }

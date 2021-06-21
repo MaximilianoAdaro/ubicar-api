@@ -12,22 +12,23 @@ import org.springframework.stereotype.Component
 
 @Profile("!test")
 @Component
-class TownLoader(private val townRepository: TownRepository, private val cityRepository: CityRepository): CommandLineRunner, Ordered {
+class TownLoader(private val townRepository: TownRepository, private val cityRepository: CityRepository) :
+  CommandLineRunner, Ordered {
 
-    override fun run(vararg args: String?) {
-        val city: City = cityRepository.findByName("CABA").orElseThrow { NotFoundException("City not found") }
-        val towns: MutableList<Town> = mutableListOf()
-        towns.add(Town("Belgrano", city))
-        towns.add(Town("Caballito", city))
-        towns.add(Town("Colegiales", city))
-        towns.add(Town("Recoleta", city))
-        towns.add(Town("Flores", city))
-        towns.add(Town("Retiro", city))
+  override fun run(vararg args: String?) {
+    val city: City = cityRepository.findByName("CABA").orElseThrow { NotFoundException("City not found") }
+    val towns: MutableList<Town> = mutableListOf()
+    towns.add(Town("Belgrano", city))
+    towns.add(Town("Caballito", city))
+    towns.add(Town("Colegiales", city))
+    towns.add(Town("Recoleta", city))
+    towns.add(Town("Flores", city))
+    towns.add(Town("Retiro", city))
 
-        towns.map { townRepository.save(it) }
-    }
+    towns.map { townRepository.save(it) }
+  }
 
-    override fun getOrder(): Int {
-        return 7
-    }
+  override fun getOrder(): Int {
+    return 7
+  }
 }

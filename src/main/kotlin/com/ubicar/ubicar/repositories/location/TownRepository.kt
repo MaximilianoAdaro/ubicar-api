@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
 
-interface TownRepository: CrudRepository<Town, String> {
+interface TownRepository : CrudRepository<Town, String> {
 
-    @Query(value = "select t from Town t where t.city.id = :#{#id}")
-    fun findAllByCityId(@Param("id") id: String): List<Town>
+  @Query(value = "select t from Town t where t.city.id = :#{#id}")
+  fun findAllByCityId(@Param("id") id: String): List<Town>
 }

@@ -9,21 +9,21 @@ import org.springframework.stereotype.Component
 
 @Profile("!test")
 @Component
-class StyleLoader(private val styleRepository: StyleRepository): CommandLineRunner, Ordered {
+class StyleLoader(private val styleRepository: StyleRepository) : CommandLineRunner, Ordered {
 
-    override fun run(vararg args: String?) {
-        val styles: MutableList<Style> = mutableListOf()
-        styles.add(Style("Contemporaneo"))
-        styles.add(Style("Mediterraneo"))
-        styles.add(Style("Minimalista"))
-        styles.add(Style("Colonial"))
-        styles.add(Style("Cottages"))
-        styles.add(Style("Tudor"))
+  override fun run(vararg args: String?) {
+    val styles: MutableList<Style> = mutableListOf()
+    styles.add(Style("Contemporaneo"))
+    styles.add(Style("Mediterraneo"))
+    styles.add(Style("Minimalista"))
+    styles.add(Style("Colonial"))
+    styles.add(Style("Cottages"))
+    styles.add(Style("Tudor"))
 
-        styles.map { styleRepository.save(it) }
-    }
+    styles.map { styleRepository.save(it) }
+  }
 
-    override fun getOrder(): Int {
-        return 3
-    }
+  override fun getOrder(): Int {
+    return 3
+  }
 }

@@ -3,23 +3,23 @@ package com.ubicar.ubicar.services.user
 import com.ubicar.ubicar.dtos.GoogleLoginUserDTO
 import com.ubicar.ubicar.dtos.UserCreationDTO
 import com.ubicar.ubicar.entities.User
-import java.util.*
+import java.util.Optional
 
 interface UserService {
 
-    fun findAll() : List<User>
+  fun findAll(): List<User>
 
-    fun saveUser(userCreationDto: UserCreationDTO) : User
+  fun saveUser(userCreationDto: UserCreationDTO): User
 
-    fun saveUserWithGoogle(userCreationDto: GoogleLoginUserDTO) : User
+  fun saveUserWithGoogle(userCreationDto: GoogleLoginUserDTO): User
 
-    fun findById(id: String) : User
+  fun findById(id: String): User
 
-    fun findByEmail(email: String): Optional<User>
+  fun findByEmail(email: String): Optional<User>
 
-    fun delete(id: String)
+  fun delete(id: String)
 
-    fun existsByEmail(email: String): Boolean
+  fun existsByEmail(email: String): Boolean
 
-    fun checkPassword(password: String, user: User): Boolean
+  fun checkPassword(password: String, user: User): Boolean
 }

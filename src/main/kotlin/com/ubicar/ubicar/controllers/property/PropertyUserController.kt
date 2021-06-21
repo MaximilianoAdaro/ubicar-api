@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class PropertyUserController(
-    private val propertyService: PropertyService,
-    private val propertyFactory: PropertyFactory
+  private val propertyService: PropertyService,
+  private val propertyFactory: PropertyFactory
 ) {
 
-    @PutMapping("/like/{id}")
-    fun likeProperty(@PathVariable id: String) : PropertyDTO {
-        return propertyFactory.convert(propertyService.like(id))
-    }
+  @PutMapping("/like/{id}")
+  fun likeProperty(@PathVariable id: String): PropertyDTO {
+    return propertyFactory.convert(propertyService.like(id))
+  }
 
-    @PutMapping("/dislike/{id}")
-    fun dislikeProperty(@PathVariable id: String) : PropertyDTO {
-        return propertyFactory.convert(propertyService.dislike(id))
-    }
+  @PutMapping("/dislike/{id}")
+  fun dislikeProperty(@PathVariable id: String): PropertyDTO {
+    return propertyFactory.convert(propertyService.dislike(id))
+  }
 }

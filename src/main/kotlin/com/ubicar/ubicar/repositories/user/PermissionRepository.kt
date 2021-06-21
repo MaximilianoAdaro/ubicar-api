@@ -7,6 +7,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface PermissionRepository : CrudRepository<Permission, String> {
 
-    override fun findAll(): List<Permission>
-
+  override fun findAll(): List<Permission>
 }

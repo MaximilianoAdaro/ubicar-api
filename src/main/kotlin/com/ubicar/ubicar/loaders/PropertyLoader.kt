@@ -1,23 +1,23 @@
 package com.ubicar.ubicar.loaders
 
-//import com.ubicar.ubicar.entities.*
-//import com.ubicar.ubicar.repositories.*
-//import com.ubicar.ubicar.repositories.location.TownRepository
-//import com.ubicar.ubicar.repositories.property.AmenityRepository
-//import com.ubicar.ubicar.repositories.property.MaterialRepository
-//import com.ubicar.ubicar.repositories.property.SecurityRepository
-//import com.ubicar.ubicar.repositories.property.StyleRepository
-//import com.ubicar.ubicar.services.property.PropertyService
-//import org.springframework.boot.CommandLineRunner
-//import org.springframework.context.annotation.Profile
-//import org.springframework.core.Ordered
-//import org.springframework.stereotype.Component
-//import java.time.LocalDate
-//import java.time.LocalTime
+// import com.ubicar.ubicar.entities.*
+// import com.ubicar.ubicar.repositories.*
+// import com.ubicar.ubicar.repositories.location.TownRepository
+// import com.ubicar.ubicar.repositories.property.AmenityRepository
+// import com.ubicar.ubicar.repositories.property.MaterialRepository
+// import com.ubicar.ubicar.repositories.property.SecurityRepository
+// import com.ubicar.ubicar.repositories.property.StyleRepository
+// import com.ubicar.ubicar.services.property.PropertyService
+// import org.springframework.boot.CommandLineRunner
+// import org.springframework.context.annotation.Profile
+// import org.springframework.core.Ordered
+// import org.springframework.stereotype.Component
+// import java.time.LocalDate
+// import java.time.LocalTime
 //
-//@Profile("!test")
-//@Component
-//class PropertyLoader(private val propertyService: PropertyService,
+// @Profile("!test")
+// @Component
+// class PropertyLoader(private val propertyService: PropertyService,
 //                     private val townRepository: TownRepository,
 //                     private val styleRepository: StyleRepository,
 //                     private val amenitiesRepository: AmenityRepository,
@@ -59,4 +59,4 @@ package com.ubicar.ubicar.loaders
 //    override fun getOrder(): Int {
 //        return 8
 //    }
-//}
+// }

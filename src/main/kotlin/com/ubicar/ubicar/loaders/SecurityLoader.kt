@@ -9,19 +9,19 @@ import org.springframework.stereotype.Component
 
 @Profile("!test")
 @Component
-class SecurityLoader(private val securityRepository: SecurityRepository): CommandLineRunner, Ordered {
+class SecurityLoader(private val securityRepository: SecurityRepository) : CommandLineRunner, Ordered {
 
-    override fun run(vararg args: String?) {
-        val securities: MutableList<SecurityMeasure> = mutableListOf()
-        securities.add(SecurityMeasure("Rejas"))
-        securities.add(SecurityMeasure("Camaras"))
-        securities.add(SecurityMeasure("Alarma de entrada"))
-        securities.add(SecurityMeasure("Alarma de humo"))
+  override fun run(vararg args: String?) {
+    val securities: MutableList<SecurityMeasure> = mutableListOf()
+    securities.add(SecurityMeasure("Rejas"))
+    securities.add(SecurityMeasure("Camaras"))
+    securities.add(SecurityMeasure("Alarma de entrada"))
+    securities.add(SecurityMeasure("Alarma de humo"))
 
-        securities.map { securityRepository.save(it) }
-    }
+    securities.map { securityRepository.save(it) }
+  }
 
-    override fun getOrder(): Int {
-        return 2
-    }
+  override fun getOrder(): Int {
+    return 2
+  }
 }

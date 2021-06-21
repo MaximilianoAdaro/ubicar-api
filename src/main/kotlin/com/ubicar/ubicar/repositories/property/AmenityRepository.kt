@@ -2,8 +2,8 @@ package com.ubicar.ubicar.repositories.property
 
 import com.ubicar.ubicar.entities.Amenity
 import org.springframework.data.repository.CrudRepository
-import java.util.*
+import java.util.Optional
 
-interface AmenityRepository: CrudRepository<Amenity, String> {
-    fun findFirstByLabel(label: String) : Optional<Amenity>
+interface AmenityRepository : CrudRepository<Amenity, String> {
+  fun findFirstByLabel(label: String): Optional<Amenity>
 }

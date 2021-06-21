@@ -12,22 +12,24 @@ import org.springframework.stereotype.Component
 
 @Profile("!test")
 @Component
-class StateLoader(private val stateRepository: StateRepository, private val countryRepository: CountryRepository): CommandLineRunner, Ordered {
+class StateLoader(private val stateRepository: StateRepository, private val countryRepository: CountryRepository) :
+  CommandLineRunner, Ordered {
 
-    override fun run(vararg args: String?) {
-        val country: Country = countryRepository.findFirstByName("Argentina").orElseThrow { NotFoundException("Country not found") }
-        val states: MutableList<State> = mutableListOf()
-        states.add(State("Buenos Aires", country))
-        states.add(State("Córdoba", country))
-        states.add(State("Neuquén", country))
-        states.add(State("Santa Fé", country))
-        states.add(State("Entre Rios", country))
-        states.add(State("Catamarca", country))
+  override fun run(vararg args: String?) {
+    val country: Country =
+      countryRepository.findFirstByName("Argentina").orElseThrow { NotFoundException("Country not found") }
+    val states: MutableList<State> = mutableListOf()
+    states.add(State("Buenos Aires", country))
+    states.add(State("Córdoba", country))
+    states.add(State("Neuquén", country))
+    states.add(State("Santa Fé", country))
+    states.add(State("Entre Rios", country))
+    states.add(State("Catamarca", country))
 
-        states.map { stateRepository.save(it) }
-    }
+    states.map { stateRepository.save(it) }
+  }
 
-    override fun getOrder(): Int {
-        return 5
-    }
+  override fun getOrder(): Int {
+    return 5
+  }
 }

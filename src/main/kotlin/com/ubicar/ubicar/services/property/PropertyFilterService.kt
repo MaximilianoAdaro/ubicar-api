@@ -8,8 +8,10 @@ import org.springframework.data.domain.PageRequest
 
 interface PropertyFilterService {
 
-    fun filterEvaluationsPaginated(
-        filter: PropertyFilterDto, pageRequest: PageRequest, params: PropertyLazyTableDto, orderList: List<String>
-    ): Page<Property>
-
+  fun filterEvaluationsPaginated(
+    filter: PropertyFilterDto,
+    pageRequest: PageRequest,
+    params: PropertyLazyTableDto,
+    orderList: List<String>
+  ): Page<Property>
 }

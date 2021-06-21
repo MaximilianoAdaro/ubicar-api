@@ -6,9 +6,9 @@ import com.ubicar.ubicar.factories.AbstractFactory
 import org.springframework.stereotype.Component
 
 @Component
-class CityFactory: AbstractFactory<City, CityDTO> {
+class CityFactory : AbstractFactory<City, CityDTO> {
 
-    override fun convert(input: City): CityDTO {
-        return CityDTO(input.id, input.name)
-    }
+  override fun convert(input: City): CityDTO {
+    return CityDTO(input.id, input.name)
+  }
 }

@@ -15,26 +15,26 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class LocationController(
-    private val townRepository: TownRepository,
-    private val cityRepository: CityRepository,
-    private val stateRepository: StateRepository,
-    private val stateFactory: StateFactory,
-    private val cityFactory: CityFactory,
-    private val townFactory: TownFactory
+  private val townRepository: TownRepository,
+  private val cityRepository: CityRepository,
+  private val stateRepository: StateRepository,
+  private val stateFactory: StateFactory,
+  private val cityFactory: CityFactory,
+  private val townFactory: TownFactory
 ) {
 
-    @GetMapping("/states")
-    fun getStates(): List<StateDTO> {
-        return stateRepository.findAll().map { stateFactory.convert(it) }
-    }
+  @GetMapping("/states")
+  fun getStates(): List<StateDTO> {
+    return stateRepository.findAll().map { stateFactory.convert(it) }
+  }
 
-    @GetMapping("/cities/{stateId}")
-    fun getCities(@PathVariable stateId: String): List<CityDTO> {
-        return cityRepository.findAllByStateId(stateId).map { cityFactory.convert(it) }
-    }
+  @GetMapping("/cities/{stateId}")
+  fun getCities(@PathVariable stateId: String): List<CityDTO> {
+    return cityRepository.findAllByStateId(stateId).map { cityFactory.convert(it) }
+  }
 
-    @GetMapping("/towns/{cityId}")
-    fun getTowns(@PathVariable cityId: String): List<TownDTO> {
-        return townRepository.findAllByCityId(cityId).map { townFactory.convert(it) }
-    }
+  @GetMapping("/towns/{cityId}")
+  fun getTowns(@PathVariable cityId: String): List<TownDTO> {
+    return townRepository.findAllByCityId(cityId).map { townFactory.convert(it) }
+  }
 }
