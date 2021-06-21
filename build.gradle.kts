@@ -74,6 +74,7 @@ ktlint {
   verbose.set(true)
   outputColorName.set("RED")
   ignoreFailures.set(true)
+  additionalEditorconfigFile.set(File(".editorconfig"))
   disabledRules.set(setOf("final-newline", "no-wildcard-imports", "import-ordering", "chain-wrapping"))
   reporters {
     reporter(ReporterType.CHECKSTYLE)

@@ -31,29 +31,16 @@ class CreatePropertyFactory(
 
   fun convert(input: CreatePropertyDTO): Property {
     val amenities: MutableList<Amenity> = mutableListOf()
-    input.amenities.map {
-      amenities.add(
-        amenityRepository.findById(it).orElseThrow { NotFoundException("Amenity not found") }
-      )
-    }
+    input.amenities.map { amenities.add(amenityRepository.findById(it).orElseThrow { NotFoundException("Amenity not found") }) }
 
     val materials: MutableList<ConstructionMaterial> = mutableListOf()
-    input.materials.map {
-      materials.add(
-        materialRepository.findById(it).orElseThrow { NotFoundException("Material not found") }
-      )
-    }
+    input.materials.map { materials.add(materialRepository.findById(it).orElseThrow { NotFoundException("Material not found") }) }
 
     val securities: MutableList<SecurityMeasure> = mutableListOf()
-    input.security.map {
-      securities.add(
-        securityRepository.findById(it).orElseThrow { NotFoundException("Security not found") }
-      )
-    }
+    input.security.map { securities.add(securityRepository.findById(it).orElseThrow { NotFoundException("Security not found") }) }
 
     val town: Town = townRepository.findById(input.address.town_id).orElseThrow { NotFoundException("Town not found") }
-    val address =
-      Address(town, input.address.postalCode, input.address.street, input.address.number, input.address.department)
+    val address = Address(town, input.address.postalCode, input.address.street, input.address.number, input.address.department)
 
     val contacts = input.contacts.map(contactFactory::from).toMutableList()
     val openHouse = input.openHouse.map(openHouseDateFactory::from).toMutableList()

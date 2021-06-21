@@ -6,8 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest
 class UbicarApplicationTests {
 
-    @Test
-    fun contextLoads() {
-        println()
-    }
+  @Test
+  fun contextLoads() {
+    println()
+  }
 }
