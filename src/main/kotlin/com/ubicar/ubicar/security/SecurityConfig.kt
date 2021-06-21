@@ -45,7 +45,7 @@ class SecurityConfig @Autowired constructor(
       .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
       .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
       .authorizeRequests().antMatchers("/auth/*").permitAll().and()
-      .authorizeRequests().antMatchers("/property/public/*").permitAll()
+      .authorizeRequests().antMatchers("/public/*").permitAll()
       // SWAGGER CONFIG
       .antMatchers(
         "/v3/api-docs", "/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security",

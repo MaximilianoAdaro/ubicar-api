@@ -3,10 +3,6 @@ package com.ubicar.ubicar.dtos
 import com.ubicar.ubicar.entities.Address
 import com.ubicar.ubicar.entities.Amenity
 import com.ubicar.ubicar.entities.Condition
-import com.ubicar.ubicar.entities.ConstructionMaterial
-import com.ubicar.ubicar.entities.Contact
-import com.ubicar.ubicar.entities.OpenHouseDate
-import com.ubicar.ubicar.entities.SecurityMeasure
 import com.ubicar.ubicar.entities.Style
 import com.ubicar.ubicar.entities.TypeOfProperty
 import java.time.LocalDate
@@ -64,12 +60,12 @@ data class PropertyDTO(
   val fullBaths: Int,
   val expenses: Int,
   val amenities: MutableList<Amenity>,
-  val materials: MutableList<ConstructionMaterial>,
-  val security: MutableList<SecurityMeasure>,
+  val materials: MutableList<MaterialDTO>,
+  val security: MutableList<SecurityDTO>,
   val parkDescription: String,
   val links: MutableList<String>,
-  val contacts: MutableList<Contact>,
-  val openHouse: MutableList<OpenHouseDate>,
+  val contacts: MutableList<ContactDto>,
+  val openHouse: MutableList<OpenHouseDateDto>,
   val comments: String
 )
 

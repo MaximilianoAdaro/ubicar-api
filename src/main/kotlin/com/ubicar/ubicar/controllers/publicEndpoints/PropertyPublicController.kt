@@ -1,4 +1,4 @@
-package com.ubicar.ubicar.controllers.property
+package com.ubicar.ubicar.controllers.publicEndpoints
 
 import com.ubicar.ubicar.dtos.PropertyDTO
 import com.ubicar.ubicar.dtos.PropertyPreviewDTO
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.Optional
 
 @RestController
-@RequestMapping("/property/public")
+@RequestMapping("/public/property")
 class PropertyPublicController(
   private val propertyService: PropertyService,
   private val propertyFactory: PropertyFactory,
