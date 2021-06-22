@@ -1,5 +1,6 @@
 package com.ubicar.ubicar.services.property
 
+import com.ubicar.ubicar.dtos.UserContactDto
 import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
 import com.ubicar.ubicar.entities.Property
@@ -26,4 +27,6 @@ interface PropertyService {
   fun getAllByFilterPageable(filter: PropertyFilterDto, params: PropertyLazyTableDto): Page<Property>
 
   fun getAllFavoritePropertiesByUser(user: User): List<Property>
+
+  fun contactOwner(id: String, contactDto: UserContactDto)
 }
