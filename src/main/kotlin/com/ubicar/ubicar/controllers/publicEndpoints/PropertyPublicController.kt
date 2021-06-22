@@ -55,7 +55,7 @@ class PropertyPublicController(
     return propertyFactory.convert(propertyService.findById(id))
   }
 
-  @GetMapping("/contact/{id}")
+  @PostMapping("/contact/{id}")
   fun contactPropertyOwner(@PathVariable id: String, @RequestBody contactDto: UserContactDto) {
     propertyService.contactOwner(id, contactDto)
   }
