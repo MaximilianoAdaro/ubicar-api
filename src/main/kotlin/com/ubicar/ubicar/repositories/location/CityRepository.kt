@@ -1,6 +1,7 @@
 package com.ubicar.ubicar.repositories.location
 
 import com.ubicar.ubicar.entities.City
+import com.ubicar.ubicar.entities.State
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
@@ -11,5 +12,5 @@ interface CityRepository : CrudRepository<City, String> {
   @Query(value = "select c from City c where c.state.id = :#{#id}")
   fun findAllByStateId(@Param("id") id: String): List<City>
 
-  fun findByName(name: String): Optional<City>
+  fun findByNameAndState(name: String, state: State): Optional<City>
 }

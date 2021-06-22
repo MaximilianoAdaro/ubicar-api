@@ -14,16 +14,7 @@ class RoleLoader(private val userRoleRepository: UserRoleRepository) : CommandLi
 
   override fun run(vararg args: String?) {
     val roles: MutableList<UserRole> = mutableListOf()
-    roles.add(
-      UserRole(
-        "Comprador/Vendedor",
-        "ROLE_comprador_vendedor",
-        "comprador_vendedor",
-        true,
-        LocalDate.now(),
-        mutableListOf()
-      )
-    )
+    roles.add(UserRole("Comprador/Vendedor", "ROLE_comprador_vendedor", "comprador_vendedor", true, LocalDate.now(), mutableListOf()))
     roles.add(UserRole("Inspector", "ROLE_inspector", "inspector", true, LocalDate.now(), mutableListOf()))
     roles.add(UserRole("Inversor", "ROLE_inversor", "inversor", true, LocalDate.now(), mutableListOf()))
     roles.add(UserRole("Inmobiliaria", "ROLE_inmobiliaria", "inmobiliaria", true, LocalDate.now(), mutableListOf()))
