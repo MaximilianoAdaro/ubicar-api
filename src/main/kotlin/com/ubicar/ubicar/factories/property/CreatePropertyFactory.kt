@@ -14,6 +14,7 @@ import com.ubicar.ubicar.repositories.property.AmenityRepository
 import com.ubicar.ubicar.repositories.property.MaterialRepository
 import com.ubicar.ubicar.repositories.property.SecurityRepository
 import com.ubicar.ubicar.repositories.property.StyleRepository
+import com.ubicar.ubicar.services.user.UserService
 import com.ubicar.ubicar.utils.NotFoundException
 import org.springframework.stereotype.Component
 import java.time.LocalDate
@@ -26,7 +27,8 @@ class CreatePropertyFactory(
   private val securityRepository: SecurityRepository,
   private val townRepository: TownRepository,
   private val contactFactory: ContactFactory,
-  private val openHouseDateFactory: OpenHouseDateFactory
+  private val openHouseDateFactory: OpenHouseDateFactory,
+  private val userService: UserService
 ) {
 
   fun convert(input: CreatePropertyDTO): Property {
@@ -71,7 +73,9 @@ class CreatePropertyFactory(
       contacts,
       openHouse,
       input.comments,
-      LocalDate.now()
+      LocalDate.now(),
+      mutableListOf(),
+      userService.findLogged()
     )
   }
 }
