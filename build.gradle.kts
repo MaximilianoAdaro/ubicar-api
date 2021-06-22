@@ -50,6 +50,10 @@ dependencies {
   implementation("io.springfox:springfox-swagger-ui:2.9.2")
   implementation("io.springfox:springfox-swagger2:3.0.0")
   implementation("com.pinterest:ktlint:0.41.0")
+  implementation("javax.mail:javax.mail-api:1.6.2")
+  implementation("org.apache.velocity:velocity:1.7")
+  implementation("org.apache.velocity:velocity-engine-core:2.2")
+  implementation("org.apache.velocity:velocity-tools:2.0")
 }
 
 allOpen {

@@ -1,7 +1,6 @@
 package com.ubicar.ubicar.controllers.publicEndpoints
 
-import com.ubicar.ubicar.dtos.PropertyDTO
-import com.ubicar.ubicar.dtos.PropertyPreviewDTO
+import com.ubicar.ubicar.dtos.*
 import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
 import com.ubicar.ubicar.dtos.filter.PropertySort
@@ -54,5 +53,10 @@ class PropertyPublicController(
   @GetMapping("/{id}")
   fun getProperty(@PathVariable id: String): PropertyDTO {
     return propertyFactory.convert(propertyService.findById(id))
+  }
+
+  @PostMapping("/contact/{id}")
+  fun contactPropertyOwner(@PathVariable id: String, @RequestBody contactDto: UserContactDto) {
+    propertyService.contactOwner(id, contactDto)
   }
 }

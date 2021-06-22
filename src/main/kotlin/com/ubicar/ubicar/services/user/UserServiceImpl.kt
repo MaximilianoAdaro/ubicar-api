@@ -7,6 +7,7 @@ import com.ubicar.ubicar.factories.user.UserCreationFactory
 import com.ubicar.ubicar.factories.user.UserCreationGoogleFactory
 import com.ubicar.ubicar.repositories.user.UserRepository
 import com.ubicar.ubicar.utils.NotFoundException
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.Optional
@@ -55,5 +56,10 @@ class UserServiceImpl(
 
   override fun checkPassword(password: String, user: User): Boolean {
     return passwordEncoder.matches(password, user.password)
+  }
+
+  override fun findLogged(): User {
+    val authentication = SecurityContextHolder.getContext().authentication
+    return userRepository.findByEmail(authentication.name).orElseThrow { NotFoundException("User not found") }
   }
 }

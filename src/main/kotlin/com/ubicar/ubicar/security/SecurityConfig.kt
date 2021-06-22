@@ -1,5 +1,6 @@
 package com.ubicar.ubicar.security
 
+import org.apache.velocity.app.VelocityEngine
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import java.util.*
 
 @EnableWebSecurity
 @Configuration
@@ -59,5 +61,18 @@ class SecurityConfig @Autowired constructor(
     http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
 
     http.oauth2ResourceServer().jwt()
+  }
+
+  @Bean
+  fun velocityEngine(): VelocityEngine? {
+    val properties = Properties()
+    properties.setProperty("input.encoding", "UTF-8")
+    properties.setProperty("output.encoding", "UTF-8")
+    properties.setProperty("resource.loader", "class")
+    properties.setProperty(
+      "class.resource.loader.class",
+      "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader"
+    )
+    return VelocityEngine(properties)
   }
 }

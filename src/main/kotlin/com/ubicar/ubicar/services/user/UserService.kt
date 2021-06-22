@@ -22,4 +22,6 @@ interface UserService {
   fun existsByEmail(email: String): Boolean
 
   fun checkPassword(password: String, user: User): Boolean
+
+  fun findLogged(): User
 }
