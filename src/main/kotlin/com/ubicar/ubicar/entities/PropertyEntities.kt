@@ -160,24 +160,11 @@ class City(
   var state: State
 ) : AbstractEntity()
 
-@Table(name = "town")
-@Entity
-class Town(
-  @Column(nullable = false)
-  var name: String,
-
-  @ManyToOne
-  var city: City
-) : AbstractEntity()
-
 @Table(name = "address")
 @Entity
 class Address(
   @ManyToOne
-  var town: Town,
-
-  @Column(nullable = false)
-  var postalCode: String,
+  var city: City,
 
   @Column(nullable = false)
   var street: String,
@@ -185,8 +172,17 @@ class Address(
   @Column(nullable = false)
   var number: Int,
 
+  @OneToOne(cascade = [CascadeType.ALL])
+  var coordinates: Coordinates
+) : AbstractEntity()
+
+@Table(name = "coordinates")
+@Entity
+class Coordinates(
   @Column(nullable = false)
-  var department: String
+  var lat: Double,
+  @Column(nullable = false)
+  var long: Double
 ) : AbstractEntity()
 
 @Table(name = "amenity")
