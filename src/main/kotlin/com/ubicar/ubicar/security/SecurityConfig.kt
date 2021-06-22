@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import java.util.*
+import java.util.Properties
 
 @EnableWebSecurity
 @Configuration
@@ -45,9 +45,9 @@ class SecurityConfig @Autowired constructor(
 //        repository.setSecure(true)
     http.csrf().disable()
       .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-      .authorizeRequests().antMatchers("/auth/*").permitAll().and()
-      .authorizeRequests().antMatchers("/public/*").permitAll()
+      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+      .antMatchers("/auth/**").permitAll()
+      .antMatchers("/public/**").permitAll()
       // SWAGGER CONFIG
       .antMatchers(
         "/v3/api-docs", "/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security",
