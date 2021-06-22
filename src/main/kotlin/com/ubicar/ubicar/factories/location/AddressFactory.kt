@@ -24,7 +24,7 @@ class AddressFactory(
       .orElseGet { countryRepository.save(Country(input.country)) }
     val state: State = stateRepository.findFirstByNameAndCountry(input.state, country)
       .orElseGet { stateRepository.save(State(input.state, country)) }
-    val city = cityRepository.findByNameAndSate(input.city, state)
+    val city = cityRepository.findByNameAndState(input.city, state)
       .orElseGet { cityRepository.save(City(input.city, state)) }
     val coordinates = coordinatesFactory.convert(input.coordinates)
     return Address(city, input.street, input.number, coordinates)

@@ -12,5 +12,5 @@ interface CityRepository : CrudRepository<City, String> {
   @Query(value = "select c from City c where c.state.id = :#{#id}")
   fun findAllByStateId(@Param("id") id: String): List<City>
 
-  fun findByNameAndSate(name: String, state: State): Optional<City>
+  fun findByNameAndState(name: String, state: State): Optional<City>
 }
