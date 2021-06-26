@@ -11,4 +11,8 @@ class CoordinatesFactory : AbstractFactory<CoordinatesDTO, Coordinates> {
   override fun convert(input: CoordinatesDTO): Coordinates {
     return Coordinates(input.lat, input.long)
   }
+
+  fun from(coordinates: Coordinates): CoordinatesDTO {
+    return CoordinatesDTO(coordinates.lat, coordinates.long)
+  }
 }

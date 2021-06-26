@@ -1,6 +1,5 @@
 package com.ubicar.ubicar.dtos
 
-import com.ubicar.ubicar.entities.Address
 import com.ubicar.ubicar.entities.Amenity
 import com.ubicar.ubicar.entities.Condition
 import com.ubicar.ubicar.entities.Style
@@ -54,7 +53,7 @@ data class PropertyDTO(
   val price: Int,
   val condition: Condition,
   val type: TypeOfProperty,
-  val address: Address,
+  val address: AddressDTO,
   val squareFoot: Int,
   val coveredSquareFoot: Int,
   val levels: Int,
@@ -81,7 +80,7 @@ data class PropertyPreviewDTO(
   val price: Int,
   val condition: Condition,
   val type: TypeOfProperty,
-  val address: Address,
+  val address: AddressDTO,
   val squareFoot: Int,
   val coveredSquareFoot: Int,
   val rooms: Int,
