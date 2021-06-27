@@ -27,7 +27,7 @@ class UserLoader(
       .orElseThrow { NotFoundException("User Role not found") }
     val user = User(
       "admin",
-      "admin@admin",
+      "admin@admin.com",
       passwordEncoder.encode("admin"),
       UserOrigin.UBICAR,
       userRole,
@@ -38,6 +38,6 @@ class UserLoader(
   }
 
   override fun getOrder(): Int {
-    return 9
+    return 8
   }
 }

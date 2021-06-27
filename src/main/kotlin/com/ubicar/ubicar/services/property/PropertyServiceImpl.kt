@@ -86,7 +86,7 @@ class PropertyServiceImpl(
         old.comments = property.comments
         propertyRepository.save(old)
       }
-      .orElseThrow { NotFoundException("User not found") }
+      .orElseThrow { NotFoundException("Property not found") }
   }
 
   override fun delete(id: String) = propertyRepository.delete(findById(id))

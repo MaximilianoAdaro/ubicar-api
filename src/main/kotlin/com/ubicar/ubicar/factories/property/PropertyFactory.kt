@@ -3,6 +3,7 @@ package com.ubicar.ubicar.factories.property
 import com.ubicar.ubicar.dtos.PropertyDTO
 import com.ubicar.ubicar.entities.Property
 import com.ubicar.ubicar.factories.AbstractFactory
+import com.ubicar.ubicar.factories.location.AddressFactory
 import com.ubicar.ubicar.factories.optionals.MaterialFactory
 import com.ubicar.ubicar.factories.optionals.SecurityFactory
 import org.springframework.stereotype.Component
@@ -12,7 +13,8 @@ class PropertyFactory(
   private val materialFactory: MaterialFactory,
   private val securityFactory: SecurityFactory,
   private val contactFactory: ContactFactory,
-  private val openHouseDateFactory: OpenHouseDateFactory
+  private val openHouseDateFactory: OpenHouseDateFactory,
+  private val addressFactory: AddressFactory
 ) : AbstractFactory<Property, PropertyDTO> {
 
   override fun convert(input: Property): PropertyDTO {
@@ -21,13 +23,15 @@ class PropertyFactory(
     val contacts = input.contacts.map(contactFactory::convert).toMutableList()
     val openHouse = input.openHouse.map(openHouseDateFactory::convert).toMutableList()
 
+    val address = addressFactory.from(input.address)
+
     return PropertyDTO(
       input.id,
       input.title,
       input.price,
       input.condition,
       input.type,
-      input.address,
+      address,
       input.squareFoot,
       input.coveredSquareFoot,
       input.levels,
