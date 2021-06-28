@@ -176,7 +176,7 @@ class PropertyLoader(
     )
     val property3 = Property(
       "Casa top en Vicente López",
-      405000000,
+      995000000,
       Condition.SALE,
       TypeOfProperty.Casa,
       address3,
