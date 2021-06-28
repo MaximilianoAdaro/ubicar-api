@@ -54,7 +54,7 @@ class PropertyLoader(
     // Property 1
     val city1 = cityRepository.save(City("San Isidro", state))
     val coordinates1 = Coordinates(-34.4892169630285, -58.564152054237304)
-    val address = Address(city1, "ELISEO RECLUS", 1030, coordinates1)
+    val address = Address(city1, "eliseo reclus", 1030, coordinates1)
     val style: Style = styleRepository.findFirstByLabel("Contemporaneo").get()
     val amenities: MutableList<Amenity> = mutableListOf(
       amenitiesRepository.findFirstByLabel("Balcón").get(),
@@ -103,7 +103,7 @@ class PropertyLoader(
     val city2 = cityRepository.save(City("General Rodríguez", state))
     val coordinates2 = Coordinates(-34.608284019555796, -58.9601312273656)
 
-    val address2 = Address(city2, "AV EVA PERON", 350, coordinates2)
+    val address2 = Address(city2, "av eva peron", 350, coordinates2)
     val style2: Style = styleRepository.findFirstByLabel("Colonial").get()
     val amenities2: MutableList<Amenity> = mutableListOf(
       amenitiesRepository.findFirstByLabel("Cochera").get(),
@@ -157,7 +157,7 @@ class PropertyLoader(
     val city3 = cityRepository.save(City("Vicente López", state))
     val coordinates3 = Coordinates(-34.52748821083418, -58.47600318016971)
 
-    val address3 = Address(city3, "CARLOS F MELO", 124, coordinates3)
+    val address3 = Address(city3, "carlos f melo", 124, coordinates3)
     val style3: Style = styleRepository.findFirstByLabel("Colonial").get()
     val amenities3: MutableList<Amenity> = mutableListOf(
       amenitiesRepository.findFirstByLabel("Cochera").get(),
