@@ -7,12 +7,14 @@ import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
 import com.ubicar.ubicar.entities.Property
 import com.ubicar.ubicar.entities.User
 import com.ubicar.ubicar.repositories.property.PropertyRepository
+import com.ubicar.ubicar.repositories.user.UserRepository
 import com.ubicar.ubicar.services.address.AddressService
 import com.ubicar.ubicar.services.contact.ContactService
 import com.ubicar.ubicar.services.openHouseDate.OpenHouseDateService
 import com.ubicar.ubicar.services.user.UserService
 import com.ubicar.ubicar.utils.BadRequestException
 import com.ubicar.ubicar.utils.NotFoundException
+import com.ubicar.ubicar.utils.SessionUtils
 import org.apache.velocity.VelocityContext
 import org.apache.velocity.app.VelocityEngine
 import org.springframework.data.domain.Page
@@ -35,7 +37,9 @@ class PropertyServiceImpl(
   private val openHouseDateService: OpenHouseDateService,
   private val userService: UserService,
   private val propertyFilterService: PropertyFilterService,
-  private val velocityEngine: VelocityEngine
+  private val velocityEngine: VelocityEngine,
+  private val sessionUtils: SessionUtils,
+  private val userRepository: UserRepository
 ) : PropertyService {
 
   override fun findAll(pageable: Pageable): Page<Property> {
@@ -50,7 +54,7 @@ class PropertyServiceImpl(
   }
 
   override fun findById(id: String): Property {
-    return propertyRepository.findById(id).orElseThrow()
+    return propertyRepository.findById(id).orElseThrow { NotFoundException("Property not found") }
   }
 
   override fun update(id: String, property: Property): Property {
