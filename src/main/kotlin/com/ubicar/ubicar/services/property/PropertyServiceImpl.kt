@@ -7,7 +7,6 @@ import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
 import com.ubicar.ubicar.entities.Property
 import com.ubicar.ubicar.entities.User
 import com.ubicar.ubicar.repositories.property.PropertyRepository
-import com.ubicar.ubicar.repositories.user.UserRepository
 import com.ubicar.ubicar.services.address.AddressService
 import com.ubicar.ubicar.services.contact.ContactService
 import com.ubicar.ubicar.services.openHouseDate.OpenHouseDateService
@@ -20,7 +19,6 @@ import org.apache.velocity.app.VelocityEngine
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import java.io.StringWriter
 import javax.mail.Message
@@ -37,7 +35,8 @@ class PropertyServiceImpl(
   private val openHouseDateService: OpenHouseDateService,
   private val userService: UserService,
   private val propertyFilterService: PropertyFilterService,
-  private val velocityEngine: VelocityEngine
+  private val velocityEngine: VelocityEngine,
+  private val sessionUtils: SessionUtils
 ) : PropertyService {
 
   override fun findAll(pageable: Pageable): Page<Property> {
@@ -95,19 +94,17 @@ class PropertyServiceImpl(
 
   override fun like(id: String): Property {
     val property: Property = findById(id)
-    val logged: User = userService.findByEmail(SecurityContextHolder.getContext().authentication.name)
-      .orElseThrow { NotFoundException("User not found") }
-    property.likes.map { if (it.id == logged.id) throw BadRequestException("You already liked this property") }
+    val logged = sessionUtils.getTokenUserInformation()
+    if (property.likes.contains(logged)) throw BadRequestException("You already liked this property")
     property.likes.add(logged)
     return propertyRepository.save(property)
   }
 
   override fun dislike(id: String): Property {
     val property: Property = findById(id)
-    val logged: User = userService.findByEmail(SecurityContextHolder.getContext().authentication.name)
-      .orElseThrow { NotFoundException("User not found") }
-    property.likes.map { if (it.id != logged.id) throw BadRequestException("You never liked this property") }
-    property.likes = property.likes.filter { it.id == logged.id }.toMutableList()
+    val logged = sessionUtils.getTokenUserInformation()
+    if (!property.likes.contains(logged)) throw BadRequestException("You never liked this property")
+    property.likes.remove(logged)
     return propertyRepository.save(property)
   }
 

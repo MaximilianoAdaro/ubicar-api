@@ -89,7 +89,7 @@ class PropertyLoader(
       materials,
       securities,
       "Es un parque muy bonito",
-      mutableListOf("https://www.youtube.com/watch?v=yDcAwTH88qw&ab_channel=LaCimaTV"),
+      mutableListOf(),
       mutableListOf(Contact("Agente", "agente@gmail.com")),
       mutableListOf(OpenHouseDate(LocalDate.now(), LocalTime.NOON, LocalTime.MIDNIGHT)),
       "Comentarios adicionales de lo linda que es esta propiedad",
@@ -143,7 +143,7 @@ class PropertyLoader(
       materials2,
       securities2,
       "No tiene",
-      mutableListOf("https://www.youtube.com/watch?v=qh8Z3wHor2g&ab_channel=ConstruyeHogar"),
+      mutableListOf(),
       mutableListOf(Contact("Vendedor", "dueña_de_depto_top@gmail.com")),
       mutableListOf(OpenHouseDate(LocalDate.now(), LocalTime.NOON, LocalTime.MIDNIGHT)),
       "Todos tus amigos van a querer venir a visitarte!",
@@ -152,6 +152,57 @@ class PropertyLoader(
       owner
     )
     properties.add(property2)
+
+    // Property 3 ---------------------------------------------------------------------
+    val city3 = cityRepository.save(City("Vicente López", state))
+    val coordinates3 = Coordinates(-34.52748821083418, -58.47600318016971)
+
+    val address3 = Address(city3, "CARLOS F MELO", 124, coordinates3)
+    val style3: Style = styleRepository.findFirstByLabel("Colonial").get()
+    val amenities3: MutableList<Amenity> = mutableListOf(
+      amenitiesRepository.findFirstByLabel("Cochera").get(),
+      amenitiesRepository.findFirstByLabel("Patio").get(),
+      amenitiesRepository.findFirstByLabel("Baulera").get(),
+      amenitiesRepository.findFirstByLabel("Terraza").get(),
+      amenitiesRepository.findFirstByLabel("Jardín").get(),
+    )
+    val materials3: MutableList<ConstructionMaterial> =
+      mutableListOf(
+        materialRepository.findFirstByLabel("Chapa").get(),
+      )
+    val securities3: MutableList<SecurityMeasure> = mutableListOf(
+      securityRepository.findFirstByLabel("Rejas").get(),
+      securityRepository.findFirstByLabel("Alarma de entrada").get(),
+    )
+    val property3 = Property(
+      "Casa top en Vicente López",
+      405000000,
+      Condition.SALE,
+      TypeOfProperty.Casa,
+      address3,
+      150,
+      130,
+      1,
+      2002,
+      style3,
+      4,
+      3,
+      2,
+      2,
+      10000,
+      amenities3,
+      materials3,
+      securities3,
+      "No tiene un espacio muy grande",
+      mutableListOf(),
+      mutableListOf(Contact("Vendedor", "dueña_de_depto@gmail.com")),
+      mutableListOf(OpenHouseDate(LocalDate.now(), LocalTime.NOON, LocalTime.MIDNIGHT)),
+      "Todos tus amigos van a querer venir a visitarte!",
+      LocalDate.now(),
+      mutableListOf(),
+      owner
+    )
+    properties.add(property3)
 
     properties.map { propertyService.save(it) }
   }
