@@ -33,13 +33,9 @@ class User(
   var userRole: UserRole,
 
   var birthDate: LocalDate?,
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(
-    name = "user_like_property",
-    joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
-    inverseJoinColumns = [JoinColumn(name = "property_id", referencedColumnName = "id")]
-  )
-  @JsonManagedReference
+
+  @ManyToMany(mappedBy = "likes")
+  @JsonBackReference
   var likedProperties: MutableList<Property> = mutableListOf()
 
 ) : AbstractEntity()

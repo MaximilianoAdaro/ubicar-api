@@ -118,8 +118,13 @@ class Property(
   @CreationTimestamp
   var creationDate: LocalDate,
 
-  @ManyToMany(mappedBy = "likedProperties")
-  @JsonBackReference
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(
+    name = "user_like_property",
+    joinColumns = [JoinColumn(name = "property_id", referencedColumnName = "id")],
+    inverseJoinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")]
+  )
+  @JsonManagedReference
   var likes: MutableList<User> = mutableListOf(),
 
   @ManyToOne(cascade = [CascadeType.ALL])
