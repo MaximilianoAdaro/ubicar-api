@@ -6,6 +6,8 @@ import com.ubicar.ubicar.factories.AbstractFactory
 import com.ubicar.ubicar.factories.location.AddressFactory
 import com.ubicar.ubicar.factories.optionals.MaterialFactory
 import com.ubicar.ubicar.factories.optionals.SecurityFactory
+import com.ubicar.ubicar.services.user.UserService
+import com.ubicar.ubicar.utils.NotFoundException
 import org.springframework.stereotype.Component
 
 @Component
@@ -14,7 +16,8 @@ class PropertyFactory(
   private val securityFactory: SecurityFactory,
   private val contactFactory: ContactFactory,
   private val openHouseDateFactory: OpenHouseDateFactory,
-  private val addressFactory: AddressFactory
+  private val addressFactory: AddressFactory,
+  private val userService: UserService
 ) : AbstractFactory<Property, PropertyDTO> {
 
   override fun convert(input: Property): PropertyDTO {
@@ -22,6 +25,15 @@ class PropertyFactory(
     val security = input.security.map(securityFactory::convert).toMutableList()
     val contacts = input.contacts.map(contactFactory::convert).toMutableList()
     val openHouse = input.openHouse.map(openHouseDateFactory::convert).toMutableList()
+    var liked = false
+    try {
+      val user = userService.findLogged()
+      for (prop in user.likedProperties) {
+        if (prop.id == input.id) {
+          liked = true
+        }
+      }
+    } catch(e: NotFoundException) { liked = false }
 
     val address = addressFactory.from(input.address)
 
@@ -49,7 +61,8 @@ class PropertyFactory(
       input.links,
       contacts,
       openHouse,
-      input.comments
+      input.comments,
+      liked
     )
   }
 }
