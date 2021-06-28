@@ -31,4 +31,10 @@ class PropertyUserController(
     val user = sessionUtils.getTokenUserInformation()
     return propertyService.getAllFavoritePropertiesByUser(user).map(propertyFactory::convert)
   }
+
+  @GetMapping("/property/own")
+  fun getMyProperties(): List<PropertyDTO> {
+    val user = sessionUtils.getTokenUserInformation()
+    return propertyService.getAllPropertiesOfUser(user).map(propertyFactory::convert)
+  }
 }

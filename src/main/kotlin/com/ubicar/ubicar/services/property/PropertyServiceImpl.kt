@@ -37,9 +37,7 @@ class PropertyServiceImpl(
   private val openHouseDateService: OpenHouseDateService,
   private val userService: UserService,
   private val propertyFilterService: PropertyFilterService,
-  private val velocityEngine: VelocityEngine,
-  private val sessionUtils: SessionUtils,
-  private val userRepository: UserRepository
+  private val velocityEngine: VelocityEngine
 ) : PropertyService {
 
   override fun findAll(pageable: Pageable): Page<Property> {
@@ -124,6 +122,10 @@ class PropertyServiceImpl(
 
   override fun getAllFavoritePropertiesByUser(user: User): List<Property> {
     return user.likedProperties
+  }
+
+  override fun getAllPropertiesOfUser(user: User): List<Property> {
+    return propertyRepository.findByOwnerId(user.id)
   }
 
   override fun contactOwner(id: String, contactDto: UserContactDto) {
