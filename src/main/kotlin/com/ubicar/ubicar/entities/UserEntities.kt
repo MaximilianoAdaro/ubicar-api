@@ -35,7 +35,7 @@ class User(
   var birthDate: LocalDate?,
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
-    name = "user_property",
+    name = "user_like_property",
     joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
     inverseJoinColumns = [JoinColumn(name = "property_id", referencedColumnName = "id")]
   )

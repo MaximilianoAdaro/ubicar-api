@@ -14,8 +14,12 @@ class SessionUtils(private val userRepository: UserRepository) {
   fun getTokenUserInformation(): User {
     val jwt = SecurityContextHolder.getContext().authentication
       ?: throw UnauthorizedException("Error while getting session token")
-    val user: UserDetailsImpl = jwt.principal as UserDetailsImpl
-    val found: Optional<User> = userRepository.findByEmail(user.email)
+    val found: Optional<User> = try {
+      val user = jwt.principal as UserDetailsImpl
+      userRepository.findByEmail(user.email)
+    } catch (e: ClassCastException) {
+      userRepository.findByEmail(jwt.principal as String)
+    }
     return found.orElseThrow { throw NotFoundException("Token user not found") }
   }
 }
