@@ -27,7 +27,7 @@ class UserLoader(
       .orElseThrow { NotFoundException("User Role not found") }
     val user = User(
       "admin",
-      "admin@admin.com",
+      "ubicar.austral2021@gmail.com",
       passwordEncoder.encode("admin"),
       UserOrigin.UBICAR,
       userRole,

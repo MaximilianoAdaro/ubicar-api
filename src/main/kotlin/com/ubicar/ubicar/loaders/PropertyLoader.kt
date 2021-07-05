@@ -49,7 +49,7 @@ class PropertyLoader(
 
     val country = countryRepository.save(Country("Argentina"))
     val state = stateRepository.save(State("Buenos Aires", country))
-    val owner = userRepository.findByEmail("admin@admin.com").get()
+    val owner = userRepository.findByEmail("ubicar.austral2021@gmail.com").get()
 
     // Property 1
     val city1 = cityRepository.save(City("San Isidro", state))
