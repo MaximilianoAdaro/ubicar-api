@@ -129,12 +129,16 @@ class PropertyServiceImpl(
     val property: Property = findById(id)
     val owner: User = property.owner
     val session: Session? = setProperties()
+    var html = "contact.html"
+    if (contactDto.cellphone == "" || contactDto.cellphone == " ") {
+      html = "contactnophone.html"
+    }
     sendMail(
       velocityEngine,
       session,
       owner,
       "Consulta sobre su propiedad: " + property.title,
-      "contact.html",
+      html,
       contactDto
     )
   }
