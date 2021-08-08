@@ -48,7 +48,7 @@ class PropertyFilterOperationRepository @Autowired constructor(
     }
 
     if (filter.style != null) {
-      predicates.add(cb.equal(root.get<Style>("style").get<String>("id"), filter.style!!.id))
+      predicates.add(cb.equal(root.get<Style>("style").get<String>("id"), filter.style!!))
     }
 
     if (filter.minPrice != null) {
