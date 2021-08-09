@@ -1,12 +1,12 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     database: postgresql
     show-sql: true
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/ubicar
+    url: jdbc:postgresql://localhost:5431/ubicar
     username: root
     password: password
     driver-class-name: org.postgresql.Driver
