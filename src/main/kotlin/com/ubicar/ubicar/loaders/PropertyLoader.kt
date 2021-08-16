@@ -2,20 +2,16 @@ package com.ubicar.ubicar.loaders
 
 import com.ubicar.ubicar.entities.Address
 import com.ubicar.ubicar.entities.Amenity
-import com.ubicar.ubicar.entities.City
 import com.ubicar.ubicar.entities.Condition
 import com.ubicar.ubicar.entities.ConstructionMaterial
 import com.ubicar.ubicar.entities.Contact
 import com.ubicar.ubicar.entities.Coordinates
-import com.ubicar.ubicar.entities.Country
 import com.ubicar.ubicar.entities.OpenHouseDate
 import com.ubicar.ubicar.entities.Property
 import com.ubicar.ubicar.entities.SecurityMeasure
-import com.ubicar.ubicar.entities.State
 import com.ubicar.ubicar.entities.Style
 import com.ubicar.ubicar.entities.TypeOfProperty
 import com.ubicar.ubicar.repositories.location.CityRepository
-import com.ubicar.ubicar.repositories.location.CountryRepository
 import com.ubicar.ubicar.repositories.location.StateRepository
 import com.ubicar.ubicar.repositories.property.AmenityRepository
 import com.ubicar.ubicar.repositories.property.MaterialRepository
@@ -38,7 +34,6 @@ class PropertyLoader(
   private val amenitiesRepository: AmenityRepository,
   private val materialRepository: MaterialRepository,
   private val securityRepository: SecurityRepository,
-  private val countryRepository: CountryRepository,
   private val stateRepository: StateRepository,
   private val cityRepository: CityRepository,
   private val userRepository: UserRepository
@@ -47,12 +42,11 @@ class PropertyLoader(
   override fun run(vararg args: String?) {
     val properties: MutableList<Property> = mutableListOf()
 
-    val country = countryRepository.save(Country("Argentina"))
-    val state = stateRepository.save(State("Buenos Aires", country))
+    val state = stateRepository.findFirstByName("Buenos Aires").orElseThrow()
     val owner = userRepository.findByEmail("ubicar.austral2021@gmail.com").get()
 
     // Property 1
-    val city1 = cityRepository.save(City("San Isidro", state))
+    val city1 = cityRepository.findByNameAndState("SAN ISIDRO", state).orElseThrow()
     val coordinates1 = Coordinates(-34.4892169630285, -58.564152054237304)
     val address = Address(city1, "eliseo reclus", 1030, coordinates1)
     val style: Style = styleRepository.findFirstByLabel("Contemporaneo").get()
@@ -100,7 +94,7 @@ class PropertyLoader(
     properties.add(property1)
 
     // Property 2 ---------------------------------------------------------------------
-    val city2 = cityRepository.save(City("General Rodríguez", state))
+    val city2 = cityRepository.findByNameAndState("GENERAL RODRIGUEZ", state).orElseThrow()
     val coordinates2 = Coordinates(-34.608284019555796, -58.9601312273656)
 
     val address2 = Address(city2, "av eva peron", 350, coordinates2)
@@ -154,7 +148,7 @@ class PropertyLoader(
     properties.add(property2)
 
     // Property 3 ---------------------------------------------------------------------
-    val city3 = cityRepository.save(City("Vicente López", state))
+    val city3 = cityRepository.findByNameAndState("VICENTE LOPEZ", state).orElseThrow()
     val coordinates3 = Coordinates(-34.52748821083418, -58.47600318016971)
 
     val address3 = Address(city3, "carlos f melo", 124, coordinates3)

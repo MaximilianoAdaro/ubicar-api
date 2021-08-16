@@ -12,15 +12,15 @@ import org.springframework.stereotype.Component
 class StyleLoader(private val styleRepository: StyleRepository) : CommandLineRunner, Ordered {
 
   override fun run(vararg args: String?) {
-    val styles: MutableList<Style> = mutableListOf()
-    styles.add(Style("Contemporaneo"))
-    styles.add(Style("Mediterraneo"))
-    styles.add(Style("Minimalista"))
-    styles.add(Style("Colonial"))
-    styles.add(Style("Cottages"))
-    styles.add(Style("Tudor"))
+    val styles: List<String> = mutableListOf(
+      "Contemporaneo", "Mediterraneo", "Minimalista", "Colonial", "Cottages", "Tudor"
+    )
 
-    styles.map { styleRepository.save(it) }
+    styles.forEach {
+      styleRepository.findFirstByLabel(it).orElseGet {
+        styleRepository.save(Style(it))
+      }
+    }
   }
 
   override fun getOrder(): Int {
