@@ -72,7 +72,8 @@ data class PropertyDTO(
   val contacts: MutableList<ContactDto>,
   val openHouse: MutableList<OpenHouseDateDto>,
   val comments: String,
-  val liked: Boolean
+  val liked: Boolean,
+  val images: List<String> = listOf()
 )
 
 data class PropertyPreviewDTO(

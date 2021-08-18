@@ -12,6 +12,12 @@ spring:
     driver-class-name: org.postgresql.Driver
     initialization-mode: always
 
+  servlet:
+    multipart:
+      max-file-size: 128KB
+#      max-request-size: 128KB
+
+
   # Pretty-print JSON responses
   jackson:
     serialization:

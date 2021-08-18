@@ -3,16 +3,18 @@ package com.ubicar.ubicar.services.property
 import com.ubicar.ubicar.dtos.UserContactDto
 import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
+import com.ubicar.ubicar.entities.Image
 import com.ubicar.ubicar.entities.Property
 import com.ubicar.ubicar.entities.User
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.web.multipart.MultipartFile
 
 interface PropertyService {
 
   fun findAll(pageable: Pageable): Page<Property>
 
-  fun save(property: Property): Property
+  fun save(property: Property, images: List<Image>): Property
 
   fun findById(id: String): Property
 

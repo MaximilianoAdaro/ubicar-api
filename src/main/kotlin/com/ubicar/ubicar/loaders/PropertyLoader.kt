@@ -198,7 +198,7 @@ class PropertyLoader(
     )
     properties.add(property3)
 
-    properties.map { propertyService.save(it) }
+    properties.map { propertyService.save(it, listOf()) }
   }
 
   override fun getOrder(): Int {

@@ -4,11 +4,13 @@ import com.ubicar.ubicar.dtos.UserContactDto
 import com.ubicar.ubicar.dtos.filter.PROPERTY_SORT_PROPERTIES
 import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
+import com.ubicar.ubicar.entities.Image
 import com.ubicar.ubicar.entities.Property
 import com.ubicar.ubicar.entities.User
 import com.ubicar.ubicar.repositories.property.PropertyRepository
 import com.ubicar.ubicar.services.address.AddressService
 import com.ubicar.ubicar.services.contact.ContactService
+import com.ubicar.ubicar.services.image.ImageService
 import com.ubicar.ubicar.services.openHouseDate.OpenHouseDateService
 import com.ubicar.ubicar.services.user.UserService
 import com.ubicar.ubicar.utils.BadRequestException
@@ -20,6 +22,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 import java.io.StringWriter
 import javax.mail.Message
 import javax.mail.MessagingException
@@ -36,14 +39,17 @@ class PropertyServiceImpl(
   private val userService: UserService,
   private val propertyFilterService: PropertyFilterService,
   private val velocityEngine: VelocityEngine,
-  private val sessionUtils: SessionUtils
+  private val sessionUtils: SessionUtils,
+  val imageService: ImageService
 ) : PropertyService {
 
   override fun findAll(pageable: Pageable): Page<Property> {
     return propertyRepository.findAll(pageable)
   }
 
-  override fun save(property: Property): Property {
+  override fun save(property: Property, images: List<Image>): Property {
+    val savedImages = imageService.saveAll(images)
+    property.images = savedImages.toMutableList()
     addressService.save(property.address)
     property.contacts.map { contactService.save(it) }
     property.openHouse.map { openHouseDateService.save(it) }

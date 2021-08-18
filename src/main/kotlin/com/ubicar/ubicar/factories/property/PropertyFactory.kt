@@ -25,6 +25,8 @@ class PropertyFactory(
     val security = input.security.map(securityFactory::convert).toMutableList()
     val contacts = input.contacts.map(contactFactory::convert).toMutableList()
     val openHouse = input.openHouse.map(openHouseDateFactory::convert).toMutableList()
+    val images = input.images.map { it.id }
+
     var liked = false
     try {
       val user = userService.findLogged()
@@ -33,7 +35,9 @@ class PropertyFactory(
           liked = true
         }
       }
-    } catch(e: NotFoundException) { liked = false }
+    } catch (e: NotFoundException) {
+      liked = false
+    }
 
     val address = addressFactory.from(input.address)
 
@@ -62,7 +66,8 @@ class PropertyFactory(
       contacts,
       openHouse,
       input.comments,
-      liked
+      liked,
+      images = images
     )
   }
 }

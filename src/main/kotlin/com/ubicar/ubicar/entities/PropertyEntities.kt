@@ -128,7 +128,11 @@ class Property(
   var likes: MutableList<User> = mutableListOf(),
 
   @ManyToOne(cascade = [CascadeType.ALL])
-  var owner: User
+  var owner: User,
+
+  //images
+  @OneToMany(cascade = [CascadeType.ALL])
+  var images: MutableList<Image> = mutableListOf()
 
 ) : AbstractEntity()
 
