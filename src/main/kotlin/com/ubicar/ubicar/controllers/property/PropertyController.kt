@@ -19,13 +19,23 @@ class PropertyController(
   val imageFactory: ImageFactory
 ) {
 
-  @PostMapping("/create", consumes = [MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE])
-  fun createProperty(
+  @PostMapping("/create")
+  fun createProperty(@RequestBody propertyDTO: CreatePropertyDTO): PropertyDTO {
+    val property = createPropertyFactory.convert(propertyDTO)
+    val savedProperty = propertyService.save(property, listOf())
+    return propertyFactory.convert(savedProperty)
+  }
+
+  @PostMapping("/create-with-images", consumes = [MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE])
+  fun createPropertyWithImages(
     @RequestPart("property") propertyDTO: CreatePropertyDTO,
     @RequestPart("images", required = false) files: List<MultipartFile>?
   ): PropertyDTO {
     val images = files?.map { imageFactory.convert(it) } ?: listOf()
-    return propertyFactory.convert(propertyService.save(createPropertyFactory.convert(propertyDTO), images))
+    val property = createPropertyFactory.convert(propertyDTO)
+
+    val savedProperty = propertyService.save(property, images)
+    return propertyFactory.convert(savedProperty)
   }
 
   @PutMapping("/{id}")
