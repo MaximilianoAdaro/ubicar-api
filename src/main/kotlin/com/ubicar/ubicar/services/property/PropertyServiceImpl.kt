@@ -22,7 +22,6 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
-import org.springframework.web.multipart.MultipartFile
 import java.io.StringWriter
 import javax.mail.Message
 import javax.mail.MessagingException
@@ -60,10 +59,12 @@ class PropertyServiceImpl(
     return propertyRepository.findById(id).orElseThrow { NotFoundException("Property not found") }
   }
 
-  override fun update(id: String, property: Property): Property {
+  override fun update(id: String, property: Property, images: List<Image>, imagesToDelete: List<String>): Property {
     return propertyRepository
       .findById(id)
       .map { old ->
+
+        val savedImages = imageService.saveAll(images)
 
         // Hacerlo mas lindo
         old.javaClass.declaredFields
@@ -91,6 +92,13 @@ class PropertyServiceImpl(
         old.contacts = property.contacts
         old.openHouse = property.openHouse
         old.comments = property.comments
+
+        val imageList = old.images
+          .filterNot { image -> imagesToDelete.contains(image.id) }
+          .plus(savedImages)
+          .toMutableList()
+        old.images = imageList
+
         propertyRepository.save(old)
       }
       .orElseThrow { NotFoundException("Property not found") }

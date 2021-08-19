@@ -26,12 +26,15 @@ class PropertyController(
     return propertyFactory.convert(savedProperty)
   }
 
-  @PostMapping("/create-with-images", consumes = [MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE])
+  @PostMapping(
+    "/create-with-images",
+    consumes = [MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE]
+  )
   fun createPropertyWithImages(
     @RequestPart("property") propertyDTO: CreatePropertyDTO,
     @RequestPart("images", required = false) files: List<MultipartFile>?
   ): PropertyDTO {
-    val images = files?.map { imageFactory.convert(it) } ?: listOf()
+    val images = files?.map { imageFactory.convert(it) }.orEmpty()
     val property = createPropertyFactory.convert(propertyDTO)
 
     val savedProperty = propertyService.save(property, images)
@@ -40,6 +43,27 @@ class PropertyController(
 
   @PutMapping("/{id}")
   fun editProperty(@PathVariable id: String, @RequestBody propertyDTO: CreatePropertyDTO): PropertyDTO {
-    return propertyFactory.convert(propertyService.update(id, createPropertyFactory.convert(propertyDTO)))
+    return propertyFactory.convert(
+      propertyService.update(
+        id,
+        createPropertyFactory.convert(propertyDTO),
+        listOf(),
+        listOf()
+      )
+    )
+  }
+
+  @PutMapping("/with-images/{id}")
+  fun editPropertyWithImages(
+    @PathVariable id: String,
+    @RequestPart("property") propertyDTO: CreatePropertyDTO,
+    @RequestPart("images", required = false) files: List<MultipartFile>?,
+    @RequestPart("imagesToDelete", required = false) imagesToDelete: List<String>?
+  ): PropertyDTO {
+    val property = createPropertyFactory.convert(propertyDTO)
+    val images = files?.map { imageFactory.convert(it) }.orEmpty()
+
+    val updatedProperty = propertyService.update(id, property, images, imagesToDelete.orEmpty())
+    return propertyFactory.convert(updatedProperty)
   }
 }

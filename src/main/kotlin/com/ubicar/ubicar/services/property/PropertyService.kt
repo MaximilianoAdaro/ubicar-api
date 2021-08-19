@@ -18,7 +18,7 @@ interface PropertyService {
 
   fun findById(id: String): Property
 
-  fun update(id: String, property: Property): Property
+  fun update(id: String, property: Property, images: List<Image>, imagesToDelete: List<String>): Property
 
   fun delete(id: String)
 
