@@ -1,11 +1,13 @@
 package com.ubicar.ubicar.services.property
 
 import com.ubicar.ubicar.dtos.UserContactDto
+import com.ubicar.ubicar.dtos.ViewBoxCoordinatesDTO
 import com.ubicar.ubicar.dtos.filter.PROPERTY_SORT_PROPERTIES
 import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
 import com.ubicar.ubicar.entities.Property
 import com.ubicar.ubicar.entities.User
+import com.ubicar.ubicar.factories.geoSpatial.PolygonFactory
 import com.ubicar.ubicar.repositories.property.PropertyRepository
 import com.ubicar.ubicar.services.address.AddressService
 import com.ubicar.ubicar.services.contact.ContactService
@@ -41,6 +43,11 @@ class PropertyServiceImpl(
 
   override fun findAll(pageable: Pageable): Page<Property> {
     return propertyRepository.findAll(pageable)
+  }
+
+  override fun findAllInViewBox(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTO): List<Property> {
+    val createPolygon = PolygonFactory.createPolygon(viewBoxCoordinatesDTO.toPointList())
+    return propertyRepository.findAllInViewBox(createPolygon)
   }
 
   override fun save(property: Property): Property {

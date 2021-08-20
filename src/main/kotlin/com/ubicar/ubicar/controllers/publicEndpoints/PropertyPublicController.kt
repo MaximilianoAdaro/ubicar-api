@@ -1,6 +1,9 @@
 package com.ubicar.ubicar.controllers.publicEndpoints
 
-import com.ubicar.ubicar.dtos.*
+import com.ubicar.ubicar.dtos.PropertyDTO
+import com.ubicar.ubicar.dtos.PropertyPreviewDTO
+import com.ubicar.ubicar.dtos.UserContactDto
+import com.ubicar.ubicar.dtos.ViewBoxCoordinatesDTO
 import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
 import com.ubicar.ubicar.dtos.filter.PropertySort
@@ -30,6 +33,13 @@ class PropertyPublicController(
   @GetMapping("/preview")
   fun getProperties(@RequestParam page: Int): Page<PropertyPreviewDTO> {
     return propertyService.findAll(PageRequest.of(page, 16)).map { propertyPreviewFactory.convert(it) }
+  }
+
+  @GetMapping("/viewBox")
+  fun getPropertiesViewBox(
+    @RequestBody vieBoxDto: ViewBoxCoordinatesDTO
+  ): List<PropertyPreviewDTO> {
+    return propertyService.findAllInViewBox(vieBoxDto).map { propertyPreviewFactory.convert(it) }
   }
 
   @PostMapping("/preview/by-filter")
