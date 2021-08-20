@@ -2,25 +2,17 @@ package com.ubicar.ubicar.repositories.property.filter
 
 import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
-import com.ubicar.ubicar.entities.Amenity
-import com.ubicar.ubicar.entities.Condition
-import com.ubicar.ubicar.entities.Property
-import com.ubicar.ubicar.entities.Style
-import com.ubicar.ubicar.entities.TypeOfProperty
+import com.ubicar.ubicar.entities.*
 import com.ubicar.ubicar.repositories.property.AmenityRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
-import java.util.Optional
+import java.util.*
 import javax.persistence.EntityManager
 import javax.persistence.TypedQuery
-import javax.persistence.criteria.CriteriaQuery
-import javax.persistence.criteria.Join
-import javax.persistence.criteria.JoinType
-import javax.persistence.criteria.Predicate
-import javax.persistence.criteria.Root
+import javax.persistence.criteria.*
 
 @Repository
 class PropertyFilterOperationRepository @Autowired constructor(
@@ -83,6 +75,29 @@ class PropertyFilterOperationRepository @Autowired constructor(
     if (filter.containsYard != null && filter.containsYard!! && yardAmenity.isPresent) {
       val propertyAmenityJoin: Join<Property, Amenity> = root.join("amenities", JoinType.INNER)
       predicates.add(cb.equal(propertyAmenityJoin, yardAmenity.get()))
+    }
+
+    if (filter.stateId != null) {
+      val predicate = cb.equal(
+        root
+          .get<Address>("address")
+          .get<City>("city")
+          .get<State>("state")
+          .get<String>("id"),
+        filter.stateId
+      )
+      predicates.add(predicate)
+    }
+
+    if (filter.cityId != null) {
+      val predicate = cb.equal(
+        root
+          .get<Address>("address")
+          .get<City>("city")
+          .get<String>("id"),
+        filter.cityId
+      )
+      predicates.add(predicate)
     }
 
 //        Sorting and orders

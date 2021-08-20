@@ -9,12 +9,8 @@ import com.ubicar.ubicar.repositories.location.StateRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
-import java.util.Optional
+import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @RequestMapping("/public")
@@ -47,4 +43,18 @@ class LocationController(
     val nameLowerCase = name.orElse("%").toLowerCase()
     return cityRepository.getAllPaginated(nameLowerCase, stateId, pageRequest).map { cityFactory.convert(it) }
   }
+
+
+  @GetMapping("/cities-and-states")
+  fun getCitiesAndStates(
+    @RequestParam(value = "name", required = false) name: Optional<String>,
+    @RequestParam(value = "size", required = false) size: Optional<Int>,
+    @RequestParam(value = "page", required = false) page: Optional<Int>,
+  ): Page<CityDTO> {
+    val pageRequest: Pageable = PageRequest.of(page.orElse(0), size.orElse(10))
+    val nameLowerCase = name.orElse("%").toLowerCase()
+    return cityRepository.getAllPaginated(nameLowerCase, "", pageRequest).map { cityFactory.convert(it) }
+  }
+
+
 }
