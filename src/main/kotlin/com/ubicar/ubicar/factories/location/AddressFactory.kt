@@ -1,6 +1,7 @@
 package com.ubicar.ubicar.factories.location
 
 import com.ubicar.ubicar.dtos.AddressDTO
+import com.ubicar.ubicar.dtos.AddressPreviewDTO
 import com.ubicar.ubicar.entities.Address
 import com.ubicar.ubicar.factories.AbstractFactory
 import com.ubicar.ubicar.repositories.location.CityRepository
@@ -26,6 +27,18 @@ class AddressFactory(
     return AddressDTO(
       state.id,
       city.id,
+      address.street,
+      address.number,
+      coordinatesFactory.from(address.coordinates)
+    )
+  }
+
+  fun toPreview(address: Address): AddressPreviewDTO {
+    val city = address.city
+    val state = city.state
+    return AddressPreviewDTO(
+      state.name,
+      city.name,
       address.street,
       address.number,
       coordinatesFactory.from(address.coordinates)
