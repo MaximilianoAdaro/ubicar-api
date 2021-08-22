@@ -2,6 +2,7 @@ package com.ubicar.ubicar.services.user
 
 import com.ubicar.ubicar.dtos.GoogleLoginUserDTO
 import com.ubicar.ubicar.dtos.UserCreationDTO
+import com.ubicar.ubicar.dtos.UserDTO
 import com.ubicar.ubicar.entities.User
 import java.util.Optional
 
@@ -24,4 +25,6 @@ interface UserService {
   fun checkPassword(password: String, user: User): Boolean
 
   fun findLogged(): User
+
+  fun update(id: String, user: UserDTO): User
 }
