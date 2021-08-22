@@ -14,7 +14,7 @@ class AddressFactory(
 ) : AbstractFactory<AddressDTO, Address> {
 
   override fun convert(input: AddressDTO): Address {
-    val city = cityRepository.findById(input.cityId)
+    val city = cityRepository.findById(input.cityId!!)
       .orElseThrow { NotFoundException("City not Found") }
     val coordinates = coordinatesFactory.convert(input.coordinates)
     return Address(city, input.street, input.number, coordinates)
