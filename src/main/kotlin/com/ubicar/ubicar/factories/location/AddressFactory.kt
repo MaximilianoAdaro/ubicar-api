@@ -20,17 +20,15 @@ class AddressFactory(
     return Address(city, input.street, input.number, coordinates)
   }
 
-  fun from(input: Address): AddressDTO {
-    val city = input.city
+  fun from(address: Address): AddressDTO {
+    val city = address.city
     val state = city.state
-    val country = state.country
     return AddressDTO(
-      country.name,
-      state.name,
-      city.name,
-      input.street,
-      input.number,
-      coordinatesFactory.from(input.coordinates)
+      state.id,
+      city.id,
+      address.street,
+      address.number,
+      coordinatesFactory.from(address.coordinates)
     )
   }
 }

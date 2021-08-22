@@ -34,7 +34,6 @@ data class CreatePropertyDTO(
 )
 
 data class AddressDTO(
-  val countryId: String,
   val stateId: String,
   val cityId: String,
   val street: String,
