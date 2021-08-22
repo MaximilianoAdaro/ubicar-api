@@ -19,7 +19,7 @@ class PropertyPreviewFactory(
       input.price,
       input.condition,
       input.type,
-      addressFactory.toPreview(address),
+      addressFactory.from(address),
       input.squareFoot,
       input.coveredSquareFoot,
       input.rooms,

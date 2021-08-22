@@ -35,14 +35,8 @@ data class CreatePropertyDTO(
 
 data class AddressDTO(
   val stateId: String,
-  val cityId: String,
-  val street: String,
-  val number: Int,
-  val coordinates: CoordinatesDTO
-)
-
-data class AddressPreviewDTO(
   val state: String,
+  val cityId: String,
   val city: String,
   val street: String,
   val number: Int,
@@ -88,7 +82,7 @@ data class PropertyPreviewDTO(
   val price: Int,
   val condition: Condition,
   val type: TypeOfProperty,
-  val address: AddressPreviewDTO,
+  val address: AddressDTO,
   val squareFoot: Int,
   val coveredSquareFoot: Int,
   val rooms: Int,
