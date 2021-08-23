@@ -25,6 +25,7 @@ class CityLoader(
   CommandLineRunner, Ordered {
 
   override fun run(vararg args: String?) {
+    if (cityRepository.totalAmount() > 1) return
     val cities: List<City> = getAllCitiesFromFile()
     cities.forEach { city ->
       cityRepository.findFirstByGid(city.gid)

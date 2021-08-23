@@ -15,6 +15,7 @@ import com.ubicar.ubicar.repositories.location.CityRepository
 import com.ubicar.ubicar.repositories.location.StateRepository
 import com.ubicar.ubicar.repositories.property.AmenityRepository
 import com.ubicar.ubicar.repositories.property.MaterialRepository
+import com.ubicar.ubicar.repositories.property.PropertyRepository
 import com.ubicar.ubicar.repositories.property.SecurityRepository
 import com.ubicar.ubicar.repositories.property.StyleRepository
 import com.ubicar.ubicar.repositories.user.UserRepository
@@ -36,10 +37,12 @@ class PropertyLoader(
   private val securityRepository: SecurityRepository,
   private val stateRepository: StateRepository,
   private val cityRepository: CityRepository,
-  private val userRepository: UserRepository
+  private val userRepository: UserRepository,
+  private val propertyRepository: PropertyRepository
 ) : CommandLineRunner, Ordered {
 
   override fun run(vararg args: String?) {
+    if (propertyRepository.totalAmount() > 1) return
     val properties: MutableList<Property> = mutableListOf()
 
     val state = stateRepository.findFirstByName("Buenos Aires").orElseThrow()

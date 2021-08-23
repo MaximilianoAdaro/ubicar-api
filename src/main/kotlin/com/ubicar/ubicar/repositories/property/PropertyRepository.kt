@@ -17,4 +17,7 @@ interface PropertyRepository : JpaRepository<Property, String> {
     nativeQuery = true
   )
   fun findAllInViewBox(polygon: Polygon): List<Property>
+
+  @Query("select count(p) from Property p")
+  fun totalAmount(): Double
 }

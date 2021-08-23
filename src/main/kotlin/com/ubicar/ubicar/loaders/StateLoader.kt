@@ -25,6 +25,7 @@ class StateLoader(
   CommandLineRunner, Ordered {
 
   override fun run(vararg args: String?) {
+    if (stateRepository.totalAmount() > 1) return
     val country: Country = countryRepository.findFirstByName("Argentina").orElseThrow()
     val states: List<State> = getAllStatesFromFile(country)
     states.forEach { state ->
