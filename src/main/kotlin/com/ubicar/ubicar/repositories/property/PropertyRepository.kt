@@ -11,12 +11,13 @@ interface PropertyRepository : JpaRepository<Property, String> {
   fun findByOwnerId(id: String): List<Property>
 
   @Query(
-    "select * from property p " +
+    "select st_asgeojson(b.*) from (" +
+      "select * from property p " +
       "join address a on a.id = p.address_id " +
-      "where st_contains(:#{#polygon}, a.coordinates)",
+      "where st_contains(:#{#polygon}, a.coordinates)) b",
     nativeQuery = true
   )
-  fun findAllInViewBox(polygon: Polygon): List<Property>
+  fun findAllInViewBox(polygon: Polygon): List<String>
 
   @Query("select count(p) from Property p")
   fun totalAmount(): Double

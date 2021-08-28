@@ -38,8 +38,8 @@ class PropertyPublicController(
   @GetMapping("/viewBox")
   fun getPropertiesViewBox(
     @RequestBody vieBoxDto: ViewBoxCoordinatesDTO
-  ): List<PropertyPreviewDTO> {
-    return propertyService.findAllInViewBox(vieBoxDto).map { propertyPreviewFactory.convert(it) }
+  ): List<String> {
+    return propertyService.findAllInViewBox(vieBoxDto)
   }
 
   @PostMapping("/preview/by-filter")

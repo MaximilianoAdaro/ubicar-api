@@ -13,7 +13,7 @@ interface PropertyService {
 
   fun findAll(pageable: Pageable): Page<Property>
 
-  fun findAllInViewBox(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTO): List<Property>
+  fun findAllInViewBox(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTO): List<String>
 
   fun save(property: Property): Property
 
