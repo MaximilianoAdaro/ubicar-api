@@ -1,10 +1,10 @@
 package com.ubicar.ubicar.controllers.publicEndpoints
 
-import com.ubicar.ubicar.dtos.CoordinatesDTO
 import com.ubicar.ubicar.dtos.PropertyDTO
 import com.ubicar.ubicar.dtos.PropertyPreviewDTO
 import com.ubicar.ubicar.dtos.UserContactDto
 import com.ubicar.ubicar.dtos.ViewBoxCoordinatesDTO
+import com.ubicar.ubicar.dtos.ViewBoxCoordinatesDTOFloat
 import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
 import com.ubicar.ubicar.dtos.filter.PropertySort
@@ -38,13 +38,20 @@ class PropertyPublicController(
 
   @GetMapping("/viewBox")
   fun getPropertiesViewBox(
-    @RequestParam NE: CoordinatesDTO,
-    @RequestParam SE: CoordinatesDTO,
-    @RequestParam SW: CoordinatesDTO,
-    @RequestParam NW: CoordinatesDTO
+    @RequestParam b1: Double,
+    @RequestParam b2: Double,
+    @RequestParam b3: Double,
+    @RequestParam b4: Double
   ): List<String> {
-    val viewBoxCoordinatesDTO = ViewBoxCoordinatesDTO(NE, SE, SW, NW)
+    val viewBoxCoordinatesDTO = ViewBoxCoordinatesDTOFloat(b1, b2, b3, b4)
     return propertyService.findAllInViewBox(viewBoxCoordinatesDTO)
+  }
+
+  @GetMapping("/viewBoxx")
+  fun getPropertiesViewBoxx(
+    @RequestBody vieBoxDto: ViewBoxCoordinatesDTO
+  ): List<String> {
+    return propertyService.findAllInViewBox(vieBoxDto)
   }
 
   @PostMapping("/preview/by-filter")

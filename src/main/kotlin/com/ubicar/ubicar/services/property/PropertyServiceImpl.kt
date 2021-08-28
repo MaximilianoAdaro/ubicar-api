@@ -2,6 +2,7 @@ package com.ubicar.ubicar.services.property
 
 import com.ubicar.ubicar.dtos.UserContactDto
 import com.ubicar.ubicar.dtos.ViewBoxCoordinatesDTO
+import com.ubicar.ubicar.dtos.ViewBoxCoordinatesDTOFloat
 import com.ubicar.ubicar.dtos.filter.PROPERTY_SORT_PROPERTIES
 import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
@@ -47,6 +48,11 @@ class PropertyServiceImpl(
 
   override fun findAllInViewBox(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTO): List<String> {
     val createPolygon = PolygonFactory.createPolygon(viewBoxCoordinatesDTO.toPointList())
+    return propertyRepository.findAllInViewBox(createPolygon)
+  }
+
+  override fun findAllInViewBox(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTOFloat): List<String> {
+    val createPolygon = PolygonFactory.createPolygon(viewBoxCoordinatesDTO.toDto().toPointList())
     return propertyRepository.findAllInViewBox(createPolygon)
   }
 

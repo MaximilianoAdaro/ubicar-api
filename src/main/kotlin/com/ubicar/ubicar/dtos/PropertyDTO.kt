@@ -66,6 +66,20 @@ data class ViewBoxCoordinatesDTO(
   fun toPointList(): List<Point> = listOf(NE.toPoint(), SE.toPoint(), SW.toPoint(), NW.toPoint(), NE.toPoint())
 }
 
+data class ViewBoxCoordinatesDTOFloat(
+  val p1: Double,
+  val p2: Double,
+  val p3: Double,
+  val p4: Double
+) {
+  fun toDto(): ViewBoxCoordinatesDTO = ViewBoxCoordinatesDTO(
+    CoordinatesDTO(p4, p1),
+    CoordinatesDTO(p2, p3),
+    CoordinatesDTO(p2, p1),
+    CoordinatesDTO(p4, p1)
+  )
+}
+
 data class PropertyDTO(
   val id: String,
   val title: String,
