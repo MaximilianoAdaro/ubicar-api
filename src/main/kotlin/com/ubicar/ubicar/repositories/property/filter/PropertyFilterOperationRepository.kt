@@ -39,6 +39,8 @@ class PropertyFilterOperationRepository @Autowired constructor(
 
     val predicates: MutableList<Predicate> = mutableListOf()
 
+    predicates.add(cb.equal(root.get<Int>("step"), 7))
+
     if (filter.condition != null) {
       predicates.add(cb.equal(root.get<Condition>("condition"), filter.condition))
     }

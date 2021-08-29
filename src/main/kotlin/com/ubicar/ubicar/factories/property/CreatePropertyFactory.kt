@@ -39,12 +39,15 @@ class CreatePropertyFactory(
     val securities: MutableList<SecurityMeasure> = mutableListOf()
     input.security.map { securities.add(securityRepository.findById(it).orElseThrow { NotFoundException("Security not found") }) }
 
-    val address = addressFactory.convert(input.address)
+    val address = if(input.step > 1) addressFactory.convert(input.address)
+    else null
 
     val contacts = input.contacts.map(contactFactory::from).toMutableList()
     val openHouse = input.openHouse.map(openHouseDateFactory::from).toMutableList()
 
-    val style = styleRepository.findById(input.style).orElseThrow { NotFoundException("Style not found") }
+    val style = if (input.step > 2) {
+       styleRepository.findById(input.style).orElseThrow { NotFoundException("Style not found") }
+    } else null
 
     return Property(
       input.title,
@@ -72,7 +75,8 @@ class CreatePropertyFactory(
       input.comments,
       LocalDate.now(),
       mutableListOf(),
-      userService.findLogged()
+      userService.findLogged(),
+      input.step
     )
   }
 }

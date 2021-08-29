@@ -44,7 +44,7 @@ class PropertyServiceImpl(
   }
 
   override fun save(property: Property): Property {
-    addressService.save(property.address)
+    if (property.step > 1) addressService.save(property.address!!)
     property.contacts.map { contactService.save(it) }
     property.openHouse.map { openHouseDateService.save(it) }
     return propertyRepository.save(property)

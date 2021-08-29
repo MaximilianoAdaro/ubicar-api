@@ -35,7 +35,8 @@ class PropertyFactory(
       }
     } catch(e: NotFoundException) { liked = false }
 
-    val address = addressFactory.from(input.address)
+    val address = if(input.address != null) addressFactory.from(input.address!!)
+    else null
 
     return PropertyDTO(
       input.id,
@@ -62,7 +63,8 @@ class PropertyFactory(
       contacts,
       openHouse,
       input.comments,
-      liked
+      liked,
+      input.step
     )
   }
 }
