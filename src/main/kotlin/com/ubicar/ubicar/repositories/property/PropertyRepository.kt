@@ -2,13 +2,15 @@ package com.ubicar.ubicar.repositories.property
 
 import com.ubicar.ubicar.entities.Property
 import com.vividsolutions.jts.geom.Polygon
+import org.springframework.data.domain.Page
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
+import org.springframework.data.domain.Pageable
 
 interface PropertyRepository : JpaRepository<Property, String> {
 
   @Query(value = "select p from Property p where p.step = 7")
-  fun findAll(pageable: Pageable): Page<Property>
+  override fun findAll(pageable: Pageable): Page<Property>
 
   @Query(value = "select p from Property p where p.owner.id = :#{#id}")
   fun findByOwnerId(id: String): List<Property>
