@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/user")
 class UserController(
   private val userService: UserService,
-  private val userDtoFactory: UserDtoFactory) {
+  private val userDtoFactory: UserDtoFactory
+) {
 
   @PutMapping("/{id}")
   fun editUser(@PathVariable id: String, @RequestBody userDto: UserDTO): UserDTO {

@@ -69,9 +69,9 @@ class UserServiceImpl(
       .findById(id)
       .map {
         old ->
-          old.userName = user.userName
-          old.email = user.email
-          save(old)
+        old.userName = user.userName
+        old.email = user.email
+        save(old)
       }
       .orElseThrow { NotFoundException("User not found") }
   }

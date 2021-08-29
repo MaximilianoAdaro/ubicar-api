@@ -1,6 +1,5 @@
 package com.ubicar.ubicar.dtos.filter
 
-import com.ubicar.ubicar.dtos.StyleDTO
 import com.ubicar.ubicar.entities.Condition
 import com.ubicar.ubicar.entities.TypeOfProperty
 import org.springframework.data.domain.Sort

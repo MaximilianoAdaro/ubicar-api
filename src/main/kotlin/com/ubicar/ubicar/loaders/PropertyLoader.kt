@@ -5,16 +5,17 @@ import com.ubicar.ubicar.entities.Amenity
 import com.ubicar.ubicar.entities.Condition
 import com.ubicar.ubicar.entities.ConstructionMaterial
 import com.ubicar.ubicar.entities.Contact
-import com.ubicar.ubicar.entities.Coordinates
 import com.ubicar.ubicar.entities.OpenHouseDate
 import com.ubicar.ubicar.entities.Property
 import com.ubicar.ubicar.entities.SecurityMeasure
 import com.ubicar.ubicar.entities.Style
 import com.ubicar.ubicar.entities.TypeOfProperty
+import com.ubicar.ubicar.factories.geoSpatial.PointFactory
 import com.ubicar.ubicar.repositories.location.CityRepository
 import com.ubicar.ubicar.repositories.location.StateRepository
 import com.ubicar.ubicar.repositories.property.AmenityRepository
 import com.ubicar.ubicar.repositories.property.MaterialRepository
+import com.ubicar.ubicar.repositories.property.PropertyRepository
 import com.ubicar.ubicar.repositories.property.SecurityRepository
 import com.ubicar.ubicar.repositories.property.StyleRepository
 import com.ubicar.ubicar.repositories.user.UserRepository
@@ -36,10 +37,12 @@ class PropertyLoader(
   private val securityRepository: SecurityRepository,
   private val stateRepository: StateRepository,
   private val cityRepository: CityRepository,
-  private val userRepository: UserRepository
+  private val userRepository: UserRepository,
+  private val propertyRepository: PropertyRepository
 ) : CommandLineRunner, Ordered {
 
   override fun run(vararg args: String?) {
+    if (propertyRepository.totalAmount() > 1) return
     val properties: MutableList<Property> = mutableListOf()
 
     val state = stateRepository.findFirstByName("Buenos Aires").orElseThrow()
@@ -47,7 +50,7 @@ class PropertyLoader(
 
     // Property 1
     val city1 = cityRepository.findByNameAndState("SAN ISIDRO", state).orElseThrow()
-    val coordinates1 = Coordinates(-34.4892169630285, -58.564152054237304)
+    val coordinates1 = PointFactory.createPoint(-58.564152054237304, -34.4892169630285)
     val address = Address(city1, "eliseo reclus", 1030, coordinates1)
     val style: Style = styleRepository.findFirstByLabel("Contemporaneo").get()
     val amenities: MutableList<Amenity> = mutableListOf(
@@ -96,7 +99,7 @@ class PropertyLoader(
 
     // Property 2 ---------------------------------------------------------------------
     val city2 = cityRepository.findByNameAndState("GENERAL RODRIGUEZ", state).orElseThrow()
-    val coordinates2 = Coordinates(-34.608284019555796, -58.9601312273656)
+    val coordinates2 = PointFactory.createPoint(-58.9601312273656, -34.608284019555796)
 
     val address2 = Address(city2, "av eva peron", 350, coordinates2)
     val style2: Style = styleRepository.findFirstByLabel("Colonial").get()
@@ -151,7 +154,7 @@ class PropertyLoader(
 
     // Property 3 ---------------------------------------------------------------------
     val city3 = cityRepository.findByNameAndState("VICENTE LOPEZ", state).orElseThrow()
-    val coordinates3 = Coordinates(-34.52748821083418, -58.47600318016971)
+    val coordinates3 = PointFactory.createPoint(-58.47600318016971, -34.52748821083418)
 
     val address3 = Address(city3, "carlos f melo", 124, coordinates3)
     val style3: Style = styleRepository.findFirstByLabel("Colonial").get()

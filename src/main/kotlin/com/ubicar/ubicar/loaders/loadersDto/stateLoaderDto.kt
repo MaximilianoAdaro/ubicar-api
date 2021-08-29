@@ -3,7 +3,7 @@ package com.ubicar.ubicar.loaders.loadersDto
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.ubicar.ubicar.entities.Country
 import com.ubicar.ubicar.entities.State
-import org.postgis.Point
+import com.ubicar.ubicar.factories.geoSpatial.PointFactory
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class StateJson(
@@ -15,7 +15,9 @@ data class StateJsonDto(
   val id: Double,
   val nombre: String
 ) {
-  fun toState(country: Country): State = State(this.nombre, id, Point(centroide.lon, centroide.lat), country)
+  fun toState(country: Country): State {
+    return State(this.nombre, id, PointFactory.createPoint(centroide.lon, centroide.lat), country)
+  }
 }
 
 data class LatLonDto(

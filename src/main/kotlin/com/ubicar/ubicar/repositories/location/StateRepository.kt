@@ -16,4 +16,7 @@ interface StateRepository : CrudRepository<State, String> {
 
   @Query("select s from State s where lower(s.name) like %:name%")
   fun getAllPaginated(name: String, pageRequest: Pageable): Page<State>
+
+  @Query("select count(s) from State s")
+  fun totalAmount(): Double
 }
