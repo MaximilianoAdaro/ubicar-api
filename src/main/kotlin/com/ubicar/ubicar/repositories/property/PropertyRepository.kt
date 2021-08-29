@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.Query
 
 interface PropertyRepository : JpaRepository<Property, String> {
 
+  @Query(value = "select p from Property p where p.step = 7")
+  fun findAll(pageable: Pageable): Page<Property>
+
   @Query(value = "select p from Property p where p.owner.id = :#{#id}")
   fun findByOwnerId(id: String): List<Property>
 

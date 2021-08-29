@@ -32,7 +32,8 @@ data class CreatePropertyDTO(
   val links: MutableList<String>,
   val contacts: MutableList<ContactDto>,
   val openHouse: MutableList<OpenHouseDateDto>,
-  val comments: String
+  val comments: String,
+  val step: Int
 )
 
 data class AddressDTO(
@@ -87,26 +88,28 @@ data class PropertyDTO(
   val price: Int,
   val condition: Condition,
   val type: TypeOfProperty,
-  val address: AddressDTO,
-  val squareFoot: Int,
-  val coveredSquareFoot: Int,
-  val levels: Int,
-  val constructionDate: Int,
-  val style: Style,
-  val environments: Int,
-  val rooms: Int,
-  val toilets: Int,
-  val fullBaths: Int,
-  val expenses: Int,
+  val address: AddressDTO?,
+  val squareFoot: Int?,
+  val coveredSquareFoot: Int?,
+  val levels: Int?,
+  val constructionDate: Int?,
+  val style: Style?,
+  val environments: Int?,
+  val rooms: Int?,
+  val toilets: Int?,
+  val fullBaths: Int?,
+  val expenses: Int?,
   val amenities: MutableList<Amenity>,
   val materials: MutableList<MaterialDTO>,
   val security: MutableList<SecurityDTO>,
-  val parkDescription: String,
+  val parkDescription: String?,
   val links: MutableList<String>,
   val contacts: MutableList<ContactDto>,
   val openHouse: MutableList<OpenHouseDateDto>,
   val comments: String,
-  val liked: Boolean
+  val liked: Boolean,
+  val step: Int,
+  val images: List<String> = listOf(),
 )
 
 data class PropertyPreviewDTO(
@@ -115,12 +118,12 @@ data class PropertyPreviewDTO(
   val price: Int,
   val condition: Condition,
   val type: TypeOfProperty,
-  val address: AddressDTO,
-  val squareFoot: Int,
-  val coveredSquareFoot: Int,
-  val rooms: Int,
-  val toilets: Int,
-  val fullBaths: Int
+  val address: AddressDTO?,
+  val squareFoot: Int?,
+  val coveredSquareFoot: Int?,
+  val rooms: Int?,
+  val toilets: Int?,
+  val fullBaths: Int?
 )
 
 data class ContactDto(

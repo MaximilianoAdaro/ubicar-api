@@ -92,7 +92,8 @@ class PropertyLoader(
       "Comentarios adicionales de lo linda que es esta propiedad",
       LocalDate.now(),
       mutableListOf(),
-      owner
+      owner,
+      7
     )
     properties.add(property1)
 
@@ -146,7 +147,8 @@ class PropertyLoader(
       "Todos tus amigos van a querer venir a visitarte!",
       LocalDate.now(),
       mutableListOf(),
-      owner
+      owner,
+      7
     )
     properties.add(property2)
 
@@ -197,11 +199,12 @@ class PropertyLoader(
       "Todos tus amigos van a querer venir a visitarte!",
       LocalDate.now(),
       mutableListOf(),
-      owner
+      owner,
+      7
     )
     properties.add(property3)
 
-    properties.map { propertyService.save(it) }
+    properties.map { propertyService.save(it, listOf()) }
   }
 
   override fun getOrder(): Int {

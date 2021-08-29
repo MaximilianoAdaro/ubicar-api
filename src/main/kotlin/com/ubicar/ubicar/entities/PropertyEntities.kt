@@ -41,37 +41,28 @@ class Property(
   var type: TypeOfProperty,
 
   @OneToOne(cascade = [CascadeType.ALL])
-  var address: Address,
+  var address: Address?,
 
-  @Column(nullable = false)
-  var squareFoot: Int,
+  var squareFoot: Int?,
 
-  @Column(nullable = false)
-  var coveredSquareFoot: Int,
+  var coveredSquareFoot: Int?,
 
-  @Column(nullable = false)
-  var levels: Int,
+  var levels: Int?,
 
-  @Column(nullable = false)
-  var constructionDate: Int,
+  var constructionDate: Int?,
 
   @ManyToOne(cascade = [CascadeType.ALL])
-  var style: Style,
+  var style: Style?,
 
-  @Column(nullable = false)
-  var environments: Int,
+  var environments: Int?,
 
-  @Column(nullable = false)
-  var rooms: Int,
+  var rooms: Int?,
 
-  @Column(nullable = false)
-  var toilets: Int,
+  var toilets: Int?,
 
-  @Column(nullable = false)
-  var fullBaths: Int,
+  var fullBaths: Int?,
 
-  @Column(nullable = false)
-  var expenses: Int,
+  var expenses: Int?,
 
   // OPTIONAL FEATURES
 
@@ -102,7 +93,7 @@ class Property(
   @JsonManagedReference
   var security: MutableList<SecurityMeasure> = mutableListOf(),
 
-  var parkDescription: String,
+  var parkDescription: String?,
 
   @ElementCollection
   var links: MutableList<String>,
@@ -113,10 +104,10 @@ class Property(
   @OneToMany(cascade = [CascadeType.ALL])
   var openHouse: MutableList<OpenHouseDate>,
 
-  var comments: String,
+  var comments: String?,
 
   @CreationTimestamp
-  var creationDate: LocalDate,
+  var creationDate: LocalDate?,
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
@@ -128,7 +119,15 @@ class Property(
   var likes: MutableList<User> = mutableListOf(),
 
   @ManyToOne(cascade = [CascadeType.ALL])
-  var owner: User
+  var owner: User,
+
+  var step: Int,
+
+  //images
+  @OneToMany(cascade = [CascadeType.ALL])
+  var images: MutableList<Image> = mutableListOf()
+
+
 
 ) : AbstractEntity()
 
