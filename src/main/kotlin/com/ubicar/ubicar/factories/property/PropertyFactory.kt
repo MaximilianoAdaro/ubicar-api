@@ -39,7 +39,8 @@ class PropertyFactory(
       liked = false
     }
 
-    val address = addressFactory.from(input.address)
+    val address = if(input.address != null) addressFactory.from(input.address!!)
+    else null
 
     return PropertyDTO(
       input.id,
@@ -65,9 +66,10 @@ class PropertyFactory(
       input.links,
       contacts,
       openHouse,
-      input.comments,
-      liked,
-      images = images
+      comments = input.comments ?: "",
+      images = images,
+      liked = liked,
+      step = input.step
     )
   }
 }
