@@ -46,9 +46,9 @@ class PropertyServiceImpl(
     return propertyRepository.findAll(pageable)
   }
 
-  override fun findAllInViewBox(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTO): List<String> {
+  override fun findAllInViewBox(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTO): List<Property> {
     val createPolygon = PolygonFactory.createPolygon(viewBoxCoordinatesDTO.toPointList())
-    return propertyRepository.findAllInViewBox(createPolygon)
+    return propertyRepository.findAllInViewBoxProperty(createPolygon)
   }
 
   override fun findAllInViewBox(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTOFloat): List<String> {

@@ -16,7 +16,7 @@ interface PropertyService {
 
   fun findAllInViewBox(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTOFloat): List<String>
 
-  fun findAllInViewBox(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTO): List<String>
+  fun findAllInViewBox(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTO): List<Property>
 
   fun save(property: Property): Property
 

@@ -19,6 +19,14 @@ interface PropertyRepository : JpaRepository<Property, String> {
   )
   fun findAllInViewBox(polygon: Polygon): List<String>
 
+  @Query(
+    "select * from property p " +
+      "join address a on a.id = p.address_id " +
+      "where st_contains(:#{#polygon}, a.coordinates)",
+    nativeQuery = true
+  )
+  fun findAllInViewBoxProperty(polygon: Polygon): List<Property>
+
   @Query("select count(p) from Property p")
   fun totalAmount(): Double
 }

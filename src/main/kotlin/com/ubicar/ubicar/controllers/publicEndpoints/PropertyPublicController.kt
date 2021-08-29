@@ -47,11 +47,11 @@ class PropertyPublicController(
     return propertyService.findAllInViewBox(viewBoxCoordinatesDTO)
   }
 
-  @GetMapping("/viewBoxx")
-  fun getPropertiesViewBoxx(
+  @GetMapping("/viewBox")
+  fun getPropertiesViewBox(
     @RequestBody vieBoxDto: ViewBoxCoordinatesDTO
-  ): List<String> {
-    return propertyService.findAllInViewBox(vieBoxDto)
+  ): List<PropertyPreviewDTO> {
+    return propertyService.findAllInViewBox(vieBoxDto).map { propertyPreviewFactory.convert(it) }
   }
 
   @PostMapping("/preview/by-filter")
