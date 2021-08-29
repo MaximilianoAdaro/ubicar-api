@@ -8,12 +8,15 @@ import com.ubicar.ubicar.dtos.ViewBoxCoordinatesDTOFloat
 import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
 import com.ubicar.ubicar.dtos.filter.PropertySort
+import com.ubicar.ubicar.factories.filter.FilterFactory
 import com.ubicar.ubicar.factories.property.PropertyFactory
 import com.ubicar.ubicar.factories.property.PropertyPreviewFactory
+import com.ubicar.ubicar.services.filter.FilterService
 import com.ubicar.ubicar.services.property.PropertyService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import java.util.Optional
 
@@ -22,7 +25,9 @@ import java.util.Optional
 class PropertyPublicController(
   private val propertyService: PropertyService,
   private val propertyFactory: PropertyFactory,
-  private val propertyPreviewFactory: PropertyPreviewFactory
+  private val propertyPreviewFactory: PropertyPreviewFactory,
+  private val filterService: FilterService,
+  private val filterFactory: FilterFactory
 ) {
 
   @GetMapping("/preview")
@@ -55,6 +60,7 @@ class PropertyPublicController(
     @RequestParam(value = "direction", required = false) direction: Optional<Sort.Direction>,
     @RequestParam(value = "property", required = false) property: Optional<PropertySort>,
   ): Page<PropertyPreviewDTO> {
+    if (SecurityContextHolder.getContext().authentication != null) filterService.save(filterFactory.from(filter))
     val propertyLazyTableDto = PropertyLazyTableDto(
       page.orElse(0),
       size.orElse(16),

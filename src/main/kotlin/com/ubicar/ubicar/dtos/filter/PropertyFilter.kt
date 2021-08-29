@@ -1,6 +1,5 @@
 package com.ubicar.ubicar.dtos.filter
 
-import com.ubicar.ubicar.dtos.StyleDTO
 import com.ubicar.ubicar.entities.Condition
 import com.ubicar.ubicar.entities.TypeOfProperty
 import org.springframework.data.domain.Sort
@@ -17,7 +16,7 @@ import org.springframework.data.domain.Sort
 data class PropertyFilterDto(
   var condition: Condition?,
   var typeProperty: TypeOfProperty?,
-  var style: StyleDTO?,
+  var style: String?,
   var minPrice: Double?,
   var maxPrice: Double?,
   var minAmountRoom: Int?,
