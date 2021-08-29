@@ -73,7 +73,7 @@ data class ViewBoxCoordinatesDTOFloat(
   val p4: Double
 ) {
   fun toDto(): ViewBoxCoordinatesDTO = ViewBoxCoordinatesDTO(
-    CoordinatesDTO(p4, p1),
+    CoordinatesDTO(p4, p3),
     CoordinatesDTO(p2, p3),
     CoordinatesDTO(p2, p1),
     CoordinatesDTO(p4, p1)

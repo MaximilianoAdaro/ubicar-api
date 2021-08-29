@@ -14,13 +14,7 @@ import com.ubicar.ubicar.services.property.PropertyService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.util.Optional
 
 @RestController
@@ -46,9 +40,8 @@ class PropertyPublicController(
     val viewBoxCoordinatesDTO = ViewBoxCoordinatesDTOFloat(b1, b2, b3, b4)
     return propertyService.findAllInViewBox(viewBoxCoordinatesDTO)
   }
-
-  @GetMapping("/viewBox")
-  fun getPropertiesViewBox(
+  @GetMapping("/viewBox2")
+  fun getPropertiesViewBox2(
     @RequestBody vieBoxDto: ViewBoxCoordinatesDTO
   ): List<PropertyPreviewDTO> {
     return propertyService.findAllInViewBox(vieBoxDto).map { propertyPreviewFactory.convert(it) }
