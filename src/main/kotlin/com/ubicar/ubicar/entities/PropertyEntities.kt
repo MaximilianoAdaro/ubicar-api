@@ -121,7 +121,13 @@ class Property(
   @ManyToOne(cascade = [CascadeType.ALL])
   var owner: User,
 
-  var step: Int
+  var step: Int,
+
+  //images
+  @OneToMany(cascade = [CascadeType.ALL])
+  var images: MutableList<Image> = mutableListOf()
+
+
 
 ) : AbstractEntity()
 

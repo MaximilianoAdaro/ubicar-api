@@ -4,11 +4,13 @@ import com.ubicar.ubicar.dtos.UserContactDto
 import com.ubicar.ubicar.dtos.filter.PROPERTY_SORT_PROPERTIES
 import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
+import com.ubicar.ubicar.entities.Image
 import com.ubicar.ubicar.entities.Property
 import com.ubicar.ubicar.entities.User
 import com.ubicar.ubicar.repositories.property.PropertyRepository
 import com.ubicar.ubicar.services.address.AddressService
 import com.ubicar.ubicar.services.contact.ContactService
+import com.ubicar.ubicar.services.image.ImageService
 import com.ubicar.ubicar.services.openHouseDate.OpenHouseDateService
 import com.ubicar.ubicar.services.user.UserService
 import com.ubicar.ubicar.utils.BadRequestException
@@ -36,14 +38,17 @@ class PropertyServiceImpl(
   private val userService: UserService,
   private val propertyFilterService: PropertyFilterService,
   private val velocityEngine: VelocityEngine,
-  private val sessionUtils: SessionUtils
+  private val sessionUtils: SessionUtils,
+  val imageService: ImageService
 ) : PropertyService {
 
   override fun findAll(pageable: Pageable): Page<Property> {
     return propertyRepository.findAll(pageable)
   }
 
-  override fun save(property: Property): Property {
+  override fun save(property: Property, images: List<Image>): Property {
+    val savedImages = imageService.saveAll(images)
+    property.images = savedImages.toMutableList()
     if (property.step > 1) addressService.save(property.address!!)
     property.contacts.map { contactService.save(it) }
     property.openHouse.map { openHouseDateService.save(it) }
@@ -54,10 +59,12 @@ class PropertyServiceImpl(
     return propertyRepository.findById(id).orElseThrow { NotFoundException("Property not found") }
   }
 
-  override fun update(id: String, property: Property): Property {
+  override fun update(id: String, property: Property, images: List<Image>, imagesToDelete: List<String>): Property {
     return propertyRepository
       .findById(id)
       .map { old ->
+
+        val savedImages = imageService.saveAll(images)
 
         // Hacerlo mas lindo
         old.javaClass.declaredFields
@@ -85,6 +92,13 @@ class PropertyServiceImpl(
         old.contacts = property.contacts
         old.openHouse = property.openHouse
         old.comments = property.comments
+
+        val imageList = old.images
+          .filterNot { image -> imagesToDelete.contains(image.id) }
+          .plus(savedImages)
+          .toMutableList()
+        old.images = imageList
+
         propertyRepository.save(old)
       }
       .orElseThrow { NotFoundException("Property not found") }
