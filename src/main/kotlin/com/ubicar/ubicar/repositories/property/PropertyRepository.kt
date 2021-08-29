@@ -8,6 +8,7 @@ import org.springframework.data.repository.CrudRepository
 
 interface PropertyRepository : CrudRepository<Property, String> {
 
+  @Query(value = "select p from Property p where p.step = 7")
   fun findAll(pageable: Pageable): Page<Property>
 
   @Query(value = "select p from Property p where p.owner.id = :#{#id}")

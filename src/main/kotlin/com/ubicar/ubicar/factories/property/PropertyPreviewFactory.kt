@@ -12,14 +12,15 @@ class PropertyPreviewFactory(
 ) : AbstractFactory<Property, PropertyPreviewDTO> {
 
   override fun convert(input: Property): PropertyPreviewDTO {
-    val address = input.address
+    val address = if(input.address != null) addressFactory.from(input.address!!)
+    else null
     return PropertyPreviewDTO(
       input.id,
       input.title,
       input.price,
       input.condition,
       input.type,
-      addressFactory.from(address),
+      address,
       input.squareFoot,
       input.coveredSquareFoot,
       input.rooms,
