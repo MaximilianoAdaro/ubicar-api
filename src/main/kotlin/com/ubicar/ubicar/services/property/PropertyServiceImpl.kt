@@ -106,6 +106,7 @@ class PropertyServiceImpl(
         old.contacts = property.contacts
         old.openHouse = property.openHouse
         old.comments = property.comments
+        old.step = property.step
 
         val imageList = old.images
           .filterNot { image -> imagesToDelete.contains(image.id) }
