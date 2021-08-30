@@ -10,13 +10,14 @@ import com.ubicar.ubicar.entities.Property
 import com.ubicar.ubicar.entities.User
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.web.multipart.MultipartFile
 
 interface PropertyService {
 
   fun findAll(pageable: Pageable): Page<Property>
 
   fun findAllInViewBox(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTOFloat): List<String>
+
+  fun findAllInViewBoxProp(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTOFloat): List<Property>
 
   fun findAllInViewBox(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTO): List<Property>
 

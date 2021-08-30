@@ -3,7 +3,6 @@ package com.ubicar.ubicar.controllers.publicEndpoints
 import com.ubicar.ubicar.dtos.PropertyDTO
 import com.ubicar.ubicar.dtos.PropertyPreviewDTO
 import com.ubicar.ubicar.dtos.UserContactDto
-import com.ubicar.ubicar.dtos.ViewBoxCoordinatesDTO
 import com.ubicar.ubicar.dtos.ViewBoxCoordinatesDTOFloat
 import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
@@ -17,7 +16,13 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 import java.util.Optional
 
 @RestController
@@ -45,11 +50,15 @@ class PropertyPublicController(
     val viewBoxCoordinatesDTO = ViewBoxCoordinatesDTOFloat(b1, b2, b3, b4)
     return propertyService.findAllInViewBox(viewBoxCoordinatesDTO)
   }
-  @GetMapping("/viewBox2")
+  @PostMapping("/viewBox2")
   fun getPropertiesViewBox2(
-    @RequestBody vieBoxDto: ViewBoxCoordinatesDTO
+    @RequestParam b1: Double,
+    @RequestParam b2: Double,
+    @RequestParam b3: Double,
+    @RequestParam b4: Double
   ): List<PropertyPreviewDTO> {
-    return propertyService.findAllInViewBox(vieBoxDto).map { propertyPreviewFactory.convert(it) }
+    val viewBoxCoordinatesDTO = ViewBoxCoordinatesDTOFloat(b1, b2, b3, b4)
+    return propertyService.findAllInViewBoxProp(viewBoxCoordinatesDTO).map { propertyPreviewFactory.convert(it) }
   }
 
   @PostMapping("/preview/by-filter")

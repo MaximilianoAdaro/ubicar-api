@@ -54,11 +54,16 @@ class PropertyServiceImpl(
     return propertyRepository.findAllInViewBoxProperty(createPolygon)
   }
 
+  override fun findAllInViewBoxProp(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTOFloat): List<Property> {
+    val createPolygon = PolygonFactory.createPolygon(viewBoxCoordinatesDTO.toDto().toPointList())
+    return propertyRepository.findAllInViewBoxProperty(createPolygon)
+  }
+
   override fun findAllInViewBox(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTOFloat): List<String> {
     val createPolygon = PolygonFactory.createPolygon(viewBoxCoordinatesDTO.toDto().toPointList())
     return propertyRepository.findAllInViewBox(createPolygon)
   }
-  
+
   override fun save(property: Property, images: List<Image>): Property {
     val savedImages = imageService.saveAll(images)
     property.images = savedImages.toMutableList()
