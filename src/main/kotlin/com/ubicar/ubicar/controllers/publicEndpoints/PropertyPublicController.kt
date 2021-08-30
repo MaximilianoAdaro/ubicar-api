@@ -50,7 +50,7 @@ class PropertyPublicController(
     val viewBoxCoordinatesDTO = ViewBoxCoordinatesDTOFloat(b1, b2, b3, b4)
     return propertyService.findAllInViewBox(viewBoxCoordinatesDTO)
   }
-  @PostMapping("/viewBox2")
+  @GetMapping("/viewBox2")
   fun getPropertiesViewBox2(
     @RequestParam b1: Double,
     @RequestParam b2: Double,
