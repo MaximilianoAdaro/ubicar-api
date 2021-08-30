@@ -26,6 +26,12 @@ class PropertyController(
     return propertyFactory.convert(savedProperty)
   }
 
+  @PostMapping("/get-property-dto")
+  fun getPropertyDto(@RequestBody propertyDTO: CreatePropertyDTO): PropertyDTO {
+    val property = createPropertyFactory.convert(propertyDTO)
+    return propertyFactory.convert(property)
+  }
+
   @PostMapping(
     "/create-with-images",
     consumes = [MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE]
