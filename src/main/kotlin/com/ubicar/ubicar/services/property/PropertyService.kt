@@ -32,7 +32,7 @@ interface PropertyService {
   fun like(id: String): Property
 
   fun dislike(id: String): Property
-  fun getAllByFilterPageable(filter: PropertyFilterDto, params: PropertyLazyTableDto): Page<Property>
+  fun getAllByFilterPageable(filter: PropertyFilterDto, params: PropertyLazyTableDto, viewBoxCoordinatesDTOFloat: ViewBoxCoordinatesDTOFloat): Page<Property>
   fun getAllFavoritePropertiesByUser(user: User): List<Property>
   fun getAllPropertiesOfUser(user: User): List<Property>
   fun contactOwner(id: String, contactDto: UserContactDto)

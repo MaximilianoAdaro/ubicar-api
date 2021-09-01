@@ -10,7 +10,7 @@ import javax.persistence.MappedSuperclass
 abstract class AbstractEntity(
   @Id
   @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid")
+  @GenericGenerator(name = "uuid", strategy = "uuid2")
   var id: String = ""
 )
 

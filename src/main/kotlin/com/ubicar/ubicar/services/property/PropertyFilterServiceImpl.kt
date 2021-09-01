@@ -4,6 +4,7 @@ import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
 import com.ubicar.ubicar.entities.Property
 import com.ubicar.ubicar.repositories.property.filter.PropertyFilterOperationRepository
+import com.vividsolutions.jts.geom.Polygon
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -17,8 +18,9 @@ class PropertyFilterServiceImpl(
     filter: PropertyFilterDto,
     pageRequest: PageRequest,
     params: PropertyLazyTableDto,
-    orderList: List<String>
+    orderList: List<String>,
+    polygon: Polygon
   ): Page<Property> {
-    return propertyFilterRepository.getFilteredProperties(filter, pageRequest, params, orderList)
+    return propertyFilterRepository.getFilteredProperties(filter, pageRequest, params, orderList, polygon)
   }
 }

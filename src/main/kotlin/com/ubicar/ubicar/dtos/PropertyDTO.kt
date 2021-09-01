@@ -51,7 +51,7 @@ data class CoordinatesDTO(
   var long: Double
 ) {
   fun toPoint(): Point {
-    return PointFactory.createPoint(lat, long)
+    return PointFactory.createPoint(long, lat)
   }
 
   companion object {

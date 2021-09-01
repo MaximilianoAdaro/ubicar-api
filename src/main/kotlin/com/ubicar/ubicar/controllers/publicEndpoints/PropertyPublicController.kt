@@ -64,6 +64,10 @@ class PropertyPublicController(
   @PostMapping("/preview/by-filter")
   fun getPropertiesFiltered(
     @RequestBody filter: PropertyFilterDto,
+    @RequestParam b1: Double,
+    @RequestParam b2: Double,
+    @RequestParam b3: Double,
+    @RequestParam b4: Double,
     @RequestParam(value = "page", required = false) page: Optional<Int>,
     @RequestParam(value = "size", required = false) size: Optional<Int>,
     @RequestParam(value = "direction", required = false) direction: Optional<Sort.Direction>,
@@ -76,7 +80,8 @@ class PropertyPublicController(
       direction.orElse(Sort.Direction.ASC),
       property.orElse(PropertySort.CREATION_DATE)
     )
-    return propertyService.getAllByFilterPageable(filter, propertyLazyTableDto)
+    val viewBoxCoordinatesDTOFloat = ViewBoxCoordinatesDTOFloat(b1, b2, b3, b4)
+    return propertyService.getAllByFilterPageable(filter, propertyLazyTableDto, viewBoxCoordinatesDTOFloat)
       .map { propertyPreviewFactory.convert(it) }
   }
 
