@@ -2,12 +2,17 @@ package com.ubicar.ubicar.repositories.property.filter
 
 import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
+import com.ubicar.ubicar.entities.Address
 import com.ubicar.ubicar.entities.Amenity
 import com.ubicar.ubicar.entities.Condition
 import com.ubicar.ubicar.entities.Property
 import com.ubicar.ubicar.entities.Style
 import com.ubicar.ubicar.entities.TypeOfProperty
 import com.ubicar.ubicar.repositories.property.AmenityRepository
+import com.ubicar.ubicar.repositories.property.filter.predicate.ContainsPredicate
+import com.vividsolutions.jts.geom.Geometry
+import com.vividsolutions.jts.geom.Polygon
+import org.hibernate.query.criteria.internal.CriteriaBuilderImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -19,6 +24,7 @@ import javax.persistence.TypedQuery
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Join
 import javax.persistence.criteria.JoinType
+import javax.persistence.criteria.Path
 import javax.persistence.criteria.Predicate
 import javax.persistence.criteria.Root
 
@@ -31,7 +37,8 @@ class PropertyFilterOperationRepository @Autowired constructor(
     filter: PropertyFilterDto,
     pageable: Pageable,
     params: PropertyLazyTableDto,
-    orderList: List<String>
+    orderList: List<String>,
+    polygon: Polygon
   ): Page<Property> {
     val cb = em.criteriaBuilder
     val cq: CriteriaQuery<Property> = cb.createQuery(Property::class.java)
@@ -86,6 +93,10 @@ class PropertyFilterOperationRepository @Autowired constructor(
       val propertyAmenityJoin: Join<Property, Amenity> = root.join("amenities", JoinType.INNER)
       predicates.add(cb.equal(propertyAmenityJoin, yardAmenity.get()))
     }
+
+    val coords: Path<Geometry> = root.get<Address>("address").get("coordinates")!!
+    val containsPredicate = ContainsPredicate(cb as CriteriaBuilderImpl, polygon, coords)
+    predicates.add(containsPredicate)
 
 //        Sorting and orders
 //        val orders: List<Order> = ArrayList()

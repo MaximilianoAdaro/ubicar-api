@@ -144,11 +144,13 @@ class PropertyServiceImpl(
 
   override fun getAllByFilterPageable(
     filter: PropertyFilterDto,
-    params: PropertyLazyTableDto
+    params: PropertyLazyTableDto,
+    viewBoxCoordinatesDTOFloat: ViewBoxCoordinatesDTOFloat
   ): Page<Property> {
     val orderList = PROPERTY_SORT_PROPERTIES[params.property]!!
     val pageRequest = PageRequest.of(params.page, params.size)
-    return propertyFilterService.filterEvaluationsPaginated(filter, pageRequest, params, orderList)
+    val polygon = PolygonFactory.createPolygon(viewBoxCoordinatesDTOFloat.toDto().toPointList())
+    return propertyFilterService.filterEvaluationsPaginated(filter, pageRequest, params, orderList, polygon)
   }
 
   override fun getAllFavoritePropertiesByUser(user: User): List<Property> {

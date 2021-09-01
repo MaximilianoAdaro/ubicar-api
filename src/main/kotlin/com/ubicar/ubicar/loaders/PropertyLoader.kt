@@ -50,7 +50,7 @@ class PropertyLoader(
 
     // Property 1
     val city1 = cityRepository.findByNameAndState("SAN ISIDRO", state).orElseThrow()
-    val coordinates1 = PointFactory.createPoint(-58.564152054237304, -34.4892169630285)
+    val coordinates1 = PointFactory.createPoint(-34.4892169630285, -58.564152054237304)
     val address = Address(city1, "eliseo reclus", 1030, coordinates1)
     val style: Style = styleRepository.findFirstByLabel("Contemporaneo").get()
     val amenities: MutableList<Amenity> = mutableListOf(
@@ -99,7 +99,7 @@ class PropertyLoader(
 
     // Property 2 ---------------------------------------------------------------------
     val city2 = cityRepository.findByNameAndState("GENERAL RODRIGUEZ", state).orElseThrow()
-    val coordinates2 = PointFactory.createPoint(-58.9601312273656, -34.608284019555796)
+    val coordinates2 = PointFactory.createPoint(-34.608284019555796, -58.9601312273656)
 
     val address2 = Address(city2, "av eva peron", 350, coordinates2)
     val style2: Style = styleRepository.findFirstByLabel("Colonial").get()
@@ -154,7 +154,7 @@ class PropertyLoader(
 
     // Property 3 ---------------------------------------------------------------------
     val city3 = cityRepository.findByNameAndState("VICENTE LOPEZ", state).orElseThrow()
-    val coordinates3 = PointFactory.createPoint(-58.47600318016971, -34.52748821083418)
+    val coordinates3 = PointFactory.createPoint(-34.52748821083418, -58.47600318016971)
 
     val address3 = Address(city3, "carlos f melo", 124, coordinates3)
     val style3: Style = styleRepository.findFirstByLabel("Colonial").get()
