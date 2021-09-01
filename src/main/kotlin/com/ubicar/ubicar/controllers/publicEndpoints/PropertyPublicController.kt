@@ -50,16 +50,6 @@ class PropertyPublicController(
     val viewBoxCoordinatesDTO = ViewBoxCoordinatesDTOFloat(b1, b2, b3, b4)
     return propertyService.findAllInViewBox(viewBoxCoordinatesDTO)
   }
-  @GetMapping("/viewBox2")
-  fun getPropertiesViewBox2(
-    @RequestParam b1: Double,
-    @RequestParam b2: Double,
-    @RequestParam b3: Double,
-    @RequestParam b4: Double
-  ): List<PropertyPreviewDTO> {
-    val viewBoxCoordinatesDTO = ViewBoxCoordinatesDTOFloat(b1, b2, b3, b4)
-    return propertyService.findAllInViewBoxProp(viewBoxCoordinatesDTO).map { propertyPreviewFactory.convert(it) }
-  }
 
   @PostMapping("/preview/by-filter")
   fun getPropertiesFiltered(
