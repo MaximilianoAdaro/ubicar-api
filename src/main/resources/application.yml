@@ -8,6 +8,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.spatial.dialect.postgis.PostgisDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
 
   datasource:
     url: jdbc:postgresql://localhost:5432/ubicar
