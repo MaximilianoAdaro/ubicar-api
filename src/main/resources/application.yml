@@ -4,9 +4,13 @@ spring:
       ddl-auto: update
     database: postgresql
     show-sql: true
+
     properties:
       hibernate:
         dialect: org.hibernate.spatial.dialect.postgis.PostgisDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
 
   datasource:
     url: jdbc:postgresql://localhost:5432/ubicar
@@ -14,6 +18,12 @@ spring:
     password: password
     driver-class-name: org.postgresql.Driver
     initialization-mode: always
+
+  servlet:
+    multipart:
+      max-file-size: 128KB
+#      max-request-size: 128KB
+
 
   # Pretty-print JSON responses
   jackson:

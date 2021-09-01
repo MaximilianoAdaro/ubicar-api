@@ -21,4 +21,7 @@ interface CityRepository : CrudRepository<City, String> {
 
   @Query("select c from City c join c.state s where lower(c.name) like %:name% and s.id = :stateId")
   fun getAllPaginated(name: String, stateId: String, pageRequest: Pageable): Page<City>
+
+  @Query("select count(c) from City c")
+  fun totalAmount(): Double
 }

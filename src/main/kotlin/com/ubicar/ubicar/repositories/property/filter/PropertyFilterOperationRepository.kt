@@ -2,17 +2,31 @@ package com.ubicar.ubicar.repositories.property.filter
 
 import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
-import com.ubicar.ubicar.entities.*
+import com.ubicar.ubicar.entities.Address
+import com.ubicar.ubicar.entities.Amenity
+import com.ubicar.ubicar.entities.Condition
+import com.ubicar.ubicar.entities.Property
+import com.ubicar.ubicar.entities.Style
+import com.ubicar.ubicar.entities.TypeOfProperty
 import com.ubicar.ubicar.repositories.property.AmenityRepository
+import com.ubicar.ubicar.repositories.property.filter.predicate.ContainsPredicate
+import com.vividsolutions.jts.geom.Geometry
+import com.vividsolutions.jts.geom.Polygon
+import org.hibernate.query.criteria.internal.CriteriaBuilderImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.Optional
 import javax.persistence.EntityManager
 import javax.persistence.TypedQuery
-import javax.persistence.criteria.*
+import javax.persistence.criteria.CriteriaQuery
+import javax.persistence.criteria.Join
+import javax.persistence.criteria.JoinType
+import javax.persistence.criteria.Path
+import javax.persistence.criteria.Predicate
+import javax.persistence.criteria.Root
 
 @Repository
 class PropertyFilterOperationRepository @Autowired constructor(
@@ -23,13 +37,16 @@ class PropertyFilterOperationRepository @Autowired constructor(
     filter: PropertyFilterDto,
     pageable: Pageable,
     params: PropertyLazyTableDto,
-    orderList: List<String>
+    orderList: List<String>,
+    polygon: Polygon
   ): Page<Property> {
     val cb = em.criteriaBuilder
     val cq: CriteriaQuery<Property> = cb.createQuery(Property::class.java)
     val root: Root<Property> = cq.from(Property::class.java)
 
     val predicates: MutableList<Predicate> = mutableListOf()
+
+    predicates.add(cb.equal(root.get<Int>("step"), 7))
 
     if (filter.condition != null) {
       predicates.add(cb.equal(root.get<Condition>("condition"), filter.condition))
@@ -40,7 +57,7 @@ class PropertyFilterOperationRepository @Autowired constructor(
     }
 
     if (filter.style != null) {
-      predicates.add(cb.equal(root.get<Style>("style").get<String>("id"), filter.style!!.id))
+      predicates.add(cb.equal(root.get<Style>("style").get<String>("id"), filter.style!!))
     }
 
     if (filter.minPrice != null) {
@@ -77,28 +94,9 @@ class PropertyFilterOperationRepository @Autowired constructor(
       predicates.add(cb.equal(propertyAmenityJoin, yardAmenity.get()))
     }
 
-    if (filter.stateId != null) {
-      val predicate = cb.equal(
-        root
-          .get<Address>("address")
-          .get<City>("city")
-          .get<State>("state")
-          .get<String>("id"),
-        filter.stateId
-      )
-      predicates.add(predicate)
-    }
-
-    if (filter.cityId != null) {
-      val predicate = cb.equal(
-        root
-          .get<Address>("address")
-          .get<City>("city")
-          .get<String>("id"),
-        filter.cityId
-      )
-      predicates.add(predicate)
-    }
+    val coords: Path<Geometry> = root.get<Address>("address").get("coordinates")!!
+    val containsPredicate = ContainsPredicate(cb as CriteriaBuilderImpl, polygon, coords)
+    predicates.add(containsPredicate)
 
 //        Sorting and orders
 //        val orders: List<Order> = ArrayList()
