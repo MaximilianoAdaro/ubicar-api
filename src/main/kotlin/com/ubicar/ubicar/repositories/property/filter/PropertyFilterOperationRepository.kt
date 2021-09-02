@@ -2,12 +2,7 @@ package com.ubicar.ubicar.repositories.property.filter
 
 import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
-import com.ubicar.ubicar.entities.Address
-import com.ubicar.ubicar.entities.Amenity
-import com.ubicar.ubicar.entities.Condition
-import com.ubicar.ubicar.entities.Property
-import com.ubicar.ubicar.entities.Style
-import com.ubicar.ubicar.entities.TypeOfProperty
+import com.ubicar.ubicar.entities.*
 import com.ubicar.ubicar.repositories.property.AmenityRepository
 import com.ubicar.ubicar.repositories.property.filter.predicate.ContainsPredicate
 import com.vividsolutions.jts.geom.Geometry
