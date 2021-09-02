@@ -26,8 +26,6 @@ data class PropertyFilterDto(
   var minAmountSquareMeter: Int?,
   var maxAmountSquareMeter: Int?,
   var containsYard: Boolean?,
-  var stateId: String?,
-  var cityId: String?,
 )
 
 enum class PropertySort {

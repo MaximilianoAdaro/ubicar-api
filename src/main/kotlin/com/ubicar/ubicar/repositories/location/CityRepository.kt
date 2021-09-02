@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
-import java.util.Optional
+import java.util.*
 
 interface CityRepository : CrudRepository<City, String> {
 
@@ -21,6 +21,9 @@ interface CityRepository : CrudRepository<City, String> {
 
   @Query("select c from City c join c.state s where lower(c.name) like %:name% and s.id = :stateId")
   fun getAllPaginated(name: String, stateId: String, pageRequest: Pageable): Page<City>
+
+  @Query("select c from City c where lower(c.name) like %:name%")
+  fun getAllPaginatedWithoutState(name: String, pageRequest: Pageable): Page<City>
 
   @Query("select count(c) from City c")
   fun totalAmount(): Double
