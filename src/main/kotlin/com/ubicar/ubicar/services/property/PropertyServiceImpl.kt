@@ -59,6 +59,11 @@ class PropertyServiceImpl(
     return propertyRepository.findAllInViewBoxProperty(createPolygon)
   }
 
+  override fun findAllInViewBoxFiltered(filter: PropertyFilterDto, viewBoxCoordinatesDTOFloat: ViewBoxCoordinatesDTOFloat): List<String> {
+    val polygon = PolygonFactory.createPolygon(viewBoxCoordinatesDTOFloat.toDto().toPointList())
+    return propertyFilterService.filterPropertiesViewBox(filter, polygon)
+  }
+
   override fun findAllInViewBox(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTOFloat): List<String> {
     val createPolygon = PolygonFactory.createPolygon(viewBoxCoordinatesDTO.toDto().toPointList())
     return propertyRepository.findAllInViewBox(createPolygon)
@@ -149,7 +154,7 @@ class PropertyServiceImpl(
     val orderList = PROPERTY_SORT_PROPERTIES[params.property]!!
     val pageRequest = PageRequest.of(params.page, params.size)
     val polygon = PolygonFactory.createPolygon(viewBoxCoordinatesDTOFloat.toDto().toPointList())
-    return propertyFilterService.filterEvaluationsPaginated(filter, pageRequest, params, orderList, polygon)
+    return propertyFilterService.filterPropertiesPaginated(filter, pageRequest, params, orderList, polygon)
   }
 
   override fun getAllFavoritePropertiesByUser(user: User): List<Property> {

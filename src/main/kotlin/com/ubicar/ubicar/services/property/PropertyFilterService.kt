@@ -9,11 +9,13 @@ import org.springframework.data.domain.PageRequest
 
 interface PropertyFilterService {
 
-  fun filterEvaluationsPaginated(
+  fun filterPropertiesPaginated(
     filter: PropertyFilterDto,
     pageRequest: PageRequest,
     params: PropertyLazyTableDto,
     orderList: List<String>,
     polygon: Polygon
   ): Page<Property>
+
+  fun filterPropertiesViewBox(filter: PropertyFilterDto, polygon: Polygon): List<String>
 }
