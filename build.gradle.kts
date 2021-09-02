@@ -56,6 +56,7 @@ dependencies {
   implementation("org.apache.velocity:velocity:1.7")
   implementation("org.apache.velocity:velocity-engine-core:2.2")
   implementation("org.apache.velocity:velocity-tools:2.0")
+  implementation("org.slf4j:slf4j-api:1.7.32")
 }
 
 allOpen {
