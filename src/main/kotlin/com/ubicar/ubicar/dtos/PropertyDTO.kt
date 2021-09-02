@@ -10,6 +10,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 data class CreatePropertyDTO(
+  val id: String?,
   val title: String,
   val price: Int,
   val condition: String,

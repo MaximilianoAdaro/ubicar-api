@@ -49,7 +49,7 @@ class CreatePropertyFactory(
        styleRepository.findById(input.style).orElseThrow { NotFoundException("Style not found") }
     } else null
 
-    return Property(
+    val property = Property(
       input.title,
       input.price,
       Condition.valueOf(input.condition),
@@ -78,5 +78,7 @@ class CreatePropertyFactory(
       userService.findLogged(),
       input.step
     )
+    property.id = if(input.id.isNullOrBlank()) "" else input.id
+    return property
   }
 }

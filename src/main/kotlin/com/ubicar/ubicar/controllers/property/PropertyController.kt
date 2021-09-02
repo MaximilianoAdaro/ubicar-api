@@ -22,7 +22,10 @@ class PropertyController(
   @PostMapping("/create")
   fun createProperty(@RequestBody propertyDTO: CreatePropertyDTO): PropertyDTO {
     val property = createPropertyFactory.convert(propertyDTO)
-    val savedProperty = propertyService.save(property, listOf())
+    val savedProperty = if (property.id.isBlank())
+      propertyService.save(property, listOf())
+    else
+      propertyService.update(property.id, property, listOf(), listOf())
     return propertyFactory.convert(savedProperty)
   }
 
