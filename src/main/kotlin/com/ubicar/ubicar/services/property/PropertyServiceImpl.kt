@@ -68,7 +68,6 @@ class PropertyServiceImpl(
     val savedImages = imageService.saveAll(images)
     property.images = savedImages.toMutableList()
     if (property.step > 1) addressService.save(property.address!!)
-
     property.contacts.map { contactService.save(it) }
     property.openHouse.map { openHouseDateService.save(it) }
     return propertyRepository.save(property)
