@@ -67,7 +67,7 @@ class PropertyLoader(
       )
     val securities: MutableList<SecurityMeasure> = mutableListOf(securityRepository.findFirstByLabel("Rejas").get())
     val property1 = Property(
-      "Casa a muy buen precio en el mejor lugar",
+      "Casa a muy buen precio en la zona más cara de Buenos Aires",
       5000000,
       Condition.SALE,
       TypeOfProperty.Casa,
@@ -85,11 +85,11 @@ class PropertyLoader(
       amenities,
       materials,
       securities,
-      "Es un parque muy bonito",
+      "Cuenta con una parrilla, pileta y un gran espacio libre",
       mutableListOf(),
-      mutableListOf(Contact("Agente", "agente@gmail.com")),
+      mutableListOf(Contact("Vendedor", "dueño@gmail.com")),
       mutableListOf(OpenHouseDate(LocalDate.now(), LocalTime.NOON, LocalTime.MIDNIGHT)),
-      "Comentarios adicionales de lo linda que es esta propiedad",
+      "",
       LocalDate.now(),
       mutableListOf(),
       owner,
@@ -122,7 +122,7 @@ class PropertyLoader(
       securityRepository.findFirstByLabel("Alarma de entrada").get(),
     )
     val property2 = Property(
-      "Depto muy top en la mejor zona de Rodriguez",
+      "Departamento en la mejor zona de Rodriguez",
       25000000,
       Condition.SALE,
       TypeOfProperty.Departamento,
@@ -142,9 +142,9 @@ class PropertyLoader(
       securities2,
       "No tiene",
       mutableListOf(),
-      mutableListOf(Contact("Vendedor", "dueña_de_depto_top@gmail.com")),
+      mutableListOf(Contact("Vendedor", "dueño@gmail.com")),
       mutableListOf(OpenHouseDate(LocalDate.now(), LocalTime.NOON, LocalTime.MIDNIGHT)),
-      "Todos tus amigos van a querer venir a visitarte!",
+      "Tiene lugar suficiente para invitar a mucha gente",
       LocalDate.now(),
       mutableListOf(),
       owner,
@@ -157,30 +157,30 @@ class PropertyLoader(
     val coordinates3 = PointFactory.createPoint(-58.47600318016971, -34.52748821083418)
 
     val address3 = Address(city3, "carlos f melo", 124, coordinates3)
-    val style3: Style = styleRepository.findFirstByLabel("Colonial").get()
+    val style3: Style = styleRepository.findFirstByLabel("Contemporaneo").get()
     val amenities3: MutableList<Amenity> = mutableListOf(
       amenitiesRepository.findFirstByLabel("Cochera").get(),
       amenitiesRepository.findFirstByLabel("Patio").get(),
       amenitiesRepository.findFirstByLabel("Baulera").get(),
-      amenitiesRepository.findFirstByLabel("Terraza").get(),
       amenitiesRepository.findFirstByLabel("Jardín").get(),
     )
     val materials3: MutableList<ConstructionMaterial> =
       mutableListOf(
-        materialRepository.findFirstByLabel("Chapa").get(),
+        materialRepository.findFirstByLabel("Cemento").get(),
+        materialRepository.findFirstByLabel("Ladrillo").get(),
       )
     val securities3: MutableList<SecurityMeasure> = mutableListOf(
       securityRepository.findFirstByLabel("Rejas").get(),
       securityRepository.findFirstByLabel("Alarma de entrada").get(),
     )
     val property3 = Property(
-      "Casa top en Vicente López",
+      "Casa modesta en Vicente López",
       995000000,
       Condition.SALE,
       TypeOfProperty.Casa,
       address3,
-      150,
-      130,
+      50,
+      45,
       1,
       2002,
       style3,
@@ -192,17 +192,169 @@ class PropertyLoader(
       amenities3,
       materials3,
       securities3,
-      "No tiene un espacio muy grande",
+      "Tiene 5 metros cuadrados de pasto",
       mutableListOf(),
-      mutableListOf(Contact("Vendedor", "dueña_de_depto@gmail.com")),
+      mutableListOf(Contact("Vendedor", "dueño@gmail.com")),
       mutableListOf(OpenHouseDate(LocalDate.now(), LocalTime.NOON, LocalTime.MIDNIGHT)),
-      "Todos tus amigos van a querer venir a visitarte!",
+      "",
       LocalDate.now(),
       mutableListOf(),
       owner,
       7
     )
     properties.add(property3)
+
+    // Property 4 ---------------------------------------------------------------------
+    val state4 = stateRepository.findFirstByName("Tucumán").orElseThrow()
+    val city4 = cityRepository.findByNameAndState("LA TRINIDAD", state4).orElseThrow()
+    val coordinates4 = PointFactory.createPoint(-65.5250428, -27.4157679)
+
+    val address4 = Address(city4, "colon", 190, coordinates4)
+    val style4: Style = styleRepository.findFirstByLabel("Contemporaneo").get()
+    val amenities4: MutableList<Amenity> = mutableListOf(
+      amenitiesRepository.findFirstByLabel("Cochera").get(),
+      amenitiesRepository.findFirstByLabel("Patio").get(),
+      amenitiesRepository.findFirstByLabel("Baulera").get(),
+      amenitiesRepository.findFirstByLabel("Terraza").get(),
+      amenitiesRepository.findFirstByLabel("Jardín").get(),
+    )
+    val materials4: MutableList<ConstructionMaterial> =
+      mutableListOf(
+        materialRepository.findFirstByLabel("Chapa").get(),
+      )
+    val securities4: MutableList<SecurityMeasure> = mutableListOf(
+      securityRepository.findFirstByLabel("Rejas").get(),
+      securityRepository.findFirstByLabel("Alarma de entrada").get(),
+    )
+    val property4 = Property(
+      "Depto muy cómodo para alquiler en La Trinidad",
+      20000,
+      Condition.RENT,
+      TypeOfProperty.Departamento,
+      address4,
+      80,
+      80,
+      1,
+      1995,
+      style4,
+      4,
+      3,
+      2,
+      2,
+      1000,
+      amenities4,
+      materials4,
+      securities4,
+      "No tiene",
+      mutableListOf(),
+      mutableListOf(Contact("Vendedor", "dueño@gmail.com")),
+      mutableListOf(OpenHouseDate(LocalDate.now(), LocalTime.NOON, LocalTime.MIDNIGHT)),
+      "",
+      LocalDate.now(),
+      mutableListOf(),
+      owner,
+      7
+    )
+    properties.add(property4)
+
+    // Property 7 ---------------------------------------------------------------------
+    val city7 = cityRepository.findByNameAndState("LANUS ESTE", state).orElseThrow()
+    val coordinates7 = PointFactory.createPoint(-58.3812447, -34.712017)
+
+    val address7 = Address(city7, "suipacha", 1130, coordinates7)
+    val style7: Style = styleRepository.findFirstByLabel("Colonial").get()
+    val amenities7: MutableList<Amenity> = mutableListOf(
+      amenitiesRepository.findFirstByLabel("Patio").get(),
+      amenitiesRepository.findFirstByLabel("Jardín").get(),
+    )
+    val materials7: MutableList<ConstructionMaterial> =
+      mutableListOf(
+        materialRepository.findFirstByLabel("Ladrillo Hueco").get(),
+      )
+    val securities7: MutableList<SecurityMeasure> = mutableListOf(
+      securityRepository.findFirstByLabel("Rejas").get(),
+    )
+    val property7 = Property(
+      "Terreno en venta en Lanús",
+      1350000,
+      Condition.SALE,
+      TypeOfProperty.Terreno,
+      address7,
+      500,
+      150,
+      2,
+      1995,
+      style7,
+      3,
+      1,
+      1,
+      1,
+      2000,
+      amenities7,
+      materials7,
+      securities7,
+      "Mucho parque con pasto bien cuidado",
+      mutableListOf(),
+      mutableListOf(Contact("Vendedor", "dueño@gmail.com")),
+      mutableListOf(OpenHouseDate(LocalDate.now(), LocalTime.NOON, LocalTime.MIDNIGHT)),
+      "Perfecto para construir una casa",
+      LocalDate.now(),
+      mutableListOf(),
+      owner,
+      7
+    )
+    properties.add(property7)
+
+    // Property 8 ---------------------------------------------------------------------
+    val city8 = cityRepository.findByNameAndState("BAHIA BLANCA", state).orElseThrow()
+    val coordinates8 = PointFactory.createPoint(-62.2799104, -38.7252996)
+
+    val address8 = Address(city8, "brandsen", 439, coordinates8)
+    val style8: Style = styleRepository.findFirstByLabel("Minimalista").get()
+    val amenities8: MutableList<Amenity> = mutableListOf(
+      amenitiesRepository.findFirstByLabel("Cochera").get(),
+      amenitiesRepository.findFirstByLabel("Patio").get(),
+      amenitiesRepository.findFirstByLabel("Jardín").get(),
+    )
+    val materials8: MutableList<ConstructionMaterial> =
+      mutableListOf(
+        materialRepository.findFirstByLabel("Ladrillo").get(),
+        materialRepository.findFirstByLabel("Ladrillo Hueco").get(),
+      )
+    val securities8: MutableList<SecurityMeasure> = mutableListOf(
+      securityRepository.findFirstByLabel("Rejas").get(),
+      securityRepository.findFirstByLabel("Camaras").get(),
+    )
+    val property8 = Property(
+      "Casa en venta en Bahia Blanca",
+      3465000,
+      Condition.SALE,
+      TypeOfProperty.Casa,
+      address8,
+      200,
+      160,
+      1,
+      2007,
+      style8,
+      7,
+      4,
+      1,
+      2,
+      1000,
+      amenities8,
+      materials8,
+      securities8,
+      "Tiene una pileta muy linda para refrescarse y un área con mucho pasto sano",
+      mutableListOf(),
+      mutableListOf(Contact("Vendedor", "dueño@gmail.com")),
+      mutableListOf(OpenHouseDate(LocalDate.now(), LocalTime.NOON, LocalTime.MIDNIGHT)),
+      "",
+      LocalDate.now(),
+      mutableListOf(),
+      owner,
+      7
+    )
+    properties.add(property8)
 
     properties.map { propertyService.save(it, listOf()) }
   }
