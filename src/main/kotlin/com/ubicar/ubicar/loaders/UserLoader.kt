@@ -25,16 +25,19 @@ class UserLoader(
 
     val userRole = userRoleRepository.findFirstBySlug("ROLE_comprador_vendedor")
       .orElseThrow { NotFoundException("User Role not found") }
-    val user = User(
-      "admin",
-      "ubicar.austral2021@gmail.com",
-      passwordEncoder.encode("admin"),
-      UserOrigin.UBICAR,
-      userRole,
-      LocalDate.now(),
-      mutableListOf()
-    )
-    userRepository.save(user)
+    userRepository.findByEmail("ubicar.austral2021@gmail.com").orElseGet {
+      userRepository.save(
+        User(
+          "admin",
+          "ubicar.austral2021@gmail.com",
+          passwordEncoder.encode("admin"),
+          UserOrigin.UBICAR,
+          userRole,
+          LocalDate.now(),
+          mutableListOf()
+        )
+      )
+    }
   }
 
   override fun getOrder(): Int {

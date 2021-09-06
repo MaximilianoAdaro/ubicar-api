@@ -36,6 +36,8 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
   implementation("org.springframework.boot:spring-boot-starter-security")
   implementation("org.springframework.boot:spring-boot-starter-web")
+  implementation("org.hibernate:hibernate-core:5.2.12.Final")
+  implementation("org.hibernate:hibernate-spatial:5.2.12.Final")
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -43,7 +45,7 @@ dependencies {
   implementation("io.jsonwebtoken:jjwt:0.9.1")
   implementation("com.google.firebase:firebase-admin:6.12.2")
   runtimeOnly("com.h2database:h2")
-  runtimeOnly("org.postgresql:postgresql")
+  implementation("org.postgresql:postgresql")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("org.springframework.security:spring-security-test")
   developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -54,6 +56,7 @@ dependencies {
   implementation("org.apache.velocity:velocity:1.7")
   implementation("org.apache.velocity:velocity-engine-core:2.2")
   implementation("org.apache.velocity:velocity-tools:2.0")
+  implementation("org.slf4j:slf4j-api:1.7.32")
 }
 
 allOpen {

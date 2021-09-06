@@ -3,15 +3,19 @@ package com.ubicar.ubicar.services.property
 import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
 import com.ubicar.ubicar.entities.Property
+import com.vividsolutions.jts.geom.Polygon
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 
 interface PropertyFilterService {
 
-  fun filterEvaluationsPaginated(
+  fun filterPropertiesPaginated(
     filter: PropertyFilterDto,
     pageRequest: PageRequest,
     params: PropertyLazyTableDto,
-    orderList: List<String>
+    orderList: List<String>,
+    polygon: Polygon
   ): Page<Property>
+
+  fun filterPropertiesViewBox(filter: PropertyFilterDto, polygon: Polygon): List<String>
 }

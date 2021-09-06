@@ -12,13 +12,14 @@ import org.springframework.stereotype.Component
 class SecurityLoader(private val securityRepository: SecurityRepository) : CommandLineRunner, Ordered {
 
   override fun run(vararg args: String?) {
-    val securities: MutableList<SecurityMeasure> = mutableListOf()
-    securities.add(SecurityMeasure("Rejas"))
-    securities.add(SecurityMeasure("Camaras"))
-    securities.add(SecurityMeasure("Alarma de entrada"))
-    securities.add(SecurityMeasure("Alarma de humo"))
+    val securities: List<String> = mutableListOf(
+      "Rejas", "Camaras", "Alarma de entrada", "Alarma de humo"
+    )
 
-    securities.map { securityRepository.save(it) }
+    securities.forEach {
+      securityRepository.findFirstByLabel(it)
+        .orElseGet { securityRepository.save(SecurityMeasure(it)) }
+    }
   }
 
   override fun getOrder(): Int {
