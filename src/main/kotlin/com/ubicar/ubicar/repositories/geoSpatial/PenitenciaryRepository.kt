@@ -1,6 +1,7 @@
 package com.ubicar.ubicar.repositories.geoSpatial
 
 import com.ubicar.ubicar.entities.geoSpatialEntities.Penitentiary
+import com.vividsolutions.jts.geom.Point
 import com.vividsolutions.jts.geom.Polygon
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
@@ -14,4 +15,7 @@ interface PenitenciaryRepository : CrudRepository<Penitentiary, String> {
     nativeQuery = true
   )
   fun findAllInViewBox(polygon: Polygon): List<String>
+
+  @Query("select min(st_distance(st_transform(st_setsrid(geom, 4236), 3857), st_transform(?1, 3857))) from point_penitentiary", nativeQuery = true)
+  fun calculateMinDistanceFromCoords(coordinates: Point): Double
 }
