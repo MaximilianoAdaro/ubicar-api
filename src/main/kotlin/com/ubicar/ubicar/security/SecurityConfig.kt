@@ -47,6 +47,7 @@ class SecurityConfig @Autowired constructor(
       .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
       .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
       .antMatchers("/auth/**").permitAll()
+      .antMatchers("/geo-data/**").permitAll()
       .antMatchers("/public/**").permitAll()
       // SWAGGER CONFIG
       .antMatchers(

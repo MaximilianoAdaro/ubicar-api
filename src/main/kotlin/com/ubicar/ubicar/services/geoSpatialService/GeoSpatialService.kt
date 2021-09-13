@@ -6,4 +6,5 @@ import com.ubicar.ubicar.dtos.ViewBoxCoordinatesDTOFloat
 interface GeoSpatialService {
 
   fun findAllInViewBox(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTOFloat, geoType: GeoType): List<String>
+  fun runAllUpdates()
 }
