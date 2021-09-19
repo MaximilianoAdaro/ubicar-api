@@ -29,6 +29,7 @@ import com.ubicar.ubicar.repositories.geoSpatial.RailwayRepository
 import com.ubicar.ubicar.repositories.geoSpatial.TrainStationRepository
 import com.ubicar.ubicar.repositories.geoSpatial.UniversityRepository
 import com.ubicar.ubicar.utils.BadRequestException
+import com.vividsolutions.jts.geom.Point
 import org.springframework.stereotype.Service
 
 @Service
@@ -89,5 +90,21 @@ class GeoSpatialServiceImpl(
     )
 
     geoDataPropertyRepository.save(geoDataProperty)
+  }
+
+  override fun runGeoDataUpdate(coordinates: Point): List<Double> {
+    return listOf(
+      railwayRepository.calculateMinDistanceFromCoords(coordinates),
+      industrialZoneRepository.calculateMinDistanceFromCoords(coordinates),
+      airportRepository.calculateMinDistanceFromCoords(coordinates),
+      educationalStablishmentRepository.calculateMinDistanceFromCoords(coordinates),
+      fireStationRepository.calculateMinDistanceFromCoords(coordinates),
+      healthBuildingRepository.calculateMinDistanceFromCoords(coordinates),
+      penitenciaryRepository.calculateMinDistanceFromCoords(coordinates),
+      portRepository.calculateMinDistanceFromCoords(coordinates),
+      policeRepository.calculateMinDistanceFromCoords(coordinates),
+      trainStationRepository.calculateMinDistanceFromCoords(coordinates),
+      universityRepository.calculateMinDistanceFromCoords(coordinates)
+    )
   }
 }
