@@ -1,9 +1,6 @@
 package com.ubicar.ubicar.dtos
 
-import com.ubicar.ubicar.entities.Amenity
-import com.ubicar.ubicar.entities.Condition
-import com.ubicar.ubicar.entities.Style
-import com.ubicar.ubicar.entities.TypeOfProperty
+import com.ubicar.ubicar.entities.*
 import com.ubicar.ubicar.factories.geoSpatial.PointFactory
 import com.vividsolutions.jts.geom.Point
 import java.time.LocalDate
@@ -34,7 +31,8 @@ data class CreatePropertyDTO(
   val contacts: MutableList<ContactDto>,
   val openHouse: MutableList<OpenHouseDateDto>,
   val comments: String,
-  val step: Int
+  val step: Int,
+  val review: MutableList<ReviewDate>
 )
 
 data class AddressDTO(
@@ -111,6 +109,8 @@ data class PropertyDTO(
   val liked: Boolean,
   val step: Int,
   val images: List<String> = listOf(),
+  val state: StateOfProperty,
+  val review: MutableList<ReviewDate>
 )
 
 data class PropertyPreviewDTO(

@@ -51,6 +51,11 @@ class AuthController(
     return userDtoFactory.convert(userService.saveUser(userCreation))
   }
 
+  @PostMapping("/register-inspector")
+  fun registerInspector(@RequestBody userCreation: UserCreationDTO): UserDTO {
+    return userDtoFactory.convert(userService.registerInspector(userCreation))
+  }
+
   @GetMapping("/me")
   fun getLogged(): UserDTO {
     val authentication: Authentication = SecurityContextHolder.getContext().authentication

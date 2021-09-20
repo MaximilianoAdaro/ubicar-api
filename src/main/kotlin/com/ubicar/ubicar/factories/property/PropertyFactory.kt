@@ -69,7 +69,9 @@ class PropertyFactory(
       comments = input.comments ?: "",
       images = images,
       liked = liked,
-      step = input.step
+      step = input.step,
+      state = input.state,
+      review = input.review
     )
   }
 }

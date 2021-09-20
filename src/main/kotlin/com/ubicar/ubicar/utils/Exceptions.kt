@@ -14,3 +14,6 @@ class UnauthorizedException(message: String?) : RuntimeException(message)
 
 @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
 class BadCredentialsException(message: String?) : RuntimeException(message)
+
+@ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+class InvalidLicenceException(message: String?) : RuntimeException(message)

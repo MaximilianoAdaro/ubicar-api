@@ -36,7 +36,13 @@ class User(
 
   @ManyToMany(mappedBy = "likes")
   @JsonBackReference
-  var likedProperties: MutableList<Property> = mutableListOf()
+  var likedProperties: MutableList<Property> = mutableListOf(),
+
+  @ManyToOne(cascade = [CascadeType.ALL])
+  var city: City?,
+
+  @ManyToOne(cascade = [CascadeType.ALL])
+  var state: State?
 
 ) : AbstractEntity()
 

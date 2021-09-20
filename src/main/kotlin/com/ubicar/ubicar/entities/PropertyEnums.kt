@@ -23,3 +23,9 @@ enum class TypeOfProperty {
   Country,
   Flat
 }
+
+enum class StateOfProperty {
+  Review,
+  Approved,
+  Declined
+}

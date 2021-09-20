@@ -1,5 +1,6 @@
 package com.ubicar.ubicar.services.property
 
+import com.ubicar.ubicar.dtos.PropertyAssignmentDto
 import com.ubicar.ubicar.dtos.UserContactDto
 import com.ubicar.ubicar.dtos.ViewBoxCoordinatesDTO
 import com.ubicar.ubicar.dtos.ViewBoxCoordinatesDTOFloat
@@ -26,6 +27,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import java.io.StringWriter
+import java.time.LocalDateTime
 import javax.mail.Message
 import javax.mail.MessagingException
 import javax.mail.Session
@@ -75,7 +77,19 @@ class PropertyServiceImpl(
     if (property.step > 1) addressService.save(property.address!!)
     property.contacts.map { contactService.save(it) }
     property.openHouse.map { openHouseDateService.save(it) }
+    if (property.step == 7) property.inspector = assignInspector(property)
     return propertyRepository.save(property)
+  }
+
+  private fun assignInspector(property: Property): User {
+    val inspector = userService.findInspector(property)
+    val date = getDate(property, inspector!!)
+    assignInspectorEmail(property, inspector, date)
+    return inspector
+  }
+
+  private fun getDate(property: Property, inspector: User): LocalDateTime {
+    return LocalDateTime.now()
   }
 
   override fun findById(id: String): Property {
@@ -176,10 +190,30 @@ class PropertyServiceImpl(
     sendMail(
       velocityEngine,
       session,
-      owner,
+      owner.email,
       "Consulta sobre su propiedad: " + property.title,
       html,
-      contactDto
+      setContextForContact(contactDto)
+    )
+  }
+
+  private fun assignInspectorEmail(property: Property, inspector: User, date: LocalDateTime) {
+    val propertyAssignmentDto = PropertyAssignmentDto(
+      property.address!!.street,
+      property.address!!.number,
+      property.address!!.city.name,
+      property.address!!.city.state.name,
+      date,
+      property.owner.email
+    )
+    val session: Session? = setProperties()
+    sendMail(
+      velocityEngine,
+      session,
+      inspector.email,
+      "Asignación de Propiedad: " + property.title,
+      "assignment.html",
+      setContextForAssignment(propertyAssignmentDto)
     )
   }
 
@@ -197,21 +231,16 @@ class PropertyServiceImpl(
   fun sendMail(
     velocityEngine: VelocityEngine,
     session: Session?,
-    owner: User,
+    recipient: String,
     subject: String?,
     template: String?,
-    contactDTO: UserContactDto
+    velocityContext: VelocityContext
   ) {
     val message = MimeMessage(session)
     try {
       message.setFrom(InternetAddress("ubicar.austral2021"))
-      message.addRecipient(Message.RecipientType.TO, InternetAddress(owner.email))
+      message.addRecipient(Message.RecipientType.TO, InternetAddress(recipient))
       message.subject = subject
-      val velocityContext = VelocityContext()
-      velocityContext.put("name", contactDTO.name)
-      velocityContext.put("email", contactDTO.email)
-      velocityContext.put("cellphone", contactDTO.cellphone)
-      velocityContext.put("message", contactDTO.message)
       val stringWriter = StringWriter()
       velocityEngine.mergeTemplate(template, "UTF-8", velocityContext, stringWriter)
       message.setContent(stringWriter.toString(), "text/html; charset=utf-8")
@@ -222,5 +251,25 @@ class PropertyServiceImpl(
     } catch (me: MessagingException) {
       me.printStackTrace()
     }
+  }
+
+  private fun setContextForContact(contactDTO: UserContactDto): VelocityContext {
+    val velocityContext = VelocityContext()
+    velocityContext.put("name", contactDTO.name)
+    velocityContext.put("email", contactDTO.email)
+    velocityContext.put("cellphone", contactDTO.cellphone)
+    velocityContext.put("message", contactDTO.message)
+    return velocityContext
+  }
+
+  private fun setContextForAssignment(propertyAssignmentDto: PropertyAssignmentDto): VelocityContext {
+    val velocityContext = VelocityContext()
+    velocityContext.put("street", propertyAssignmentDto.street)
+    velocityContext.put("number", propertyAssignmentDto.number)
+    velocityContext.put("city", propertyAssignmentDto.city)
+    velocityContext.put("state", propertyAssignmentDto.state)
+    velocityContext.put("date", propertyAssignmentDto.date)
+    velocityContext.put("email", propertyAssignmentDto.email)
+    return velocityContext
   }
 }

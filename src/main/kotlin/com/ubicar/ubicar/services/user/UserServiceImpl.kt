@@ -3,10 +3,12 @@ package com.ubicar.ubicar.services.user
 import com.ubicar.ubicar.dtos.GoogleLoginUserDTO
 import com.ubicar.ubicar.dtos.UserCreationDTO
 import com.ubicar.ubicar.dtos.UserDTO
+import com.ubicar.ubicar.entities.Property
 import com.ubicar.ubicar.entities.User
 import com.ubicar.ubicar.factories.user.UserCreationFactory
 import com.ubicar.ubicar.factories.user.UserCreationGoogleFactory
 import com.ubicar.ubicar.repositories.user.UserRepository
+import com.ubicar.ubicar.utils.InvalidLicenceException
 import com.ubicar.ubicar.utils.NotFoundException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -74,6 +76,21 @@ class UserServiceImpl(
         save(old)
       }
       .orElseThrow { NotFoundException("User not found") }
+  }
+
+  override fun registerInspector(userCreation: UserCreationDTO): User {
+    if (checkValidity()) return saveUser(userCreation)
+    else throw InvalidLicenceException("This licence doesn't exist")
+  }
+
+  override fun findInspector(property: Property): User? {
+    var inspector = userRepository.findInspectorByCity(property.address?.city?.id)
+    if (inspector == null) inspector = userRepository.findInspectorByState(property.address?.city?.state?.id)
+    return inspector
+  }
+
+  private fun checkValidity(): Boolean {
+    return true
   }
 
   private fun save(user: User): User {

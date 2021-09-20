@@ -1,5 +1,7 @@
 package com.ubicar.ubicar.repositories.user
 
+import com.ubicar.ubicar.entities.City
+import com.ubicar.ubicar.entities.State
 import com.ubicar.ubicar.entities.User
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
@@ -15,4 +17,10 @@ interface UserRepository : CrudRepository<User, String> {
   fun findByEmail(email: String): Optional<User>
 
   fun existsByEmail(email: String): Boolean
+
+  @Query("select u from User u where u.userRole.slug = ?2 and u.city.id = ?1")
+  fun findInspectorByCity(city: String?, inspector: String = "ROLE_inspector"): User?
+
+  @Query("select u from User u where u.userRole.slug = ?2 and u.state.id = ?1")
+  fun findInspectorByState(state: String?, inspector: String = "ROLE_inspector"): User?
 }

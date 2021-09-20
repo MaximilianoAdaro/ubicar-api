@@ -123,11 +123,20 @@ class Property(
 
   var step: Int,
 
-  //images
+  // Images
   @OneToMany(cascade = [CascadeType.ALL])
-  var images: MutableList<Image> = mutableListOf()
+  var images: MutableList<Image> = mutableListOf(),
 
+  // Inspector
+  @Column(nullable = false)
+  @Enumerated(value = EnumType.STRING)
+  var state: StateOfProperty,
 
+  @OneToMany(cascade = [CascadeType.ALL])
+  var review: MutableList<ReviewDate>,
+
+  @ManyToOne(cascade = [CascadeType.ALL])
+  var inspector: User?
 
 ) : AbstractEntity()
 
@@ -185,6 +194,19 @@ class Contact(
 @Table(name = "open_house_date")
 @Entity
 class OpenHouseDate(
+  @Column(nullable = false)
+  var day: LocalDate,
+
+  @Column(nullable = false)
+  var initialTime: LocalTime,
+
+  @Column(nullable = false)
+  var finalTime: LocalTime
+) : AbstractEntity()
+
+@Table(name = "review_date")
+@Entity
+class ReviewDate(
   @Column(nullable = false)
   var day: LocalDate,
 
