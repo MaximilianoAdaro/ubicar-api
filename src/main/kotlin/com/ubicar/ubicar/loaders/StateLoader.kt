@@ -19,8 +19,7 @@ import org.springframework.stereotype.Component
 @Component
 class StateLoader(
   private val stateRepository: StateRepository,
-  private val countryRepository: CountryRepository,
-  private val abstractMethod: AbstractMethod
+  private val countryRepository: CountryRepository
 ) :
   CommandLineRunner, Ordered {
 
@@ -38,7 +37,7 @@ class StateLoader(
     mapper.registerKotlinModule()
     mapper.registerModule(JavaTimeModule())
 
-    val content = abstractMethod.getContentFromPath("/geoRef/states.json")
+    val content = AbstractMethod.getContentFromPath("/geoRef/states.json")
     val jsonTextList: StateJson = mapper.readValue(content)
     return jsonTextList.provincias.map { it.toState(country) }
   }

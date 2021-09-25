@@ -77,3 +77,6 @@ out/
 hs_err_pid*
 
 src/main/resources/firebase-service-credentials.json
+
+/src/main/resources/propData
+/src/main/resources/propData_aux

@@ -19,8 +19,7 @@ import org.springframework.stereotype.Component
 @Component
 class CityLoader(
   private val cityRepository: CityRepository,
-  private val stateRepository: StateRepository,
-  private val abstractMethod: AbstractMethod
+  private val stateRepository: StateRepository
 ) :
   CommandLineRunner, Ordered {
 
@@ -38,7 +37,7 @@ class CityLoader(
     mapper.registerKotlinModule()
     mapper.registerModule(JavaTimeModule())
 
-    val content = abstractMethod.getContentFromPath("/geoRef/cities.json")
+    val content = AbstractMethod.getContentFromPath("/geoRef/cities.json")
     val jsonTextList: CityJson = mapper.readValue(content)
     return jsonTextList.localidades.map { cityDto ->
       val state = stateRepository.findFirstByGid(cityDto.provincia.id)
