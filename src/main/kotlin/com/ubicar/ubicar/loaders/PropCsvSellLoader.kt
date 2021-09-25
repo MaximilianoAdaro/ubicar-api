@@ -16,18 +16,21 @@ class PropCsvSellLoader(
   CommandLineRunner, Ordered {
 
   override fun run(vararg args: String?) {
-    val amountOfFiles = 14
-    for (i in 1 until amountOfFiles) {
-      val filePath = "sell_part_$i"
-      val lines: MutableList<String> =
-        File("/home/maxi/projects/ubicar/ubicar-api/src/main/resources/propData/$filePath.csv").readLines()
-          .toMutableList()
-      AbstractMethod.list.forEach { lines[0] += ",$it" }
-      val auxList: MutableList<String> = AbstractMethod.parallelStream(lines, geoSpatialService)
-      println("lines.size: ${lines.size}")
-      println("Done")
-      val text = auxList.joinToString("\n")
-      File("/home/maxi/projects/ubicar/ubicar-api/src/main/resources/propData/$filePath-output.csv").writeText(text) // write to new file
+    val amountOfFiles = 15
+    val shouldRun = false
+    if (shouldRun) {
+      for (i in 13 until amountOfFiles) {
+        val filePath = "sell_part_$i"
+        val lines: MutableList<String> =
+          File("/home/maxi/projects/ubicar/ubicar-api/src/main/resources/propData/$filePath.csv").readLines()
+            .toMutableList()
+        AbstractMethod.list.forEach { lines[0] += ",$it" }
+        val auxList: MutableList<String> = AbstractMethod.parallelStream(lines, geoSpatialService)
+        println("lines.size: ${lines.size}")
+        println("Done")
+        val text = auxList.joinToString("\n")
+        File("/home/maxi/projects/ubicar/ubicar-api/src/main/resources/propData/$filePath-output.csv").writeText(text) // write to new file
+      }
     }
   }
 

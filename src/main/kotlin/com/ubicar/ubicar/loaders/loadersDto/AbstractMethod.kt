@@ -37,13 +37,13 @@ class AbstractMethod {
       geoSpatialService: GeoSpatialService
     ): MutableList<String> {
       var counter = 0
-      val parallelism = 20
+      val parallelism = 10
       var forkJoinPool: ForkJoinPool? = null
       val auxList: MutableList<String> = mutableListOf()
-      System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "20")
+      System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "10")
       try {
         forkJoinPool = ForkJoinPool(parallelism)
-        val primes = forkJoinPool.submit(
+        forkJoinPool.submit(
           Callable {
             lines.parallelStream().forEach { line: String ->
               try {
@@ -56,14 +56,13 @@ class AbstractMethod {
                 auxList.add(aux)
                 println(counter++)
               } catch (e: Exception) {
-                println(e.message)
+                println("Exception: ${e.message}")
               }
             }
           }
         ).get()
-        println(primes)
       } catch (e: Exception) {
-        println(e.message)
+        println("Exception: ${e.message}")
       } finally {
         forkJoinPool?.shutdown()
       }
