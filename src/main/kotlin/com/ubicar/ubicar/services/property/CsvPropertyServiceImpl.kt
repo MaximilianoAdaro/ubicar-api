@@ -17,7 +17,7 @@ class CsvPropertyServiceImpl(
 ) : CsvPropertyService {
 
   val propertyDefaultColumnsList =
-    listOf("price_aprox_usd", "surface_total_in_m2", "surface_covered_in_m2", "price_usd_per_m2", "rooms")
+    listOf("surface_total_in_m2", "surface_covered_in_m2", "rooms", "state_name")
 
   var spatialColumnsList = listOf(
     "dRailway",
@@ -33,8 +33,8 @@ class CsvPropertyServiceImpl(
     "dUniversity"
   )
 
-  var propertyTypeColumnsList =
-    listOf("property_type_PH", "property_type_apartment", "property_type_house", "property_type_store")
+  // var propertyTypeColumnsList = listOf("property_type_PH", "property_type_apartment", "property_type_house", "property_type_store")
+  var propertyTypeColumnsList = listOf("property_type")
 
   override fun createCsvFromProperty(property: Property) {
     try {
@@ -72,24 +72,24 @@ class CsvPropertyServiceImpl(
   private fun propetyData(property: Property): String {
     val propertyDefaultResult = this.propertyDefaultResult(property)
     val runGeoDataUpdate = geoSpatialService.runGeoDataUpdate(property.address!!.coordinates).map { it.toString() }
-    val propertyTypeResult = this.propertyTypeResult(property).map { it.toString() }
+    val propertyTypeResult = this.propertyTypeResult(property)
 
     // list of the property data columns for the CSV
     val list = mutableListOf<String>()
     list.addAll(propertyDefaultResult)
     list.addAll(runGeoDataUpdate)
-    list.addAll(propertyTypeResult)
+    list.add(propertyTypeResult)
 
     val joiner = StringJoiner(",")
     list.forEach { joiner.add(it) }
     return joiner.toString()
   }
 
-  private fun propertyTypeResult(property: Property): List<Int> {
-    val type_PH = listOf(1, 0, 0, 0)
-    val type_APARTMENT = listOf(0, 1, 0, 0)
-    val type_HOUSE = listOf(0, 0, 1, 0)
-    val type_STORE = listOf(0, 0, 0, 1)
+  private fun propertyTypeResult(property: Property): String {
+    val type_PH = "ph"
+    val type_APARTMENT = "apartment"
+    val type_HOUSE = "house"
+    val type_STORE = "store"
 
     return when (property.type) {
       TypeOfProperty.Casa -> type_HOUSE
@@ -113,15 +113,14 @@ class CsvPropertyServiceImpl(
 
   // "price_aprox_usd", "surface_total_in_m2", "surface_covered_in_m2", "price_usd_per_m2", "rooms"
   private fun propertyDefaultResult(property: Property): List<String> {
-    val price = property.price
     val squareFoot = property.squareFoot
-    val price_usd_per_m2 = squareFoot?.let { price.div(it) }
+    val stateName = "Bs.As. G.B.A. Zona Norte"
+    // val stateName = property.address!!.city.state.name
     return listOf(
-      price.toString(),
       squareFoot.toString(),
       property.coveredSquareFoot.toString(),
-      price_usd_per_m2.toString(),
-      property.rooms.toString()
+      property.rooms.toString(),
+      stateName
     )
   }
 }
