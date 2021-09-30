@@ -16,20 +16,23 @@ class PropCsvSellLoader(
   CommandLineRunner, Ordered {
 
   override fun run(vararg args: String?) {
-    val amountOfFiles = 15
-    val shouldRun = false
+    val amountOfFiles = 3
+    val shouldRun = true
     if (shouldRun) {
-      for (i in 13 until amountOfFiles) {
-        val filePath = "sell_part_$i"
+      for (i in 1 until amountOfFiles) {
+        val firstPartPath = "/home/maxi/projects/ubicar/ubicar-api/src/main/resources/newData"
+        val filePath = "new_sell_part_$i"
+        println("------------------------------------------------------------------------------------------")
+        println("Start with $filePath")
         val lines: MutableList<String> =
-          File("/home/maxi/projects/ubicar/ubicar-api/src/main/resources/propData/$filePath.csv").readLines()
+          File("$firstPartPath/$filePath.csv").readLines()
             .toMutableList()
         AbstractMethod.list.forEach { lines[0] += ",$it" }
         val auxList: MutableList<String> = AbstractMethod.parallelStream(lines, geoSpatialService)
         println("lines.size: ${lines.size}")
         println("Done")
         val text = auxList.joinToString("\n")
-        File("/home/maxi/projects/ubicar/ubicar-api/src/main/resources/propData/$filePath-output.csv").writeText(text) // write to new file
+        File("$firstPartPath/$filePath-output.csv").writeText(text) // write to new file
       }
     }
   }
