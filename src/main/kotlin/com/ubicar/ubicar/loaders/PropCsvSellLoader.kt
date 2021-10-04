@@ -16,10 +16,10 @@ class PropCsvSellLoader(
   CommandLineRunner, Ordered {
 
   override fun run(vararg args: String?) {
-    val amountOfFiles = 3
-    val shouldRun = true
+    val amountOfFiles = 12
+    val shouldRun = false
     if (shouldRun) {
-      for (i in 1 until amountOfFiles) {
+      for (i in 11 until amountOfFiles) {
         val firstPartPath = "/home/maxi/projects/ubicar/ubicar-api/src/main/resources/newData"
         val filePath = "new_sell_part_$i"
         println("------------------------------------------------------------------------------------------")
