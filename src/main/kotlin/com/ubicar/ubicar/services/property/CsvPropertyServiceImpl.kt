@@ -17,7 +17,7 @@ class CsvPropertyServiceImpl(
 ) : CsvPropertyService {
 
   val propertyDefaultColumnsList =
-    listOf("surface_total_in_m2", "surface_covered_in_m2", "rooms", "state_name")
+    listOf("surface_total", "surface_covered", "rooms", "l2", "l3")
 
   var spatialColumnsList = listOf(
     "dRailway",
@@ -114,13 +114,15 @@ class CsvPropertyServiceImpl(
   // "price_aprox_usd", "surface_total_in_m2", "surface_covered_in_m2", "price_usd_per_m2", "rooms"
   private fun propertyDefaultResult(property: Property): List<String> {
     val squareFoot = property.squareFoot
-    val stateName = "Bs.As. G.B.A. Zona Norte"
+    val l2 = "Capital Federal"
+    val l3 = "Palermo"
     // val stateName = property.address!!.city.state.name
     return listOf(
       squareFoot.toString(),
       property.coveredSquareFoot.toString(),
       property.rooms.toString(),
-      stateName
+      l2,
+      l3
     )
   }
 }
