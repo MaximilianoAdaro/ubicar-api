@@ -8,6 +8,7 @@ import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
 import com.ubicar.ubicar.entities.Image
 import com.ubicar.ubicar.entities.Property
+import com.ubicar.ubicar.entities.Tag
 import com.ubicar.ubicar.entities.User
 import com.ubicar.ubicar.factories.geoSpatial.PolygonFactory
 import com.ubicar.ubicar.repositories.property.PropertyRepository
@@ -181,6 +182,15 @@ class PropertyServiceImpl(
       html,
       contactDto
     )
+  }
+
+  override fun setTags(id: String, tags: MutableList<Tag>): Property {
+    return propertyRepository
+      .findById(id)
+      .map { old ->
+        old.tags = tags
+        propertyRepository.save(old)
+      }.orElseThrow { NotFoundException("Property not found") }
   }
 
   fun setProperties(): Session? {

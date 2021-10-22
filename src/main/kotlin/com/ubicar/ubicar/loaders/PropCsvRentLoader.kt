@@ -35,6 +35,6 @@ class PropCsvRentLoader(
   }
 
   override fun getOrder(): Int {
-    return 10
+    return 11
   }
 }

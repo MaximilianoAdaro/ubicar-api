@@ -137,3 +137,8 @@ data class OpenHouseDateDto(
   var initialTime: LocalTime,
   var finalTime: LocalTime
 )
+
+data class TagDTO(
+  val id: String,
+  val value: String
+)

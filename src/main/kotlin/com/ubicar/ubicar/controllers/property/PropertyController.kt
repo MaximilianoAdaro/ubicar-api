@@ -2,9 +2,13 @@ package com.ubicar.ubicar.controllers.property
 
 import com.ubicar.ubicar.dtos.CreatePropertyDTO
 import com.ubicar.ubicar.dtos.PropertyDTO
+import com.ubicar.ubicar.dtos.TagDTO
+import com.ubicar.ubicar.entities.Tag
 import com.ubicar.ubicar.factories.image.ImageFactory
+import com.ubicar.ubicar.factories.optionals.TagFactory
 import com.ubicar.ubicar.factories.property.CreatePropertyFactory
 import com.ubicar.ubicar.factories.property.PropertyFactory
+import com.ubicar.ubicar.repositories.property.TagRepository
 import com.ubicar.ubicar.services.property.PropertyService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
@@ -16,6 +20,8 @@ class PropertyController(
   private val propertyService: PropertyService,
   private val propertyFactory: PropertyFactory,
   private val createPropertyFactory: CreatePropertyFactory,
+  private val tagRepository: TagRepository,
+  private val tagFactory: TagFactory,
   val imageFactory: ImageFactory
 ) {
 
@@ -62,6 +68,13 @@ class PropertyController(
     )
   }
 
+  @PutMapping("/{id}/tags")
+  fun addTags(@PathVariable id: String, @RequestBody tags: MutableList<Tag>): PropertyDTO {
+    return propertyFactory.convert(
+      propertyService.setTags(id, tags)
+    )
+  }
+
   @PutMapping("/with-images/{id}")
   fun editPropertyWithImages(
     @PathVariable id: String,
@@ -74,5 +87,10 @@ class PropertyController(
 
     val updatedProperty = propertyService.update(id, property, images, imagesToDelete.orEmpty())
     return propertyFactory.convert(updatedProperty)
+  }
+
+  @GetMapping("/tags")
+  fun getTags(): List<TagDTO> {
+    return tagRepository.findAll().map { tagFactory.convert(it) }
   }
 }

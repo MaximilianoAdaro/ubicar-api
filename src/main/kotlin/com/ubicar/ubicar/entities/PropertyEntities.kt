@@ -123,11 +123,19 @@ class Property(
 
   var step: Int,
 
-  //images
+  // Images
   @OneToMany(cascade = [CascadeType.ALL])
-  var images: MutableList<Image> = mutableListOf()
+  var images: MutableList<Image> = mutableListOf(),
 
-
+  // Tags de likeado
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(
+    name = "property_tag",
+    joinColumns = [JoinColumn(name = "property_id", referencedColumnName = "id")],
+    inverseJoinColumns = [JoinColumn(name = "tag_id", referencedColumnName = "id")]
+  )
+  @JsonManagedReference
+  var tags: MutableList<Tag> = mutableListOf(),
 
 ) : AbstractEntity()
 
@@ -193,4 +201,15 @@ class OpenHouseDate(
 
   @Column(nullable = false)
   var finalTime: LocalTime
+) : AbstractEntity()
+
+@Table(name = "tag")
+@Entity
+class Tag(
+  @Column(nullable = false)
+  var value: String,
+
+  @ManyToMany(mappedBy = "tags")
+  @JsonBackReference
+  private var properties: MutableList<Property> = mutableListOf()
 ) : AbstractEntity()

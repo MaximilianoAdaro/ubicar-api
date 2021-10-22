@@ -360,6 +360,6 @@ class PropertyLoader(
   }
 
   override fun getOrder(): Int {
-    return 9
+    return 10
   }
 }

@@ -7,6 +7,7 @@ import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
 import com.ubicar.ubicar.entities.Image
 import com.ubicar.ubicar.entities.Property
+import com.ubicar.ubicar.entities.Tag
 import com.ubicar.ubicar.entities.User
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -38,4 +39,5 @@ interface PropertyService {
   fun getAllFavoritePropertiesByUser(user: User): List<Property>
   fun getAllPropertiesOfUser(user: User): List<Property>
   fun contactOwner(id: String, contactDto: UserContactDto)
+  fun setTags(id: String, tags: MutableList<Tag>): Property
 }
