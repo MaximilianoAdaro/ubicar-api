@@ -42,7 +42,8 @@ class PropertyServiceImpl(
   private val propertyFilterService: PropertyFilterService,
   private val velocityEngine: VelocityEngine,
   private val sessionUtils: SessionUtils,
-  val imageService: ImageService
+  private val imageService: ImageService,
+  private val csvPropertyService: CsvPropertyService
 ) : PropertyService {
 
   override fun findAll(pageable: Pageable): Page<Property> {
@@ -59,7 +60,10 @@ class PropertyServiceImpl(
     return propertyRepository.findAllInViewBoxProperty(createPolygon)
   }
 
-  override fun findAllInViewBoxFiltered(filter: PropertyFilterDto, viewBoxCoordinatesDTOFloat: ViewBoxCoordinatesDTOFloat): List<String> {
+  override fun findAllInViewBoxFiltered(
+    filter: PropertyFilterDto,
+    viewBoxCoordinatesDTOFloat: ViewBoxCoordinatesDTOFloat
+  ): List<String> {
     val polygon = PolygonFactory.createPolygon(viewBoxCoordinatesDTOFloat.toDto().toPointList())
     return propertyFilterService.filterPropertiesViewBox(filter, polygon)
   }
@@ -75,7 +79,14 @@ class PropertyServiceImpl(
     if (property.step > 1) addressService.save(property.address!!)
     property.contacts.map { contactService.save(it) }
     property.openHouse.map { openHouseDateService.save(it) }
-    return propertyRepository.save(property)
+    val propertySaved = propertyRepository.save(property)
+    createCsvProperty(propertySaved)
+    return propertySaved
+  }
+
+  override fun createCsvProperty(property: Property) {
+    if (property.step == 7)
+      csvPropertyService.createCsvFromProperty(property)
   }
 
   override fun findById(id: String): Property {
@@ -83,7 +94,7 @@ class PropertyServiceImpl(
   }
 
   override fun update(id: String, property: Property, images: List<Image>, imagesToDelete: List<String>): Property {
-    return propertyRepository
+    val propertySaved = propertyRepository
       .findById(id)
       .map { old ->
 
@@ -126,6 +137,8 @@ class PropertyServiceImpl(
         propertyRepository.save(old)
       }
       .orElseThrow { NotFoundException("Property not found") }
+    createCsvProperty(propertySaved)
+    return propertySaved
   }
 
   override fun delete(id: String) = propertyRepository.delete(findById(id))

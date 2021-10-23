@@ -80,3 +80,7 @@ src/main/resources/firebase-service-credentials.json
 
 /src/main/resources/propData
 /src/main/resources/propData_aux
+/src/main/resources/validation
+
+
+/src/main/resources/properties_csv

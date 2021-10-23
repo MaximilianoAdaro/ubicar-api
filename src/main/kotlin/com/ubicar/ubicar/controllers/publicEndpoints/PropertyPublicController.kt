@@ -11,6 +11,7 @@ import com.ubicar.ubicar.factories.filter.FilterFactory
 import com.ubicar.ubicar.factories.property.PropertyFactory
 import com.ubicar.ubicar.factories.property.PropertyPreviewFactory
 import com.ubicar.ubicar.services.filter.FilterService
+import com.ubicar.ubicar.services.property.CsvPropertyService
 import com.ubicar.ubicar.services.property.PropertyService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -32,6 +33,7 @@ class PropertyPublicController(
   private val propertyFactory: PropertyFactory,
   private val propertyPreviewFactory: PropertyPreviewFactory,
   private val filterService: FilterService,
+  private val csvPropertyService: CsvPropertyService,
   private val filterFactory: FilterFactory
 ) {
 
@@ -84,5 +86,10 @@ class PropertyPublicController(
   @PostMapping("/contact/{id}")
   fun contactPropertyOwner(@PathVariable id: String, @RequestBody contactDto: UserContactDto) {
     propertyService.contactOwner(id, contactDto)
+  }
+
+  @PostMapping("/csv/{propertyId}")
+  fun createCsvFromProperty(@PathVariable propertyId: String) {
+    csvPropertyService.createCsvFromProperty(propertyId)
   }
 }
