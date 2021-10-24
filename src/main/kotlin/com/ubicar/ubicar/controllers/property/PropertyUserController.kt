@@ -8,10 +8,7 @@ import com.ubicar.ubicar.services.filter.FilterService
 import com.ubicar.ubicar.services.property.PropertyService
 import com.ubicar.ubicar.services.user.UserService
 import com.ubicar.ubicar.utils.SessionUtils
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class PropertyUserController(
@@ -30,6 +27,11 @@ class PropertyUserController(
 
   @PutMapping("/dislike/{id}")
   fun dislikeProperty(@PathVariable id: String): PropertyDTO {
+    return propertyFactory.convert(propertyService.dislike(id))
+  }
+
+  @PostMapping("/add-tags/{id}")
+  fun addTagsToProperty(@PathVariable id: String): PropertyDTO {
     return propertyFactory.convert(propertyService.dislike(id))
   }
 

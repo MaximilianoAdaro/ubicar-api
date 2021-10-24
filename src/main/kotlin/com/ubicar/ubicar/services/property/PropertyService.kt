@@ -39,5 +39,4 @@ interface PropertyService {
   fun getAllFavoritePropertiesByUser(user: User): List<Property>
   fun getAllPropertiesOfUser(user: User): List<Property>
   fun contactOwner(id: String, contactDto: UserContactDto)
-  fun setTags(id: String, tags: MutableList<Tag>): Property
 }

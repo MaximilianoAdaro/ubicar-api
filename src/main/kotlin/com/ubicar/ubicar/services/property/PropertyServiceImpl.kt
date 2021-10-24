@@ -15,6 +15,7 @@ import com.ubicar.ubicar.repositories.property.PropertyRepository
 import com.ubicar.ubicar.services.address.AddressService
 import com.ubicar.ubicar.services.contact.ContactService
 import com.ubicar.ubicar.services.image.ImageService
+import com.ubicar.ubicar.services.likes.LikedTagService
 import com.ubicar.ubicar.services.openHouseDate.OpenHouseDateService
 import com.ubicar.ubicar.services.user.UserService
 import com.ubicar.ubicar.utils.BadRequestException
@@ -39,11 +40,11 @@ class PropertyServiceImpl(
   private val addressService: AddressService,
   private val contactService: ContactService,
   private val openHouseDateService: OpenHouseDateService,
-  private val userService: UserService,
   private val propertyFilterService: PropertyFilterService,
   private val velocityEngine: VelocityEngine,
   private val sessionUtils: SessionUtils,
-  val imageService: ImageService
+  private val imageService: ImageService,
+  private val likedTagService: LikedTagService
 ) : PropertyService {
 
   override fun findAll(pageable: Pageable): Page<Property> {
@@ -143,6 +144,10 @@ class PropertyServiceImpl(
     val property: Property = findById(id)
     val logged = sessionUtils.getTokenUserInformation()
     if (!property.likes.contains(logged)) throw BadRequestException("You never liked this property")
+
+    // borrar tags de likeado
+    likedTagService.delete(id, logged.id)
+
     property.likes.remove(logged)
     return propertyRepository.save(property)
   }
@@ -184,14 +189,6 @@ class PropertyServiceImpl(
     )
   }
 
-  override fun setTags(id: String, tags: MutableList<Tag>): Property {
-    return propertyRepository
-      .findById(id)
-      .map { old ->
-        old.tags = tags
-        propertyRepository.save(old)
-      }.orElseThrow { NotFoundException("Property not found") }
-  }
 
   fun setProperties(): Session? {
     val props = System.getProperties()

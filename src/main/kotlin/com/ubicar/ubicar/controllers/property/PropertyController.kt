@@ -9,8 +9,11 @@ import com.ubicar.ubicar.factories.optionals.TagFactory
 import com.ubicar.ubicar.factories.property.CreatePropertyFactory
 import com.ubicar.ubicar.factories.property.PropertyFactory
 import com.ubicar.ubicar.repositories.property.TagRepository
+import com.ubicar.ubicar.services.likes.LikedTagService
 import com.ubicar.ubicar.services.property.PropertyService
+import com.ubicar.ubicar.services.user.UserService
 import org.springframework.http.MediaType
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
@@ -22,6 +25,8 @@ class PropertyController(
   private val createPropertyFactory: CreatePropertyFactory,
   private val tagRepository: TagRepository,
   private val tagFactory: TagFactory,
+  private val userService: UserService,
+  private val likedTagService: LikedTagService,
   val imageFactory: ImageFactory
 ) {
 
@@ -70,8 +75,10 @@ class PropertyController(
 
   @PutMapping("/{id}/tags")
   fun addTags(@PathVariable id: String, @RequestBody tags: MutableList<Tag>): PropertyDTO {
+    if (SecurityContextHolder.getContext().authentication.principal != "anonymousUser")
+      likedTagService.save(tags, id, userService.findLogged().id)
     return propertyFactory.convert(
-      propertyService.setTags(id, tags)
+      propertyService.findById(id)
     )
   }
 
@@ -84,7 +91,6 @@ class PropertyController(
   ): PropertyDTO {
     val property = createPropertyFactory.convert(propertyDTO)
     val images = files?.map { imageFactory.convert(it) }.orEmpty()
-
     val updatedProperty = propertyService.update(id, property, images, imagesToDelete.orEmpty())
     return propertyFactory.convert(updatedProperty)
   }
