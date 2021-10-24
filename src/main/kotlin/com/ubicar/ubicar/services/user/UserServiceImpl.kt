@@ -17,7 +17,8 @@ import java.util.Optional
 class UserServiceImpl(
   private val userRepository: UserRepository,
   private val userCreationFactory: UserCreationFactory,
-  private val userCreationGoogleFactory: UserCreationGoogleFactory
+  private val userCreationGoogleFactory: UserCreationGoogleFactory,
+  private val recentlyViewedService: RecentlyViewedService
 ) : UserService {
 
   private val passwordEncoder = BCryptPasswordEncoder()
@@ -28,7 +29,9 @@ class UserServiceImpl(
 
   override fun saveUser(userCreationDto: UserCreationDTO): User {
     userCreationDto.password = passwordEncoder.encode(userCreationDto.password)
-    return userRepository.save(userCreationFactory.from(userCreationDto))
+    val user = userRepository.save(userCreationFactory.from(userCreationDto))
+    recentlyViewedService.save(user)
+    return user
   }
 
   override fun saveUserWithGoogle(userCreationDto: GoogleLoginUserDTO): User {
