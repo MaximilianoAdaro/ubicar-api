@@ -44,11 +44,53 @@ class City(
   var state: State
 ) : AbstractEntity()
 
+@Table(name = "municipality")
+@Entity
+class Municipality(
+
+  @Column(nullable = false)
+  var name: String,
+
+  @Column(nullable = false, unique = true)
+  var gid: Double,
+
+  var category: String,
+
+  var centroid: Point,
+
+  @ManyToOne
+  var state: State
+) : AbstractEntity()
+
+@Table(name = "department")
+@Entity
+class Department(
+
+  @Column(nullable = false)
+  var name: String,
+
+  @Column(nullable = false, unique = true)
+  var gid: Double,
+
+  var category: String,
+
+  var centroid: Point,
+
+  @ManyToOne
+  var state: State
+) : AbstractEntity()
+
 @Table(name = "address")
 @Entity
 class Address(
   @ManyToOne
   var city: City,
+
+  @ManyToOne
+  var municipality: Municipality? = null,
+
+  @ManyToOne
+  var department: Department? = null,
 
   @Column(nullable = false)
   var street: String,
@@ -57,4 +99,6 @@ class Address(
   var number: Int,
 
   var coordinates: Point,
-) : AbstractEntity()
+) : AbstractEntity() {
+  constructor(city: City, street: String, number: Int, coordinates: Point) : this(city, null, null, street, number, coordinates)
+}

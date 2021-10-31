@@ -37,10 +37,10 @@ class AbstractMethod {
       geoSpatialService: GeoSpatialService
     ): MutableList<String> {
       var counter = 0
-      val parallelism = 10
+      val parallelism = 20
       var forkJoinPool: ForkJoinPool? = null
       val auxList: MutableList<String> = mutableListOf()
-      System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "10")
+      System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "20")
       try {
         forkJoinPool = ForkJoinPool(parallelism)
         forkJoinPool.submit(
