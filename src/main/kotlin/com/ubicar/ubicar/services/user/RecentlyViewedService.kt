@@ -7,9 +7,9 @@ interface RecentlyViewedService {
 
   fun findByUserId(id: String): List<Property>
 
-  fun addRecentlyViewed(property: Property, id: String)
+  fun addRecentlyViewed(property: Property, user: User)
 
   fun save(user: User)
 
-  fun findFirst10ByUser(id: String): MutableList<Property>
+  fun findLast10ByUser(id: String): MutableList<Property>
 }

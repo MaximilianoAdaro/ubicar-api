@@ -84,7 +84,7 @@ class PropertyPublicController(
   fun getProperty(@PathVariable id: String): PropertyDTO {
     val property = propertyService.findById(id)
     if (SecurityContextHolder.getContext().authentication.principal != "anonymousUser")
-      recentlyViewedService.addRecentlyViewed(property, userService.findLogged().id)
+      recentlyViewedService.addRecentlyViewed(property, userService.findLogged())
     return propertyFactory.convert(property)
   }
 

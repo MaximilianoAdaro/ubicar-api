@@ -1,11 +1,13 @@
 package com.ubicar.ubicar.controllers
 
 import com.ubicar.ubicar.dtos.*
+import com.ubicar.ubicar.factories.property.PropertyFactory
 import com.ubicar.ubicar.factories.property.PropertyPreviewFactory
 import com.ubicar.ubicar.factories.user.RoleFactory
 import com.ubicar.ubicar.factories.user.UserDtoFactory
 import com.ubicar.ubicar.repositories.user.UserRoleRepository
 import com.ubicar.ubicar.services.auth.AuthenticationService
+import com.ubicar.ubicar.services.property.PropertyService
 import com.ubicar.ubicar.services.user.RecentlyViewedService
 import com.ubicar.ubicar.services.user.UserService
 import javassist.NotFoundException
@@ -25,12 +27,18 @@ import javax.servlet.http.HttpServletResponse
 class HomePageController(
   private val recentlyViewedService: RecentlyViewedService,
   private val userService: UserService,
-  private val propertyPreviewFactory: PropertyPreviewFactory
+  private val propertyFactory: PropertyFactory,
+  private val propertyService: PropertyService
 ) {
 
   @GetMapping("/recentlyViewed")
-  fun getRecentlyViewed(): List<PropertyPreviewDTO> {
-    return recentlyViewedService.findFirst10ByUser(userService.findLogged().id).map { propertyPreviewFactory.convert(it) }
+  fun getRecentlyViewed(): List<PropertyDTO> {
+    return recentlyViewedService.findLast10ByUser(userService.findLogged().id).map { propertyFactory.convert(it) }
+  }
+
+  @GetMapping("/mostLiked")
+  fun getMostLiked(): List<PropertyDTO> {
+    return propertyService.mostLiked().map { propertyFactory.convert(it) }
   }
 
 }

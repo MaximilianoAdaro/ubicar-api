@@ -10,8 +10,5 @@ import org.springframework.stereotype.Repository
 interface RecentlyViewedRepository : CrudRepository<RecentlyViewed, String> {
 
   @Query("select r from RecentlyViewed r where r.user.id= ?1")
-  fun findByUser(id: String): RecentlyViewed
-
-  @Query("select r.properties from RecentlyViewed r where r.user.id= ?1")
-  fun findFirst10ByUser(id: String): MutableList<Property>
+  fun findByUser(id: String): RecentlyViewed?
 }

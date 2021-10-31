@@ -183,6 +183,13 @@ class PropertyServiceImpl(
     )
   }
 
+  override fun mostLiked(): List<Property> {
+    val properties = propertyRepository.findAll()
+    properties.sortByDescending { it.likes.size }
+    return if (properties.size > 10) properties.subList(0, 10)
+    else properties
+  }
+
   fun setProperties(): Session? {
     val props = System.getProperties()
     props["mail.smtp.host"] = "smtp.gmail.com"
