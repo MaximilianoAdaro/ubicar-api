@@ -13,6 +13,8 @@ import com.ubicar.ubicar.factories.property.PropertyPreviewFactory
 import com.ubicar.ubicar.services.filter.FilterService
 import com.ubicar.ubicar.services.property.CsvPropertyService
 import com.ubicar.ubicar.services.property.PropertyService
+import com.ubicar.ubicar.services.user.RecentlyViewedService
+import com.ubicar.ubicar.services.user.UserService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -33,8 +35,10 @@ class PropertyPublicController(
   private val propertyFactory: PropertyFactory,
   private val propertyPreviewFactory: PropertyPreviewFactory,
   private val filterService: FilterService,
-  private val csvPropertyService: CsvPropertyService,
-  private val filterFactory: FilterFactory
+  private val filterFactory: FilterFactory,
+  private val recentlyViewedService: RecentlyViewedService,
+  private val userService: UserService,
+  private val csvPropertyService: CsvPropertyService
 ) {
 
   @GetMapping("/preview")
@@ -80,7 +84,10 @@ class PropertyPublicController(
 
   @GetMapping("/{id}")
   fun getProperty(@PathVariable id: String): PropertyDTO {
-    return propertyFactory.convert(propertyService.findById(id))
+    val property = propertyService.findById(id)
+    if (SecurityContextHolder.getContext().authentication.principal != "anonymousUser")
+      recentlyViewedService.addRecentlyViewed(property, userService.findLogged())
+    return propertyFactory.convert(property)
   }
 
   @PostMapping("/contact/{id}")

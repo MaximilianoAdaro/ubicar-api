@@ -4,17 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import org.hibernate.annotations.CreationTimestamp
 import java.time.LocalDate
-import javax.persistence.CascadeType
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
-import javax.persistence.FetchType
-import javax.persistence.JoinColumn
-import javax.persistence.JoinTable
-import javax.persistence.ManyToMany
-import javax.persistence.ManyToOne
-import javax.persistence.Table
+import javax.persistence.*
 
 @Table(name = "user_data")
 @Entity
@@ -66,4 +56,16 @@ class Permission(
 
   @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL]) @JsonBackReference
   var userRoles: MutableList<UserRole> = mutableListOf()
+) : AbstractEntity()
+
+@Table(name = "recently_viewed")
+@Entity
+class RecentlyViewed(
+
+  @OneToOne
+  var user: User,
+
+  @OneToMany(cascade = [CascadeType.ALL])
+  var properties: MutableList<Property> = mutableListOf()
+
 ) : AbstractEntity()

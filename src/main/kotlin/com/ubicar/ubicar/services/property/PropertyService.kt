@@ -38,5 +38,6 @@ interface PropertyService {
   fun getAllFavoritePropertiesByUser(user: User): List<Property>
   fun getAllPropertiesOfUser(user: User): List<Property>
   fun contactOwner(id: String, contactDto: UserContactDto)
+  fun mostLiked(): List<Property>
   fun createCsvProperty(property: Property)
 }
