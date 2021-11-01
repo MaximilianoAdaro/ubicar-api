@@ -40,7 +40,8 @@ class UserRole(
   var active: Boolean = true,
   @CreationTimestamp var creationDate: LocalDate,
 
-  @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL]) @JsonManagedReference
+  @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+  @JsonManagedReference
   var permissions: MutableList<Permission> = mutableListOf()
 ) : AbstractEntity()
 
@@ -54,7 +55,8 @@ class Permission(
   var active: Boolean = true,
   @CreationTimestamp var creationDate: LocalDate,
 
-  @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL]) @JsonBackReference
+  @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+  @JsonBackReference
   var userRoles: MutableList<UserRole> = mutableListOf()
 ) : AbstractEntity()
 
@@ -65,7 +67,13 @@ class RecentlyViewed(
   @OneToOne
   var user: User,
 
-  @OneToMany(cascade = [CascadeType.ALL])
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(
+    name = "recently_viewed_property",
+    joinColumns = [JoinColumn(name = "recently_viewed_id", referencedColumnName = "id")],
+    inverseJoinColumns = [JoinColumn(name = "property_id", referencedColumnName = "id")]
+  )
+  @JsonManagedReference
   var properties: MutableList<Property> = mutableListOf()
 
 ) : AbstractEntity()

@@ -17,18 +17,15 @@ class RecentlyViewedServiceImpl(
   }
 
   override fun addRecentlyViewed(property: Property, user: User) {
-    val recent = recentlyViewedRepository.findByUser(user.id)
-    val newRecentList = mutableListOf(property)
-    if (recent == null) {
-      recentlyViewedRepository.save(RecentlyViewed(user, newRecentList))
-    } else {
-      var exists = false
-      recent.properties.map { if (it.id == property.id) exists = true }
-      if (!exists) {
-        newRecentList.addAll(recent.properties)
-        recent.properties = newRecentList
-        recentlyViewedRepository.save(recent)
-      }
+    val recent = recentlyViewedRepository.findByUser(user.id)!!
+    var exists = false
+    recent.properties.map { if (it.id == property.id) exists = true }
+    if (!exists) {
+      val newRecentList = mutableListOf(property)
+      newRecentList.addAll(recent.properties)
+//      recent.properties.clear()
+      recent.properties.addAll(newRecentList)
+      recentlyViewedRepository.save(recent)
     }
   }
 
