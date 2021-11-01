@@ -1,6 +1,5 @@
 package com.ubicar.ubicar.repositories.user
 
-import com.ubicar.ubicar.entities.Property
 import com.ubicar.ubicar.entities.RecentlyViewed
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository

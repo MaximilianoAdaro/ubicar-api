@@ -39,7 +39,9 @@ class UserServiceImpl(
       userCreationDto,
       passwordEncoder.encode("password".plus(userCreationDto.email.plus("password")))
     )
-    return userRepository.save(from)
+    val user = userRepository.save(from)
+    recentlyViewedService.save(user)
+    return user
   }
 
   override fun findById(id: String): User {
