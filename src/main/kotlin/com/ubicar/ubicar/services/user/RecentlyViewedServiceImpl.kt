@@ -5,6 +5,7 @@ import com.ubicar.ubicar.entities.RecentlyViewed
 import com.ubicar.ubicar.entities.User
 import com.ubicar.ubicar.repositories.user.RecentlyViewedRepository
 import org.springframework.stereotype.Service
+import java.util.stream.Collectors
 
 @Service
 class RecentlyViewedServiceImpl(
@@ -18,7 +19,7 @@ class RecentlyViewedServiceImpl(
 
   override fun addRecentlyViewed(property: Property, user: User) {
     val recent = recentlyViewedRepository.findByUser(user.id)
-    val newRecentList = mutableListOf(property)
+    var newRecentList = mutableListOf(property)
     if (recent == null) {
       recentlyViewedRepository.save(RecentlyViewed(user, newRecentList))
     } else {
@@ -26,6 +27,8 @@ class RecentlyViewedServiceImpl(
       recent.properties.map { if (it.id == property.id) exists = true }
       if (!exists) {
         newRecentList.addAll(recent.properties)
+        // Para extender la cantidad guardada, hay que cambiar ese 50
+        newRecentList = newRecentList.stream().limit(50).collect(Collectors.toList())
         recent.properties = newRecentList
         recentlyViewedRepository.save(recent)
       }
