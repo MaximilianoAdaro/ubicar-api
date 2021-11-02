@@ -125,9 +125,11 @@ class Property(
 
   //images
   @OneToMany(cascade = [CascadeType.ALL])
-  var images: MutableList<Image> = mutableListOf()
+  var images: MutableList<Image> = mutableListOf(),
 
-
+  @ManyToMany(mappedBy = "properties")
+  @JsonBackReference
+  var recentlyViewed: MutableList<RecentlyViewed> = mutableListOf()
 
 ) : AbstractEntity()
 

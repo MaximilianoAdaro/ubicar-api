@@ -18,20 +18,16 @@ class RecentlyViewedServiceImpl(
   }
 
   override fun addRecentlyViewed(property: Property, user: User) {
-    val recent = recentlyViewedRepository.findByUser(user.id)
-    var newRecentList = mutableListOf(property)
-    if (recent == null) {
-      recentlyViewedRepository.save(RecentlyViewed(user, newRecentList))
-    } else {
-      var exists = false
-      recent.properties.map { if (it.id == property.id) exists = true }
-      if (!exists) {
-        newRecentList.addAll(recent.properties)
-        // Para extender la cantidad guardada, hay que cambiar ese 50
-        newRecentList = newRecentList.stream().limit(50).collect(Collectors.toList())
-        recent.properties = newRecentList
-        recentlyViewedRepository.save(recent)
-      }
+    val recent = recentlyViewedRepository.findByUser(user.id)!!
+    var exists = false
+    recent.properties.map { if (it.id == property.id) exists = true }
+    if (!exists) {
+      var newRecentList = mutableListOf(property)
+      newRecentList.addAll(recent.properties)
+      // Para extender la cantidad guardada, hay que cambiar ese 50
+      newRecentList = newRecentList.stream().limit(50).collect(Collectors.toList())
+      recent.properties.addAll(newRecentList)
+      recentlyViewedRepository.save(recent)
     }
   }
 
