@@ -41,4 +41,9 @@ class HomePageController(
     return propertyService.mostLiked().map { propertyFactory.convert(it) }
   }
 
+  @GetMapping("/all-recently-viewed")
+  fun getAllRecentlyViewed(): List<PropertyDTO> {
+    return recentlyViewedService.findByUserId(userService.findLogged().id).map { propertyFactory.convert(it) }
+  }
+
 }
