@@ -24,6 +24,7 @@ class RecentlyViewedServiceImpl(
     if (!exists) {
       var newRecentList = mutableListOf(property)
       newRecentList.addAll(recent.properties)
+      recent.properties.clear()
       // Para extender la cantidad guardada, hay que cambiar ese 50
       newRecentList = newRecentList.stream().limit(50).collect(Collectors.toList())
       recent.properties.addAll(newRecentList)
