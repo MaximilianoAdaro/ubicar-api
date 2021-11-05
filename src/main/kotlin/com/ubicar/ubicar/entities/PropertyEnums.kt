@@ -23,3 +23,17 @@ enum class TypeOfProperty {
   Country,
   Flat
 }
+
+enum class Tags(val value: String) {
+  Location("Ubicación"),
+  Price("Precio"),
+  Amenities("Comodidades"),
+  SquareFeet("Metros Cuadrados"),
+  Security("Seguridad"),
+  Year("Año de construcción"),
+  Material("Material de construcción");
+
+  fun getValue(tag: Tags): String {
+    return tag.value
+  }
+}
