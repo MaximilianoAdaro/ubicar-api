@@ -1,9 +1,11 @@
 package com.ubicar.ubicar.loaders
 
+import com.ubicar.ubicar.dtos.UserCreationDTO
 import com.ubicar.ubicar.entities.User
 import com.ubicar.ubicar.entities.UserOrigin
 import com.ubicar.ubicar.repositories.user.UserRepository
 import com.ubicar.ubicar.repositories.user.UserRoleRepository
+import com.ubicar.ubicar.services.user.UserService
 import com.ubicar.ubicar.utils.NotFoundException
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Profile
@@ -15,26 +17,23 @@ import java.time.LocalDate
 @Profile("!test")
 @Component
 class UserLoader(
+  private val userService: UserService,
   private val userRepository: UserRepository,
-  private val userRoleRepository: UserRoleRepository
+  private val roleRepository: UserRoleRepository
 ) : CommandLineRunner, Ordered {
-
-  private val passwordEncoder = BCryptPasswordEncoder()
 
   override fun run(vararg args: String?) {
 
-    val userRole = userRoleRepository.findFirstBySlug("ROLE_comprador_vendedor")
-      .orElseThrow { NotFoundException("User Role not found") }
+    val role = roleRepository.findFirstBySlug("ROLE_comprador_vendedor").get()
+
     userRepository.findByEmail("ubicar.austral2021@gmail.com").orElseGet {
-      userRepository.save(
-        User(
-          "admin",
+      userService.saveUser(
+        UserCreationDTO(
           "ubicar.austral2021@gmail.com",
-          passwordEncoder.encode("admin"),
-          UserOrigin.UBICAR,
-          userRole,
-          LocalDate.now(),
-          mutableListOf()
+          "admin",
+          "admin",
+          role.id,
+          LocalDate.now()
         )
       )
     }

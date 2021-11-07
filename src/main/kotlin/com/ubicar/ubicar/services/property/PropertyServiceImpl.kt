@@ -79,7 +79,7 @@ class PropertyServiceImpl(
     property.contacts.map { contactService.save(it) }
     property.openHouse.map { openHouseDateService.save(it) }
     val propertySaved = propertyRepository.save(property)
-    createCsvProperty(propertySaved)
+    //createCsvProperty(propertySaved)
     return propertySaved
   }
 
