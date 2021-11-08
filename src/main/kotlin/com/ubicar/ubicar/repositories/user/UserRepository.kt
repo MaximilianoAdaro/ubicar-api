@@ -15,4 +15,7 @@ interface UserRepository : CrudRepository<User, String> {
   fun findByEmail(email: String): Optional<User>
 
   fun existsByEmail(email: String): Boolean
+
+  @Query("select u from User u where u.userRole.slug = ?1")
+  fun findByRoleInversor(slug: String = "ROLE_inversor"): List<User>
 }

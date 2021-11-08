@@ -205,6 +205,21 @@ class PropertyServiceImpl(
     else properties
   }
 
+  override fun isOpportunity(property: Property) {
+    val session: Session? = setProperties()
+    val list = userService.getInversores()
+    for (user in list) {
+      sendMailOpportunity(
+        velocityEngine,
+        session,
+        "Encontramos una oportunidad que podría interesarte",
+        "opportunity.html",
+        property,
+        user.email
+      )
+    }
+  }
+
   fun setProperties(): Session? {
     val props = System.getProperties()
     props["mail.smtp.host"] = "smtp.gmail.com"
@@ -214,6 +229,49 @@ class PropertyServiceImpl(
     props["mail.smtp.starttls.enable"] = "true"
     props["mail.smtp.port"] = "587"
     return Session.getDefaultInstance(props)
+  }
+
+  private fun setConfigurations(velocityEngine: VelocityEngine, message: MimeMessage, session: Session?, template: String?, velocityContext: VelocityContext) {
+    val stringWriter = StringWriter()
+    velocityEngine.mergeTemplate(template, "UTF-8", velocityContext, stringWriter)
+    message.setContent(stringWriter.toString(), "text/html; charset=utf-8")
+    val transport = session?.getTransport("smtp")
+    transport?.connect("smtp.gmail.com", "ubicar.austral2021", "Lab3Ubicar2021")
+    transport?.sendMessage(message, message.allRecipients)
+    transport?.close()
+  }
+
+  fun sendMailOpportunity(
+    velocityEngine: VelocityEngine,
+    session: Session?,
+    subject: String?,
+    template: String?,
+    property: Property,
+    recipient: String
+  ) {
+    val message = MimeMessage(session)
+    try {
+      message.setFrom(InternetAddress("ubicar.austral2021"))
+      message.addRecipient(Message.RecipientType.TO, InternetAddress(recipient))
+      message.subject = subject
+      val velocityContext = VelocityContext()
+      val condition = if(property.condition.name == "SALE") "En Venta" else "En Alquiler"
+      velocityContext.put("id", property.id)
+      velocityContext.put("title", property.title)
+      velocityContext.put("department", property.address?.department)
+      velocityContext.put("number", property.address?.number)
+      velocityContext.put("street", property.address?.street)
+      velocityContext.put("state", property.address?.city?.state?.name)
+      velocityContext.put("city", property.address?.city?.name?.toLowerCase()?.capitalize())
+      velocityContext.put("rooms", property.rooms)
+      velocityContext.put("baths", property.fullBaths)
+      velocityContext.put("squared", property.coveredSquareFoot)
+      velocityContext.put("condition", condition)
+      velocityContext.put("price", property.price)
+      setConfigurations(velocityEngine, message, session, template, velocityContext)
+    } catch (me: MessagingException) {
+      me.printStackTrace()
+    }
   }
 
   fun sendMail(
@@ -234,13 +292,7 @@ class PropertyServiceImpl(
       velocityContext.put("email", contactDTO.email)
       velocityContext.put("cellphone", contactDTO.cellphone)
       velocityContext.put("message", contactDTO.message)
-      val stringWriter = StringWriter()
-      velocityEngine.mergeTemplate(template, "UTF-8", velocityContext, stringWriter)
-      message.setContent(stringWriter.toString(), "text/html; charset=utf-8")
-      val transport = session?.getTransport("smtp")
-      transport?.connect("smtp.gmail.com", "ubicar.austral2021", "Lab3Ubicar2021")
-      transport?.sendMessage(message, message.allRecipients)
-      transport?.close()
+      setConfigurations(velocityEngine, message, session, template, velocityContext)
     } catch (me: MessagingException) {
       me.printStackTrace()
     }

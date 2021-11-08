@@ -40,4 +40,5 @@ interface PropertyService {
   fun contactOwner(id: String, contactDto: UserContactDto)
   fun mostLiked(): List<Property>
   fun createCsvProperty(property: Property)
+  fun isOpportunity(property: Property)
 }
