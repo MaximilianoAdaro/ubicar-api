@@ -19,5 +19,6 @@ class GeoDataProperty(
   var dPort: Double,
   var dSecureBuilding: Double,
   var dTrainStation: Double,
-  var dUniversity: Double
+  var dUniversity: Double,
+  var dSubway: Double
 ) : AbstractEntity()

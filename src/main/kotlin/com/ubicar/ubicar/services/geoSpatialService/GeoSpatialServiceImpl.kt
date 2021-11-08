@@ -10,6 +10,7 @@ import com.ubicar.ubicar.dtos.GeoType.POLICE
 import com.ubicar.ubicar.dtos.GeoType.PORT
 import com.ubicar.ubicar.dtos.GeoType.RAIL
 import com.ubicar.ubicar.dtos.GeoType.SCHOOL
+import com.ubicar.ubicar.dtos.GeoType.SUBWAY_STATION
 import com.ubicar.ubicar.dtos.GeoType.TRAINSTATION
 import com.ubicar.ubicar.dtos.GeoType.UNIV
 import com.ubicar.ubicar.dtos.ViewBoxCoordinatesDTOFloat
@@ -26,6 +27,7 @@ import com.ubicar.ubicar.repositories.geoSpatial.PenitenciaryRepository
 import com.ubicar.ubicar.repositories.geoSpatial.PoliceRepository
 import com.ubicar.ubicar.repositories.geoSpatial.PortRepository
 import com.ubicar.ubicar.repositories.geoSpatial.RailwayRepository
+import com.ubicar.ubicar.repositories.geoSpatial.SubwayRepository
 import com.ubicar.ubicar.repositories.geoSpatial.TrainStationRepository
 import com.ubicar.ubicar.repositories.geoSpatial.UniversityRepository
 import com.ubicar.ubicar.utils.BadRequestException
@@ -45,6 +47,7 @@ class GeoSpatialServiceImpl(
   val penitenciaryRepository: PenitenciaryRepository,
   val industrialZoneRepository: IndustrialZoneRepository,
   val trainStationRepository: TrainStationRepository,
+  val subwayRepository: SubwayRepository,
   val geoDataPropertyRepository: GeoDataPropertyRepository
 ) : GeoSpatialService {
 
@@ -63,6 +66,7 @@ class GeoSpatialServiceImpl(
       JAIL -> penitenciaryRepository.findAllInViewBox(polygon)
       IND -> industrialZoneRepository.findAllInViewBox(polygon)
       TRAINSTATION -> trainStationRepository.findAllInViewBox(polygon)
+      SUBWAY_STATION -> subwayRepository.findAllInViewBox(polygon)
       else -> throw BadRequestException("Not available ${geoType.name} geo type")
     }
   }
@@ -86,7 +90,8 @@ class GeoSpatialServiceImpl(
       portRepository.calculateMinDistanceFromCoords(coordinates),
       policeRepository.calculateMinDistanceFromCoords(coordinates),
       trainStationRepository.calculateMinDistanceFromCoords(coordinates),
-      universityRepository.calculateMinDistanceFromCoords(coordinates)
+      universityRepository.calculateMinDistanceFromCoords(coordinates),
+      subwayRepository.calculateMinDistanceFromCoords(coordinates)
     )
 
     geoDataPropertyRepository.save(geoDataProperty)
@@ -104,7 +109,8 @@ class GeoSpatialServiceImpl(
       portRepository.calculateMinDistanceFromCoords(coordinates),
       policeRepository.calculateMinDistanceFromCoords(coordinates),
       trainStationRepository.calculateMinDistanceFromCoords(coordinates),
-      universityRepository.calculateMinDistanceFromCoords(coordinates)
+      universityRepository.calculateMinDistanceFromCoords(coordinates),
+      subwayRepository.calculateMinDistanceFromCoords(coordinates)
     )
   }
 }

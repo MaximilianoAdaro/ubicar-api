@@ -29,7 +29,8 @@ class AbstractMethod {
       "dPort",
       "dSecureBuilding",
       "dTrainStation",
-      "dUniversity"
+      "dUniversity",
+      "dSubway"
     )
 
     fun parallelStream(
