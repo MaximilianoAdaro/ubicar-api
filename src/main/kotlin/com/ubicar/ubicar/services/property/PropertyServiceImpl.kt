@@ -15,6 +15,7 @@ import com.ubicar.ubicar.services.address.AddressService
 import com.ubicar.ubicar.services.contact.ContactService
 import com.ubicar.ubicar.services.image.ImageService
 import com.ubicar.ubicar.services.openHouseDate.OpenHouseDateService
+import com.ubicar.ubicar.services.user.UserService
 import com.ubicar.ubicar.utils.BadRequestException
 import com.ubicar.ubicar.utils.NotFoundException
 import com.ubicar.ubicar.utils.SessionUtils
@@ -42,7 +43,8 @@ class PropertyServiceImpl(
   private val sessionUtils: SessionUtils,
   private val imageService: ImageService,
   private val csvPropertyService: CsvPropertyService,
-  private val tagsLikedService: TagsLikedService
+  private val tagsLikedService: TagsLikedService,
+  private val userService: UserService
 ) : PropertyService {
 
   override fun findAll(pageable: Pageable): Page<Property> {
@@ -218,17 +220,17 @@ class PropertyServiceImpl(
         user.email
       )
     }
+  }
 
-    override fun getOpportunities(): List<Property> {
-      return propertyRepository.getAllOpportunities()
-    }
+  override fun getOpportunities(): List<Property> {
+    return propertyRepository.getAllOpportunities()
+  }
 
-    override fun isOpportunity(id: String): Property {
-      val property = findById(id)
-      property.isOpportunity = true
-
-      return propertyRepository.save(property)
-    }
+  override fun isOpportunity(id: String): Property {
+    val property = findById(id)
+    property.isOpportunity = true
+    opportunityMail(property)
+    return propertyRepository.save(property)
   }
 
   fun setProperties(): Session? {
@@ -271,8 +273,8 @@ class PropertyServiceImpl(
       velocityContext.put("title", property.title)
       velocityContext.put("department", property.address?.department)
       velocityContext.put("number", property.address?.number)
-      velocityContext.put("street", property.address?.street)
-      velocityContext.put("state", property.address?.city?.state?.name)
+      velocityContext.put("street", property.address?.street?.toLowerCase()?.capitalize())
+      velocityContext.put("state", property.address?.city?.state?.name?.toLowerCase()?.capitalize())
       velocityContext.put("city", property.address?.city?.name?.toLowerCase()?.capitalize())
       velocityContext.put("rooms", property.rooms)
       velocityContext.put("baths", property.fullBaths)

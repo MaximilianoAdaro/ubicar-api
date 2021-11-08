@@ -50,7 +50,7 @@ class PropertyController(
     val property = createPropertyFactory.convert(propertyDTO)
     val savedProperty = propertyService.save(property, images)
     val result = predictorService.requestPrediction(savedProperty)
-    if (result.toDouble() < savedProperty.price) propertyService.isOpportunity(savedProperty.id)
+    if (result.toDouble() > savedProperty.price) propertyService.isOpportunity(savedProperty.id)
     return propertyFactory.convert(savedProperty)
   }
 
