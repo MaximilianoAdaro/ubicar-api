@@ -1,5 +1,6 @@
 package com.ubicar.ubicar.services.property
 
+import com.fasterxml.jackson.databind.annotation.JsonAppend
 import com.ubicar.ubicar.dtos.UserContactDto
 import com.ubicar.ubicar.dtos.ViewBoxCoordinatesDTO
 import com.ubicar.ubicar.dtos.ViewBoxCoordinatesDTOFloat
@@ -40,4 +41,6 @@ interface PropertyService {
   fun contactOwner(id: String, contactDto: UserContactDto)
   fun mostLiked(): List<Property>
   fun createCsvProperty(property: Property)
+  fun getOpportunities(): List<Property>
+  fun isOpportunity(id: String): Property
 }

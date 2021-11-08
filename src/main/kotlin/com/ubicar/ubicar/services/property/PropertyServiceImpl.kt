@@ -205,6 +205,17 @@ class PropertyServiceImpl(
     else properties
   }
 
+  override fun getOpportunities(): List<Property> {
+    return propertyRepository.getAllOpportunities()
+  }
+
+  override fun isOpportunity(id: String): Property {
+    val property = findById(id)
+    property.isOpportunity = true
+
+    return propertyRepository.save(property)
+  }
+
   fun setProperties(): Session? {
     val props = System.getProperties()
     props["mail.smtp.host"] = "smtp.gmail.com"

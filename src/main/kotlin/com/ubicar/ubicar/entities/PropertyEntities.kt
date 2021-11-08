@@ -116,7 +116,9 @@ class Property(
 
   @ManyToMany(mappedBy = "properties")
   @JsonBackReference
-  var recentlyViewed: MutableList<RecentlyViewed> = mutableListOf()
+  var recentlyViewed: MutableList<RecentlyViewed> = mutableListOf(),
+
+  var isOpportunity: Boolean = false
 
 ) : AbstractEntity()
 
