@@ -15,7 +15,6 @@ import com.ubicar.ubicar.services.address.AddressService
 import com.ubicar.ubicar.services.contact.ContactService
 import com.ubicar.ubicar.services.image.ImageService
 import com.ubicar.ubicar.services.openHouseDate.OpenHouseDateService
-import com.ubicar.ubicar.services.user.UserService
 import com.ubicar.ubicar.utils.BadRequestException
 import com.ubicar.ubicar.utils.NotFoundException
 import com.ubicar.ubicar.utils.SessionUtils
@@ -38,12 +37,12 @@ class PropertyServiceImpl(
   private val addressService: AddressService,
   private val contactService: ContactService,
   private val openHouseDateService: OpenHouseDateService,
-  private val userService: UserService,
   private val propertyFilterService: PropertyFilterService,
   private val velocityEngine: VelocityEngine,
   private val sessionUtils: SessionUtils,
   private val imageService: ImageService,
-  private val csvPropertyService: CsvPropertyService
+  private val csvPropertyService: CsvPropertyService,
+  private val tagsLikedService: TagsLikedService
 ) : PropertyService {
 
   override fun findAll(pageable: Pageable): Page<Property> {
@@ -80,7 +79,7 @@ class PropertyServiceImpl(
     property.contacts.map { contactService.save(it) }
     property.openHouse.map { openHouseDateService.save(it) }
     val propertySaved = propertyRepository.save(property)
-    createCsvProperty(propertySaved)
+    //createCsvProperty(propertySaved)
     return propertySaved
   }
 
@@ -148,7 +147,10 @@ class PropertyServiceImpl(
     val logged = sessionUtils.getTokenUserInformation()
     if (property.likes.contains(logged)) throw BadRequestException("You already liked this property")
     property.likes.add(logged)
-    return propertyRepository.save(property)
+    val newProperty = propertyRepository.save(property)
+    if (tagsLikedService.findByPropertyIdAndUserId(newProperty.id, logged.id) == null)
+      tagsLikedService.create(newProperty, logged)
+    return newProperty
   }
 
   override fun dislike(id: String): Property {

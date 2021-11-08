@@ -75,18 +75,12 @@ class UserServiceImpl(
       .map {
         old ->
         old.userName = user.userName
-        old.email = user.email
-        save(old)
+        userRepository.save(old)
       }
       .orElseThrow { NotFoundException("User not found") }
   }
 
   override fun getInversores(): List<User> {
     return userRepository.findByRoleInversor()
-  }
-
-  private fun save(user: User): User {
-    if (userRepository.existsByEmail(user.email)) throw NotFoundException("This email is already registered")
-    return userRepository.save(user)
   }
 }

@@ -24,9 +24,17 @@ class RecentlyViewedServiceImpl(
     if (!exists) {
       var newRecentList = mutableListOf(property)
       newRecentList.addAll(recent.properties)
+      recent.properties.clear()
       // Para extender la cantidad guardada, hay que cambiar ese 50
       newRecentList = newRecentList.stream().limit(50).collect(Collectors.toList())
       recent.properties.addAll(newRecentList)
+      recentlyViewedRepository.save(recent)
+    } else {
+      var list = recent.properties
+      list = list.filter { it.id != property.id }.toMutableList()
+      recent.properties.clear()
+      recent.properties.add(property)
+      recent.properties.addAll(list)
       recentlyViewedRepository.save(recent)
     }
   }
@@ -38,7 +46,7 @@ class RecentlyViewedServiceImpl(
   override fun findLast10ByUser(id: String): MutableList<Property> {
     val list = recentlyViewedRepository.findByUser(id)?.properties
     return if (list?.size!! >= 10) {
-      list.subList(list.size - 11, list.size - 1)
+      list.subList(0, 10)
     } else list
   }
 }
