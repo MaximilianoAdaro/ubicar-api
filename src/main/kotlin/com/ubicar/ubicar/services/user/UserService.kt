@@ -27,4 +27,6 @@ interface UserService {
   fun findLogged(): User
 
   fun update(id: String, user: UserDTO): User
+
+  fun getInversores(): List<User>
 }

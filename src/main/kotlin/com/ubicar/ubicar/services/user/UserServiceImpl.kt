@@ -80,4 +80,7 @@ class UserServiceImpl(
       .orElseThrow { NotFoundException("User not found") }
   }
 
+  override fun getInversores(): List<User> {
+    return userRepository.findByRoleInversor()
+  }
 }

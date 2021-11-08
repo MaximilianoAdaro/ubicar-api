@@ -95,6 +95,11 @@ class PropertyPublicController(
     propertyService.contactOwner(id, contactDto)
   }
 
+  @PostMapping("/opportunity/{id}")
+  fun isProperty(@PathVariable id: String) {
+    propertyService.isOpportunity(propertyService.findById(id))
+  }
+
   @PostMapping("/csv/{propertyId}")
   fun createCsvFromProperty(@PathVariable propertyId: String) {
     csvPropertyService.createCsvFromProperty(propertyId)
