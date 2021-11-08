@@ -44,4 +44,7 @@ interface PropertyRepository : JpaRepository<Property, String> {
     nativeQuery = true
   )
   fun getListAsGeoJsonFeature(filteredProperties: List<String>): List<String>
+
+  @Query("select p from Property p where p.isOpportunity = true")
+  fun getAllOpportunities(): List<Property>
 }

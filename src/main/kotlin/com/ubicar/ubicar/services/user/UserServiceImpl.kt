@@ -73,7 +73,7 @@ class UserServiceImpl(
     return userRepository
       .findById(id)
       .map {
-        old ->
+          old ->
         old.userName = user.userName
         userRepository.save(old)
       }

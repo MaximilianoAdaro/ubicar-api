@@ -36,18 +36,13 @@ class CsvPropertyServiceImpl(
   // var propertyTypeColumnsList = listOf("property_type_PH", "property_type_apartment", "property_type_house", "property_type_store")
   var propertyTypeColumnsList = listOf("property_type")
 
-  override fun createCsvFromProperty(property: Property) {
-    try {
-      val sb = StringBuilder()
-      sb.append(this.loadColumns())
-      sb.append('\n')
-      sb.append(this.propetyData(property))
-      sb.append('\n')
-
-      File("/home/maxi/projects/ubicar/ubicar-api/src/main/resources/properties_csv/${property.id}.csv").writeText(sb.toString())
-    } catch (e: FileNotFoundException) {
-      error("Error message: ${e.message}")
-    }
+  override fun createCsvFromProperty(property: Property): String {
+    val sb = StringBuilder()
+    sb.append(this.loadColumns())
+    sb.append('\n')
+    sb.append(this.propetyData(property))
+    sb.append('\n')
+    return sb.toString()
   }
 
   override fun createCsvFromProperty(propertyId: String) {

@@ -1,12 +1,9 @@
 package com.ubicar.ubicar.controllers
 
-import com.ubicar.ubicar.dtos.GoogleLoginUserDTO
-import com.ubicar.ubicar.dtos.LogInUserDTO
-import com.ubicar.ubicar.dtos.RoleDTO
-import com.ubicar.ubicar.dtos.UserCreationDTO
-import com.ubicar.ubicar.dtos.UserDTO
+import com.ubicar.ubicar.dtos.*
 import com.ubicar.ubicar.factories.user.RoleFactory
 import com.ubicar.ubicar.factories.user.UserDtoFactory
+import com.ubicar.ubicar.factories.user.UserDtoProfileFactory
 import com.ubicar.ubicar.repositories.user.UserRoleRepository
 import com.ubicar.ubicar.services.auth.AuthenticationService
 import com.ubicar.ubicar.services.user.UserService
@@ -28,6 +25,7 @@ class AuthController(
   private val userService: UserService,
   private val authenticationService: AuthenticationService,
   private val userDtoFactory: UserDtoFactory,
+  private val userDtoProfileFactory: UserDtoProfileFactory,
   private val userRoleRepository: UserRoleRepository,
   private val roleFactory: RoleFactory
 ) {
@@ -55,6 +53,14 @@ class AuthController(
   fun getLogged(): UserDTO {
     val authentication: Authentication = SecurityContextHolder.getContext().authentication
     return userDtoFactory.convert(
+      userService.findByEmail(authentication.name).orElseThrow { NotFoundException("User not found") }
+    )
+  }
+
+  @GetMapping("/profile")
+  fun getProfileUser(): UserDTOProfile {
+    val authentication: Authentication = SecurityContextHolder.getContext().authentication
+    return userDtoProfileFactory.convert(
       userService.findByEmail(authentication.name).orElseThrow { NotFoundException("User not found") }
     )
   }

@@ -46,4 +46,9 @@ class HomePageController(
     return recentlyViewedService.findByUserId(userService.findLogged().id).map { propertyFactory.convert(it) }
   }
 
+  @GetMapping("/opportunities")
+  fun getOpportunities(): List<PropertyDTO> {
+    return propertyService.getOpportunities().map { propertyFactory.convert(it) }
+  }
+
 }

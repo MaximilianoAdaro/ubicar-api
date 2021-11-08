@@ -8,6 +8,13 @@ data class UserDTO(
   var userName: String
 )
 
+data class UserDTOProfile(
+  var id: String,
+  var email: String,
+  var userName: String,
+  var investor: Boolean
+)
+
 data class GoogleLoginUserDTO(
   var name: String,
   var email: String
