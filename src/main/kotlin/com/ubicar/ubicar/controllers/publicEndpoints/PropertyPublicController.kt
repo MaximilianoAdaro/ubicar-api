@@ -11,6 +11,7 @@ import com.ubicar.ubicar.factories.filter.FilterFactory
 import com.ubicar.ubicar.factories.property.PropertyFactory
 import com.ubicar.ubicar.factories.property.PropertyPreviewFactory
 import com.ubicar.ubicar.services.filter.FilterService
+import com.ubicar.ubicar.services.predictor.PredictorService
 import com.ubicar.ubicar.services.property.CsvPropertyService
 import com.ubicar.ubicar.services.property.PropertyService
 import com.ubicar.ubicar.services.user.RecentlyViewedService
@@ -38,7 +39,8 @@ class PropertyPublicController(
   private val filterFactory: FilterFactory,
   private val recentlyViewedService: RecentlyViewedService,
   private val userService: UserService,
-  private val csvPropertyService: CsvPropertyService
+  private val csvPropertyService: CsvPropertyService,
+  private val predictorService: PredictorService
 ) {
 
   @GetMapping("/preview")
@@ -98,5 +100,10 @@ class PropertyPublicController(
   @PostMapping("/csv/{propertyId}")
   fun createCsvFromProperty(@PathVariable propertyId: String) {
     csvPropertyService.createCsvFromProperty(propertyId)
+  }
+
+  @GetMapping("/get-geodata")
+  fun getGeoData(coordinates: String): String {
+    return predictorService.sendGeodata(coordinates)
   }
 }

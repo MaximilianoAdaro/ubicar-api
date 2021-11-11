@@ -19,6 +19,7 @@ import com.ubicar.ubicar.repositories.property.PropertyRepository
 import com.ubicar.ubicar.repositories.property.SecurityRepository
 import com.ubicar.ubicar.repositories.property.StyleRepository
 import com.ubicar.ubicar.repositories.user.UserRepository
+import com.ubicar.ubicar.services.geoSpatialService.GeoSpatialService
 import com.ubicar.ubicar.services.property.PropertyService
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Profile
@@ -38,7 +39,8 @@ class PropertyLoader(
   private val stateRepository: StateRepository,
   private val cityRepository: CityRepository,
   private val userRepository: UserRepository,
-  private val propertyRepository: PropertyRepository
+  private val propertyRepository: PropertyRepository,
+  private val geoSpatialService: GeoSpatialService
 ) : CommandLineRunner, Ordered {
 
   override fun run(vararg args: String?) {
@@ -51,6 +53,7 @@ class PropertyLoader(
     // Property 1
     val city1 = cityRepository.findByNameAndState("SAN ISIDRO", state).orElseThrow()
     val coordinates1 = PointFactory.createPoint(-58.564152054237304, -34.4892169630285)
+    val geoData1 = geoSpatialService.getGeodataOfCoordinates(coordinates1)
     val address = Address(city1, "eliseo reclus", 1030, coordinates1)
     val style: Style = styleRepository.findFirstByLabel("Contemporaneo").get()
     val amenities: MutableList<Amenity> = mutableListOf(
@@ -93,14 +96,15 @@ class PropertyLoader(
       LocalDate.now(),
       mutableListOf(),
       owner,
-      7
+      7,
+      geoDataProperty = geoData1
     )
     properties.add(property1)
 
     // Property 2 ---------------------------------------------------------------------
     val city2 = cityRepository.findByNameAndState("GENERAL RODRIGUEZ", state).orElseThrow()
     val coordinates2 = PointFactory.createPoint(-58.9601312273656, -34.608284019555796)
-
+    val geoData2 = geoSpatialService.getGeodataOfCoordinates(coordinates2)
     val address2 = Address(city2, "av eva peron", 350, coordinates2)
     val style2: Style = styleRepository.findFirstByLabel("Colonial").get()
     val amenities2: MutableList<Amenity> = mutableListOf(
@@ -148,14 +152,15 @@ class PropertyLoader(
       LocalDate.now(),
       mutableListOf(),
       owner,
-      7
+      7,
+      geoDataProperty = geoData2
     )
     properties.add(property2)
 
     // Property 3 ---------------------------------------------------------------------
     val city3 = cityRepository.findByNameAndState("VICENTE LOPEZ", state).orElseThrow()
     val coordinates3 = PointFactory.createPoint(-58.47600318016971, -34.52748821083418)
-
+    val geoData3 = geoSpatialService.getGeodataOfCoordinates(coordinates3)
     val address3 = Address(city3, "carlos f melo", 124, coordinates3)
     val style3: Style = styleRepository.findFirstByLabel("Contemporaneo").get()
     val amenities3: MutableList<Amenity> = mutableListOf(
@@ -200,7 +205,8 @@ class PropertyLoader(
       LocalDate.now(),
       mutableListOf(),
       owner,
-      7
+      7,
+      geoDataProperty = geoData3
     )
     properties.add(property3)
 
@@ -208,7 +214,7 @@ class PropertyLoader(
     val state4 = stateRepository.findFirstByName("Tucumán").orElseThrow()
     val city4 = cityRepository.findByNameAndState("LA TRINIDAD", state4).orElseThrow()
     val coordinates4 = PointFactory.createPoint(-65.5250428, -27.4157679)
-
+    val geoData4 = geoSpatialService.getGeodataOfCoordinates(coordinates4)
     val address4 = Address(city4, "colon", 190, coordinates4)
     val style4: Style = styleRepository.findFirstByLabel("Contemporaneo").get()
     val amenities4: MutableList<Amenity> = mutableListOf(
@@ -253,14 +259,15 @@ class PropertyLoader(
       LocalDate.now(),
       mutableListOf(),
       owner,
-      7
+      7,
+      geoDataProperty = geoData4
     )
     properties.add(property4)
 
     // Property 7 ---------------------------------------------------------------------
     val city7 = cityRepository.findByNameAndState("LANUS ESTE", state).orElseThrow()
     val coordinates7 = PointFactory.createPoint(-58.3812447, -34.712017)
-
+    val geoData5 = geoSpatialService.getGeodataOfCoordinates(coordinates7)
     val address7 = Address(city7, "suipacha", 1130, coordinates7)
     val style7: Style = styleRepository.findFirstByLabel("Colonial").get()
     val amenities7: MutableList<Amenity> = mutableListOf(
@@ -301,14 +308,15 @@ class PropertyLoader(
       LocalDate.now(),
       mutableListOf(),
       owner,
-      7
+      7,
+      geoDataProperty = geoData5
     )
     properties.add(property7)
 
     // Property 8 ---------------------------------------------------------------------
     val city8 = cityRepository.findByNameAndState("BAHIA BLANCA", state).orElseThrow()
     val coordinates8 = PointFactory.createPoint(-62.2799104, -38.7252996)
-
+    val geoData6 = geoSpatialService.getGeodataOfCoordinates(coordinates8)
     val address8 = Address(city8, "brandsen", 439, coordinates8)
     val style8: Style = styleRepository.findFirstByLabel("Minimalista").get()
     val amenities8: MutableList<Amenity> = mutableListOf(
@@ -352,7 +360,8 @@ class PropertyLoader(
       LocalDate.now(),
       mutableListOf(),
       owner,
-      7
+      7,
+      geoDataProperty = geoData6
     )
     properties.add(property8)
 

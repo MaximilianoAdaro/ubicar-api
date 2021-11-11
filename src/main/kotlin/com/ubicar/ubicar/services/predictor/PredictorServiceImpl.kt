@@ -1,17 +1,19 @@
 package com.ubicar.ubicar.services.predictor
 
 import com.ubicar.ubicar.entities.Property
+import com.ubicar.ubicar.factories.geoSpatial.PointFactory
+import com.ubicar.ubicar.services.geoSpatialService.GeoSpatialService
 import com.ubicar.ubicar.services.property.CsvPropertyService
+import com.vividsolutions.jts.geom.Coordinate
+import com.vividsolutions.jts.geom.Geometry
 import org.springframework.http.*
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
-import org.springframework.http.ResponseEntity
-import java.util.*
-import kotlin.collections.HashMap
-
+import com.vividsolutions.jts.geom.Point
 
 @Service
-class PredictorServiceImpl(private val csvPropertyService: CsvPropertyService) : PredictorService {
+class PredictorServiceImpl(private val csvPropertyService: CsvPropertyService,
+                           private val geoSpatialService: GeoSpatialService) : PredictorService {
 
   private val restTemplate = RestTemplate()
 
@@ -21,7 +23,6 @@ class PredictorServiceImpl(private val csvPropertyService: CsvPropertyService) :
 
     val headers = HttpHeaders()
     headers.contentType = MediaType.TEXT_PLAIN
-//    headers.accept = Collections.singletonList(MediaType.APPLICATION_JSON)
 
     val entity = HttpEntity(toPredict, headers)
 
@@ -30,4 +31,9 @@ class PredictorServiceImpl(private val csvPropertyService: CsvPropertyService) :
     return response.body!!
   }
 
+  override fun sendGeodata(coordinates: String): String {
+    val clean = coordinates.substring(1, coordinates.length-2).split(",")
+    val point = PointFactory.createPoint(clean[0].toDouble(), clean[1].toDouble())
+    return geoSpatialService.save(geoSpatialService.getGeodataOfCoordinates(point)).id
+  }
 }

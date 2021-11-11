@@ -118,7 +118,10 @@ class Property(
   @JsonBackReference
   var recentlyViewed: MutableList<RecentlyViewed> = mutableListOf(),
 
-  var isOpportunity: Boolean = false
+  var isOpportunity: Boolean = false,
+
+  @OneToOne
+  var geoDataProperty: GeoDataProperty
 
 ) : AbstractEntity()
 

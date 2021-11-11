@@ -5,7 +5,8 @@ import java.time.LocalDate
 data class UserDTO(
   var id: String,
   var email: String,
-  var userName: String
+  var userName: String,
+  var investor: Boolean? = false
 )
 
 data class UserDTOProfile(

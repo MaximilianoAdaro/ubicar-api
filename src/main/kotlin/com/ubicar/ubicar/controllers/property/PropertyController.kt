@@ -5,6 +5,7 @@ import com.ubicar.ubicar.dtos.PropertyDTO
 import com.ubicar.ubicar.factories.image.ImageFactory
 import com.ubicar.ubicar.factories.property.CreatePropertyFactory
 import com.ubicar.ubicar.factories.property.PropertyFactory
+import com.ubicar.ubicar.services.geoSpatialService.GeoSpatialService
 import com.ubicar.ubicar.services.predictor.PredictorService
 import com.ubicar.ubicar.services.property.PropertyService
 import org.springframework.http.MediaType
@@ -18,7 +19,8 @@ class PropertyController(
   private val propertyFactory: PropertyFactory,
   private val createPropertyFactory: CreatePropertyFactory,
   private val predictorService: PredictorService,
-  val imageFactory: ImageFactory
+  private val imageFactory: ImageFactory,
+  private val geoSpatialService: GeoSpatialService
 ) {
 
   @PostMapping("/create")
@@ -28,7 +30,6 @@ class PropertyController(
       propertyService.save(property, listOf())
     else
       propertyService.update(property.id, property, listOf(), listOf())
-    val result = predictorService.requestPrediction(savedProperty)
     return propertyFactory.convert(savedProperty)
   }
 

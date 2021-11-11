@@ -1,17 +1,13 @@
 package com.ubicar.ubicar.factories.property
 
 import com.ubicar.ubicar.dtos.CreatePropertyDTO
-import com.ubicar.ubicar.entities.Amenity
-import com.ubicar.ubicar.entities.Condition
-import com.ubicar.ubicar.entities.ConstructionMaterial
-import com.ubicar.ubicar.entities.Property
-import com.ubicar.ubicar.entities.SecurityMeasure
-import com.ubicar.ubicar.entities.TypeOfProperty
+import com.ubicar.ubicar.entities.*
 import com.ubicar.ubicar.factories.location.AddressFactory
 import com.ubicar.ubicar.repositories.property.AmenityRepository
 import com.ubicar.ubicar.repositories.property.MaterialRepository
 import com.ubicar.ubicar.repositories.property.SecurityRepository
 import com.ubicar.ubicar.repositories.property.StyleRepository
+import com.ubicar.ubicar.services.geoSpatialService.GeoSpatialService
 import com.ubicar.ubicar.services.user.UserService
 import com.ubicar.ubicar.utils.NotFoundException
 import org.springframework.stereotype.Component
@@ -26,7 +22,8 @@ class CreatePropertyFactory(
   private val contactFactory: ContactFactory,
   private val openHouseDateFactory: OpenHouseDateFactory,
   private val addressFactory: AddressFactory,
-  private val userService: UserService
+  private val userService: UserService,
+  private val geoSpatialService: GeoSpatialService
 ) {
 
   fun convert(input: CreatePropertyDTO): Property {
@@ -40,6 +37,9 @@ class CreatePropertyFactory(
     input.security.map { securities.add(securityRepository.findById(it).orElseThrow { NotFoundException("Security not found") }) }
 
     val address = if(input.step > 1) addressFactory.convert(input.address)
+    else null
+
+    val geoDataProperty = if(input.step > 1) geoSpatialService.getGeodataOfCoordinates(address!!.coordinates)
     else null
 
     val contacts = input.contacts.map(contactFactory::from).toMutableList()
@@ -76,7 +76,8 @@ class CreatePropertyFactory(
       LocalDate.now(),
       mutableListOf(),
       userService.findLogged(),
-      input.step
+      input.step,
+      geoDataProperty = geoDataProperty!!
     )
     property.id = if(input.id.isNullOrBlank()) "" else input.id
     return property
