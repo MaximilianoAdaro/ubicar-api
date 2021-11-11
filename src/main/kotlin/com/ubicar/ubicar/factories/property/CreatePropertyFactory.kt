@@ -22,8 +22,7 @@ class CreatePropertyFactory(
   private val contactFactory: ContactFactory,
   private val openHouseDateFactory: OpenHouseDateFactory,
   private val addressFactory: AddressFactory,
-  private val userService: UserService,
-  private val geoSpatialService: GeoSpatialService
+  private val userService: UserService
 ) {
 
   fun convert(input: CreatePropertyDTO): Property {
@@ -37,9 +36,6 @@ class CreatePropertyFactory(
     input.security.map { securities.add(securityRepository.findById(it).orElseThrow { NotFoundException("Security not found") }) }
 
     val address = if(input.step > 1) addressFactory.convert(input.address)
-    else null
-
-    val geoDataProperty = if(input.step > 1) geoSpatialService.getGeodataOfCoordinates(address!!.coordinates)
     else null
 
     val contacts = input.contacts.map(contactFactory::from).toMutableList()
@@ -77,7 +73,7 @@ class CreatePropertyFactory(
       mutableListOf(),
       userService.findLogged(),
       input.step,
-      geoDataProperty = geoDataProperty!!
+      geoData = null
     )
     property.id = if(input.id.isNullOrBlank()) "" else input.id
     return property

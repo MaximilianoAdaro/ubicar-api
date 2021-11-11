@@ -32,8 +32,9 @@ class PredictorServiceImpl(private val csvPropertyService: CsvPropertyService,
   }
 
   override fun sendGeodata(coordinates: String): String {
-    val clean = coordinates.substring(1, coordinates.length-2).split(",")
-    val point = PointFactory.createPoint(clean[0].toDouble(), clean[1].toDouble())
-    return geoSpatialService.save(geoSpatialService.getGeodataOfCoordinates(point)).id
+//    val clean = coordinates.substring(1, coordinates.length-2).split(",")
+//    val point = PointFactory.createPoint(clean[0].toDouble(), clean[1].toDouble())
+//    return geoSpatialService.save(geoSpatialService.getGeodataOfCoordinates(point)).id
+    return ""
   }
 }

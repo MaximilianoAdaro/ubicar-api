@@ -85,8 +85,7 @@ class PropertyServiceImpl(
     property.images = savedImages.toMutableList()
     if (property.step > 1) {
       addressService.save(property.address!!)
-      val geoDataProperty = geoSpatialService.save(property.geoDataProperty)
-      property.geoDataProperty = geoDataProperty
+      property.geoData = geoSpatialService.save(geoSpatialService.runGeoDataUpdate(property))
     }
     property.contacts.map { contactService.save(it) }
     property.openHouse.map { openHouseDateService.save(it) }
@@ -117,7 +116,6 @@ class PropertyServiceImpl(
         old.condition = property.condition
         old.type = property.type
         old.address = property.address
-        old.geoDataProperty = geoSpatialService.getGeodataOfCoordinates(property.address!!.coordinates)
         old.squareFoot = property.squareFoot
         old.coveredSquareFoot = property.coveredSquareFoot
         old.levels = property.levels

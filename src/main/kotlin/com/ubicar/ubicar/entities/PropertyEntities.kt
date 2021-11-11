@@ -121,7 +121,8 @@ class Property(
   var isOpportunity: Boolean = false,
 
   @OneToOne
-  var geoDataProperty: GeoDataProperty
+  @JoinColumn(name = "geo_data_property_id", referencedColumnName = "id")
+  var geoData: GeoDataProperty?
 
 ) : AbstractEntity()
 

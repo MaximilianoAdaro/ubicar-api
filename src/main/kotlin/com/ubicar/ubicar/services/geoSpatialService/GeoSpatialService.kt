@@ -9,8 +9,8 @@ import com.vividsolutions.jts.geom.Point
 interface GeoSpatialService {
 
   fun findAllInViewBox(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTOFloat, geoType: GeoType): List<String>
-  fun getGeodataOfCoordinates(coordinates: Point): GeoDataProperty
-  fun storeGeodataOfProperty(property: Property)
+  fun storeGeodataOfProperty(property: Property): GeoDataProperty
   fun runGeoDataUpdate(coordinates: Point): List<Double>
   fun save(geoDataProperty: GeoDataProperty): GeoDataProperty
+  fun runGeoDataUpdate(property: Property): GeoDataProperty
 }

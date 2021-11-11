@@ -16,13 +16,7 @@ import org.springframework.stereotype.Repository
 import java.util.Optional
 import javax.persistence.EntityManager
 import javax.persistence.TypedQuery
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.CriteriaQuery
-import javax.persistence.criteria.Join
-import javax.persistence.criteria.JoinType
-import javax.persistence.criteria.Path
-import javax.persistence.criteria.Predicate
-import javax.persistence.criteria.Root
+import javax.persistence.criteria.*
 
 @Repository
 class PropertyFilterOperationRepository @Autowired constructor(
@@ -114,7 +108,7 @@ class PropertyFilterOperationRepository @Autowired constructor(
     }
 
     // DISTANCIAS A GEODATA
-    val propertyGeoDataJoin: Join<Property, GeoDataProperty> = root.join("geoDataProperty", JoinType.INNER)
+    val propertyGeoDataJoin: Join<Property, GeoDataProperty> = root.join("geoData", JoinType.INNER)
 
     if (filter.minDistanceSchool != null) {
       predicates.add(cb.greaterThanOrEqualTo(propertyGeoDataJoin.get("dEducation"), filter.minDistanceSchool!!))

@@ -4,15 +4,6 @@ import com.ubicar.ubicar.entities.Condition
 import com.ubicar.ubicar.entities.TypeOfProperty
 import org.springframework.data.domain.Sort
 
-// - Condición
-// - Precio
-// - Número de habitaciones
-// - Tipo de propiedad (Casa, Depto, etc.)
-// - Estilo
-// - Número de baños
-// - Metros cuadrados
-// - Jardín (Si o No)
-
 data class PropertyFilterDto(
   var condition: Condition?,
   var typeProperty: TypeOfProperty?,

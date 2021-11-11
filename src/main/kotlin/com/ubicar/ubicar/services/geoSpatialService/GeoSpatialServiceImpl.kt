@@ -67,7 +67,8 @@ class GeoSpatialServiceImpl(
     }
   }
 
-  override fun getGeodataOfCoordinates(coordinates: Point): GeoDataProperty {
+  override fun runGeoDataUpdate(property: Property): GeoDataProperty {
+    val coordinates = property.address!!.coordinates
     return GeoDataProperty(
       railwayRepository.calculateMinDistanceFromCoords(coordinates),
       industrialZoneRepository.calculateMinDistanceFromCoords(coordinates),
@@ -83,8 +84,8 @@ class GeoSpatialServiceImpl(
     )
   }
 
-  override fun storeGeodataOfProperty(property: Property) {
-    geoDataPropertyRepository.save(getGeodataOfCoordinates(property.address!!.coordinates))
+  override fun storeGeodataOfProperty(property: Property): GeoDataProperty {
+    return geoDataPropertyRepository.save(runGeoDataUpdate(property))
   }
 
   override fun runGeoDataUpdate(coordinates: Point): List<Double> {
