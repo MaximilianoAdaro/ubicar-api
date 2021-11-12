@@ -10,7 +10,10 @@ import com.ubicar.ubicar.dtos.filter.PropertySort
 import com.ubicar.ubicar.factories.filter.FilterFactory
 import com.ubicar.ubicar.factories.property.PropertyFactory
 import com.ubicar.ubicar.factories.property.PropertyPreviewFactory
+import com.ubicar.ubicar.repositories.property.PropertyRepository
 import com.ubicar.ubicar.services.filter.FilterService
+import com.ubicar.ubicar.services.geoSpatialService.GeoSpatialService
+import com.ubicar.ubicar.services.predictor.PredictorService
 import com.ubicar.ubicar.services.property.CsvPropertyService
 import com.ubicar.ubicar.services.property.PropertyService
 import com.ubicar.ubicar.services.user.RecentlyViewedService
@@ -38,7 +41,9 @@ class PropertyPublicController(
   private val filterFactory: FilterFactory,
   private val recentlyViewedService: RecentlyViewedService,
   private val userService: UserService,
-  private val csvPropertyService: CsvPropertyService
+  private val csvPropertyService: CsvPropertyService,
+  private val propertyRepository: PropertyRepository,
+  private val geoSpatialService: GeoSpatialService
 ) {
 
   @GetMapping("/preview")
@@ -98,5 +103,15 @@ class PropertyPublicController(
   @PostMapping("/csv/{propertyId}")
   fun createCsvFromProperty(@PathVariable propertyId: String) {
     csvPropertyService.createCsvFromProperty(propertyId)
+  }
+
+  @GetMapping("/set-geodata")
+  fun setGeoData() {
+    val list = propertyService.findAll()
+    for (element in list) {
+      val geo = geoSpatialService.storeGeodataOfProperty(element)
+      element.geoData = geo
+      propertyRepository.save(element)
+    }
   }
 }

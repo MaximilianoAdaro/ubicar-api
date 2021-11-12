@@ -17,7 +17,8 @@ class UserDtoFactory : AbstractFactory<User, UserDTO> {
     return UserDTO(
       input.id,
       input.email,
-      input.userName
+      input.userName,
+      input.userRole.slug == "ROLE_inversor"
     )
   }
 }

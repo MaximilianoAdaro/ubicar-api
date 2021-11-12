@@ -71,15 +71,9 @@ class GeoSpatialServiceImpl(
     }
   }
 
-  override fun runAllUpdates() {
-    val propertiesNotRun = geoDataPropertyRepository.findAllWherePropertyNotFound()
-    propertiesNotRun.forEach(this::runGeoDataUpdate)
-  }
-
-  fun runGeoDataUpdate(property: Property) {
+  override fun runGeoDataUpdate(property: Property): GeoDataProperty {
     val coordinates = property.address!!.coordinates
-    val geoDataProperty = GeoDataProperty(
-      property,
+    return GeoDataProperty(
       railwayRepository.calculateMinDistanceFromCoords(coordinates),
       industrialZoneRepository.calculateMinDistanceFromCoords(coordinates),
       airportRepository.calculateMinDistanceFromCoords(coordinates),
@@ -93,8 +87,10 @@ class GeoSpatialServiceImpl(
       universityRepository.calculateMinDistanceFromCoords(coordinates),
       subwayRepository.calculateMinDistanceFromCoords(coordinates)
     )
+  }
 
-    geoDataPropertyRepository.save(geoDataProperty)
+  override fun storeGeodataOfProperty(property: Property): GeoDataProperty {
+    return geoDataPropertyRepository.save(runGeoDataUpdate(property))
   }
 
   override fun runGeoDataUpdate(coordinates: Point): List<Double> {
@@ -112,5 +108,9 @@ class GeoSpatialServiceImpl(
       universityRepository.calculateMinDistanceFromCoords(coordinates),
       subwayRepository.calculateMinDistanceFromCoords(coordinates)
     )
+  }
+
+  override fun save(geoDataProperty: GeoDataProperty): GeoDataProperty {
+    return geoDataPropertyRepository.save(geoDataProperty)
   }
 }

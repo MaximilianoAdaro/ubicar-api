@@ -11,8 +11,8 @@ class GeoDataController(
   private val geoSpatialService: GeoSpatialService
 ) {
 
-  @PostMapping("/property/update")
-  fun updateGeoPropertyData() {
-    geoSpatialService.runAllUpdates()
-  }
+//  @PostMapping("/property/update")
+//  fun updateGeoPropertyData() {
+//    geoSpatialService.runAllUpdates()
+//  }
 }

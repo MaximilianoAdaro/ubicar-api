@@ -4,15 +4,6 @@ import com.ubicar.ubicar.entities.Condition
 import com.ubicar.ubicar.entities.TypeOfProperty
 import org.springframework.data.domain.Sort
 
-// - Condición
-// - Precio
-// - Número de habitaciones
-// - Tipo de propiedad (Casa, Depto, etc.)
-// - Estilo
-// - Número de baños
-// - Metros cuadrados
-// - Jardín (Si o No)
-
 data class PropertyFilterDto(
   var condition: Condition?,
   var typeProperty: TypeOfProperty?,
@@ -26,6 +17,16 @@ data class PropertyFilterDto(
   var minAmountSquareMeter: Int?,
   var maxAmountSquareMeter: Int?,
   var containsYard: Boolean?,
+  var minDistanceSchool: Double?,
+  var maxDistanceSchool: Double?,
+  var minDistanceUniversity: Double?,
+  var maxDistanceUniversity: Double?,
+  var minDistanceHospital: Double?,
+  var maxDistanceHospital: Double?,
+  var minDistancePenitentiary: Double?,
+  var maxDistanceCommissary: Double?,
+  var minDistanceFireStation: Double?,
+  var maxDistanceFireStation: Double?,
 )
 
 enum class PropertySort {

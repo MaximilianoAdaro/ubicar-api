@@ -13,6 +13,7 @@ import com.ubicar.ubicar.factories.geoSpatial.PolygonFactory
 import com.ubicar.ubicar.repositories.property.PropertyRepository
 import com.ubicar.ubicar.services.address.AddressService
 import com.ubicar.ubicar.services.contact.ContactService
+import com.ubicar.ubicar.services.geoSpatialService.GeoSpatialService
 import com.ubicar.ubicar.services.image.ImageService
 import com.ubicar.ubicar.services.openHouseDate.OpenHouseDateService
 import com.ubicar.ubicar.services.user.UserService
@@ -44,8 +45,13 @@ class PropertyServiceImpl(
   private val imageService: ImageService,
   private val csvPropertyService: CsvPropertyService,
   private val tagsLikedService: TagsLikedService,
-  private val userService: UserService
+  private val userService: UserService,
+  private val geoSpatialService: GeoSpatialService
 ) : PropertyService {
+
+  override fun findAll(): List<Property> {
+    return propertyRepository.findAll()
+  }
 
   override fun findAll(pageable: Pageable): Page<Property> {
     return propertyRepository.findAll(pageable)
@@ -77,12 +83,13 @@ class PropertyServiceImpl(
   override fun save(property: Property, images: List<Image>): Property {
     val savedImages = imageService.saveAll(images)
     property.images = savedImages.toMutableList()
-    if (property.step > 1) addressService.save(property.address!!)
+    if (property.step > 1) {
+      addressService.save(property.address!!)
+      property.geoData = geoSpatialService.save(geoSpatialService.runGeoDataUpdate(property))
+    }
     property.contacts.map { contactService.save(it) }
     property.openHouse.map { openHouseDateService.save(it) }
-    val propertySaved = propertyRepository.save(property)
-    //createCsvProperty(propertySaved)
-    return propertySaved
+    return propertyRepository.save(property)
   }
 
   override fun createCsvProperty(property: Property) {

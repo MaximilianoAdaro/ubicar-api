@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable
 
 interface PropertyService {
 
+  fun findAll(): List<Property>
+
   fun findAll(pageable: Pageable): Page<Property>
 
   fun findAllInViewBox(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTOFloat): List<String>

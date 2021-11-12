@@ -24,6 +24,16 @@ class Filter(
   var minAmountSquareMeter: Int?,
   var maxAmountSquareMeter: Int?,
   var containsYard: Boolean?,
+  var minDistanceSchool: Double?,
+  var maxDistanceSchool: Double?,
+  var minDistanceUniversity: Double?,
+  var maxDistanceUniversity: Double?,
+  var minDistanceHospital: Double?,
+  var maxDistanceHospital: Double?,
+  var minDistancePenitentiary: Double?,
+  var maxDistanceCommissary: Double?,
+  var minDistanceFireStation: Double?,
+  var maxDistanceFireStation: Double?,
 
   @ManyToOne(cascade = [CascadeType.ALL])
   var user: User?

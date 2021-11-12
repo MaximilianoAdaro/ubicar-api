@@ -118,7 +118,11 @@ class Property(
   @JsonBackReference
   var recentlyViewed: MutableList<RecentlyViewed> = mutableListOf(),
 
-  var isOpportunity: Boolean = false
+  var isOpportunity: Boolean = false,
+
+  @OneToOne
+  @JoinColumn(name = "geo_data_property_id", referencedColumnName = "id")
+  var geoData: GeoDataProperty?
 
 ) : AbstractEntity()
 
