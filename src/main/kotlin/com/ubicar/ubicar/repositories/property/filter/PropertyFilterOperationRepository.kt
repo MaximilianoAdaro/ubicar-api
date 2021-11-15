@@ -150,6 +150,14 @@ class PropertyFilterOperationRepository @Autowired constructor(
       predicates.add(cb.lessThanOrEqualTo(propertyGeoDataJoin.get("dSecureBuilding"), filter.maxDistanceCommissary!!))
     }
 
+    if (filter.minDistanceSubway != null) {
+      predicates.add(cb.greaterThanOrEqualTo(propertyGeoDataJoin.get("dSubway"), filter.minDistanceSubway!!))
+    }
+
+    if (filter.maxDistanceSubway != null) {
+      predicates.add(cb.lessThanOrEqualTo(propertyGeoDataJoin.get("dSubway"), filter.maxDistanceSubway!!))
+    }
+
     val coords: Path<Geometry> = root.get<Address>("address").get("coordinates")!!
     val containsPredicate = ContainsPredicate(cb as CriteriaBuilderImpl, polygon, coords)
     predicates.add(containsPredicate)

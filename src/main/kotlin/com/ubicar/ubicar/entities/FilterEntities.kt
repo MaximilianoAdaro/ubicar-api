@@ -34,6 +34,8 @@ class Filter(
   var maxDistanceCommissary: Double?,
   var minDistanceFireStation: Double?,
   var maxDistanceFireStation: Double?,
+  var minDistanceSubway: Double?,
+  var maxDistanceSubway: Double?,
 
   @ManyToOne(cascade = [CascadeType.ALL])
   var user: User?
