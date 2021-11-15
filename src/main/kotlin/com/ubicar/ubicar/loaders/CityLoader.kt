@@ -8,6 +8,7 @@ import com.ubicar.ubicar.entities.City
 import com.ubicar.ubicar.loaders.loadersDto.AbstractMethod
 import com.ubicar.ubicar.loaders.loadersDto.CityJson
 import com.ubicar.ubicar.repositories.location.CityRepository
+import com.ubicar.ubicar.repositories.location.DepartmentRepository
 import com.ubicar.ubicar.repositories.location.StateRepository
 import com.ubicar.ubicar.utils.NotFoundException
 import org.springframework.boot.CommandLineRunner
@@ -19,17 +20,15 @@ import org.springframework.stereotype.Component
 @Component
 class CityLoader(
   private val cityRepository: CityRepository,
-  private val stateRepository: StateRepository
+  private val stateRepository: StateRepository,
+  private val departmentRepository: DepartmentRepository
 ) :
   CommandLineRunner, Ordered {
 
   override fun run(vararg args: String?) {
     if (cityRepository.totalAmount() > 1) return
     val cities: List<City> = getAllCitiesFromFile()
-    cities.forEach { city ->
-      cityRepository.findFirstByGid(city.gid)
-        .orElseGet { cityRepository.save(city) }
-    }
+    cities.forEach { cityRepository.save(it) }
   }
 
   private fun getAllCitiesFromFile(): List<City> {
@@ -40,9 +39,18 @@ class CityLoader(
     val content = AbstractMethod.getContentFromPath("/geoRef/cities.json")
     val jsonTextList: CityJson = mapper.readValue(content)
     return jsonTextList.localidades.map { cityDto ->
-      val state = stateRepository.findFirstByGid(cityDto.provincia.id)
-        .orElseThrow { NotFoundException("State not found") }
-      cityDto.toCity(state)
+      val state =
+        stateRepository.findFirstByGid(cityDto.provincia.id).orElseThrow { NotFoundException("State not found") }
+      val department = departmentRepository.findFirstByGid(cityDto.departamento.id)
+        .orElseThrow { NotFoundException("Departament not found") }
+      val optionalCity = cityRepository.findFirstByGid(cityDto.id)
+      return@map if (optionalCity.isPresent) {
+        val city = optionalCity.get()
+        city.department = department
+        city
+      } else {
+        cityDto.toCity(state, department)
+      }
     }
   }
 

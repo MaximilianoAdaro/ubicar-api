@@ -41,7 +41,10 @@ class City(
   var centroid: Point,
 
   @ManyToOne
-  var state: State
+  var state: State,
+
+  @ManyToOne
+  var department: Department?
 ) : AbstractEntity()
 
 @Table(name = "municipality")
@@ -86,12 +89,6 @@ class Address(
   @ManyToOne
   var city: City,
 
-  @ManyToOne
-  var municipality: Municipality? = null,
-
-  @ManyToOne
-  var department: Department? = null,
-
   @Column(nullable = false)
   var street: String,
 
@@ -99,6 +96,4 @@ class Address(
   var number: Int,
 
   var coordinates: Point,
-) : AbstractEntity() {
-  constructor(city: City, street: String, number: Int, coordinates: Point) : this(city, null, null, street, number, coordinates)
-}
+) : AbstractEntity()

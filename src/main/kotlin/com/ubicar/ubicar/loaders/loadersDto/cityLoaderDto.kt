@@ -17,10 +17,11 @@ data class CityJsonDto(
   val centroide: LatLonDto,
   val id: Double,
   val nombre: String,
-  val provincia: ProvinceDto
+  val provincia: ProvinceDto,
+  val departamento: ProvinceDto
 ) {
-  fun toCity(state: State): City {
-    return City(this.nombre, id, PointFactory.createPoint(centroide.lon, centroide.lat), state)
+  fun toCity(state: State, department: Department): City {
+    return City(this.nombre, id, PointFactory.createPoint(centroide.lon, centroide.lat), state, department)
   }
 }
 

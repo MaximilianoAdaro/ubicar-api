@@ -1,33 +1,33 @@
 package com.ubicar.ubicar.services.predictor
 
 import com.ubicar.ubicar.entities.Property
-import com.ubicar.ubicar.factories.geoSpatial.PointFactory
-import com.ubicar.ubicar.services.geoSpatialService.GeoSpatialService
 import com.ubicar.ubicar.services.property.CsvPropertyService
-import com.vividsolutions.jts.geom.Coordinate
-import com.vividsolutions.jts.geom.Geometry
-import org.springframework.http.*
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
-import com.vividsolutions.jts.geom.Point
 
 @Service
-class PredictorServiceImpl(private val csvPropertyService: CsvPropertyService,
-                           private val geoSpatialService: GeoSpatialService) : PredictorService {
+class PredictorServiceImpl(
+  private val csvPropertyService: CsvPropertyService
+) : PredictorService {
 
   private val restTemplate = RestTemplate()
 
   override fun requestPrediction(property: Property): String {
     val toPredict = csvPropertyService.createCsvFromProperty(property)
     val url = "http://localhost:5000/predict"
-
+    println("toPredict $toPredict")
     val headers = HttpHeaders()
     headers.contentType = MediaType.TEXT_PLAIN
 
-    val entity = HttpEntity(toPredict, headers)
+    val toPredictEncoded = toPredict.toByteArray(Charsets.UTF_8)
+    println("toPredictEncoded $toPredictEncoded")
+    val entity = HttpEntity(toPredictEncoded, headers)
 
     val response = restTemplate.postForEntity(url, entity, String::class.java)
-
+    println("response $response")
     return response.body!!
   }
 
