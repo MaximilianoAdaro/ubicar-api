@@ -100316,8 +100316,8 @@
         "id": null
       },
       "departamento": {
-        "nombre": null,
-        "id": null
+        "nombre": "Comuna 1",
+        "id": "02007"
       },
       "nombre": "CIUDAD DE BUENOS AIRES",
       "id": "02000010000",

@@ -240,6 +240,15 @@ class PropertyServiceImpl(
     return propertyRepository.save(property)
   }
 
+  override fun runAllSetGeoDataToProperties() {
+    val list = this.findAll()
+    for (element in list) {
+      val geo = geoSpatialService.storeGeodataOfProperty(element)
+      element.geoData = geo
+      propertyRepository.save(element)
+    }
+  }
+
   fun setProperties(): Session? {
     val props = System.getProperties()
     props["mail.smtp.host"] = "smtp.gmail.com"
@@ -251,7 +260,13 @@ class PropertyServiceImpl(
     return Session.getDefaultInstance(props)
   }
 
-  private fun setConfigurations(velocityEngine: VelocityEngine, message: MimeMessage, session: Session?, template: String?, velocityContext: VelocityContext) {
+  private fun setConfigurations(
+    velocityEngine: VelocityEngine,
+    message: MimeMessage,
+    session: Session?,
+    template: String?,
+    velocityContext: VelocityContext
+  ) {
     val stringWriter = StringWriter()
     velocityEngine.mergeTemplate(template, "UTF-8", velocityContext, stringWriter)
     message.setContent(stringWriter.toString(), "text/html; charset=utf-8")
@@ -275,10 +290,10 @@ class PropertyServiceImpl(
       message.addRecipient(Message.RecipientType.TO, InternetAddress(recipient))
       message.subject = subject
       val velocityContext = VelocityContext()
-      val condition = if(property.condition.name == "SALE") "En Venta" else "En Alquiler"
+      val condition = if (property.condition.name == "SALE") "En Venta" else "En Alquiler"
       velocityContext.put("id", property.id)
       velocityContext.put("title", property.title)
-      velocityContext.put("department", property.address?.department)
+      velocityContext.put("department", property.address?.city?.department)
       velocityContext.put("number", property.address?.number)
       velocityContext.put("street", property.address?.street?.toLowerCase()?.capitalize())
       velocityContext.put("state", property.address?.city?.state?.name?.toLowerCase()?.capitalize())

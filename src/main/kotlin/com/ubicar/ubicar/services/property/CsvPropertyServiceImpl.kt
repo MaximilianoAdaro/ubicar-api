@@ -1,13 +1,12 @@
 package com.ubicar.ubicar.services.property
 
+import com.ubicar.ubicar.entities.Address
 import com.ubicar.ubicar.entities.Property
 import com.ubicar.ubicar.entities.TypeOfProperty
 import com.ubicar.ubicar.repositories.property.PropertyRepository
 import com.ubicar.ubicar.services.geoSpatialService.GeoSpatialService
 import javassist.NotFoundException
 import org.springframework.stereotype.Service
-import java.io.File
-import java.io.FileNotFoundException
 import java.util.StringJoiner
 
 @Service
@@ -17,7 +16,7 @@ class CsvPropertyServiceImpl(
 ) : CsvPropertyService {
 
   val propertyDefaultColumnsList =
-    listOf("surface_total", "surface_covered", "rooms", "l2", "l3")
+    listOf("surface_total", "surface_covered", "rooms", "l2", "l3", "lat", "lon", "price")
 
   var spatialColumnsList = listOf(
     "dRailway",
@@ -30,19 +29,15 @@ class CsvPropertyServiceImpl(
     "dPort",
     "dSecureBuilding",
     "dTrainStation",
-    "dUniversity"
+    "dUniversity",
+    "dSubway"
   )
 
   // var propertyTypeColumnsList = listOf("property_type_PH", "property_type_apartment", "property_type_house", "property_type_store")
   var propertyTypeColumnsList = listOf("property_type")
 
   override fun createCsvFromProperty(property: Property): String {
-    val sb = StringBuilder()
-    sb.append(this.loadColumns())
-    sb.append('\n')
-    sb.append(this.propetyData(property))
-    sb.append('\n')
-    return sb.toString()
+    return "${loadColumns()}\n${propetyData(property)}"
   }
 
   override fun createCsvFromProperty(propertyId: String) {
@@ -55,6 +50,7 @@ class CsvPropertyServiceImpl(
 
     // list of columns for the CSV
     val list = mutableListOf<String>()
+    list.add("a")
     list.addAll(propertyDefaultColumnsList)
     list.addAll(spatialColumnsList)
     list.addAll(propertyTypeColumnsList)
@@ -71,6 +67,7 @@ class CsvPropertyServiceImpl(
 
     // list of the property data columns for the CSV
     val list = mutableListOf<String>()
+    list.add("0")
     list.addAll(propertyDefaultResult)
     list.addAll(runGeoDataUpdate)
     list.add(propertyTypeResult)
@@ -109,15 +106,21 @@ class CsvPropertyServiceImpl(
   // "price_aprox_usd", "surface_total_in_m2", "surface_covered_in_m2", "price_usd_per_m2", "rooms"
   private fun propertyDefaultResult(property: Property): List<String> {
     val squareFoot = property.squareFoot
-    val l2 = "Capital Federal"
-    val l3 = "Palermo"
+    val address: Address = property.address!!
+    val l2 = address.city.department!!.name
+    val l3 = address.city.state.name
+    val lat = address.coordinates.x.toString()
+    val lon = address.coordinates.y.toString()
     // val stateName = property.address!!.city.state.name
     return listOf(
       squareFoot.toString(),
       property.coveredSquareFoot.toString(),
       property.rooms.toString(),
       l2,
-      l3
+      l3,
+      lat,
+      lon,
+      property.price.toString()
     )
   }
 }
