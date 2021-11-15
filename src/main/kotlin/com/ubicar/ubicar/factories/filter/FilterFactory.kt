@@ -36,7 +36,9 @@ class FilterFactory(
       input.minDistancePenitentiary,
       input.maxDistanceCommissary,
       input.minDistanceFireStation,
-      input.maxDistanceFireStation
+      input.maxDistanceFireStation,
+      input.minDistanceSubway,
+      input.maxDistanceSubway
     )
   }
 
@@ -65,6 +67,8 @@ class FilterFactory(
       filterDto.maxDistanceCommissary,
       filterDto.minDistanceFireStation,
       filterDto.maxDistanceFireStation,
+      filterDto.minDistanceSubway,
+      filterDto.maxDistanceSubway,
       userService.findLogged()
     )
   }

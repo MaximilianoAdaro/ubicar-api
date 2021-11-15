@@ -27,6 +27,8 @@ data class PropertyFilterDto(
   var maxDistanceCommissary: Double?,
   var minDistanceFireStation: Double?,
   var maxDistanceFireStation: Double?,
+  var minDistanceSubway: Double?,
+  var maxDistanceSubway: Double?,
 )
 
 enum class PropertySort {
