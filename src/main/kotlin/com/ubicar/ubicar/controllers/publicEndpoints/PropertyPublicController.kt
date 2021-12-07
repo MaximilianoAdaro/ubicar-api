@@ -72,11 +72,7 @@ class PropertyPublicController(
     @RequestParam(value = "direction", required = false) direction: Optional<Sort.Direction>,
     @RequestParam(value = "property", required = false) property: Optional<PropertySort>,
   ): Page<PropertyPreviewDTO> {
-    if (SecurityContextHolder.getContext().authentication.principal != "anonymousUser") filterService.save(
-      filterFactory.from(
-        filter
-      )
-    )
+    if (SecurityContextHolder.getContext().authentication.principal != "anonymousUser") filterService.save(filterFactory.from(filter))
     val propertyLazyTableDto = PropertyLazyTableDto(
       page.orElse(0),
       size.orElse(16),

@@ -6,9 +6,8 @@ import com.ubicar.ubicar.dtos.ViewBoxCoordinatesDTOFloat
 import com.ubicar.ubicar.dtos.filter.PROPERTY_SORT_PROPERTIES
 import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
 import com.ubicar.ubicar.dtos.filter.PropertyLazyTableDto
-import com.ubicar.ubicar.entities.Image
-import com.ubicar.ubicar.entities.Property
-import com.ubicar.ubicar.entities.User
+import com.ubicar.ubicar.entities.*
+import com.ubicar.ubicar.factories.filter.FilterFactory
 import com.ubicar.ubicar.factories.geoSpatial.PolygonFactory
 import com.ubicar.ubicar.repositories.property.PropertyRepository
 import com.ubicar.ubicar.services.address.AddressService
@@ -16,6 +15,7 @@ import com.ubicar.ubicar.services.contact.ContactService
 import com.ubicar.ubicar.services.geoSpatialService.GeoSpatialService
 import com.ubicar.ubicar.services.image.ImageService
 import com.ubicar.ubicar.services.openHouseDate.OpenHouseDateService
+import com.ubicar.ubicar.services.recommendation.RecommendationService
 import com.ubicar.ubicar.services.user.UserService
 import com.ubicar.ubicar.utils.BadRequestException
 import com.ubicar.ubicar.utils.NotFoundException
@@ -46,7 +46,9 @@ class PropertyServiceImpl(
   private val csvPropertyService: CsvPropertyService,
   private val tagsLikedService: TagsLikedService,
   private val userService: UserService,
-  private val geoSpatialService: GeoSpatialService
+  private val geoSpatialService: GeoSpatialService,
+  private val recommendationService: RecommendationService,
+  private val filterFactory: FilterFactory
 ) : PropertyService {
 
   override fun findAll(): List<Property> {
@@ -159,7 +161,25 @@ class PropertyServiceImpl(
     val newProperty = propertyRepository.save(property)
     if (tagsLikedService.findByPropertyIdAndUserId(newProperty.id, logged.id) == null)
       tagsLikedService.create(newProperty, logged)
+    generateRecommendations(newProperty)
     return newProperty
+  }
+
+  private fun generateRecommendations(newProperty: Property) {
+    val filter = checkFilters(newProperty)
+    if(filter != null) {
+      val list = propertyFilterService.filterProperties(filterFactory.convert(filter)).reversed().toMutableList()
+      list.sortByDescending { it.likes.size }
+      val properties = if (list.size > 10) list.subList(0, 10) else list
+      recommendationService.save(Recommendation(properties, filter))
+      // Ahora se manda automaticamente despues de que se likea pero lo mejor sería esperar un tiempo
+      recommendationService.recommendationsMail()
+    }
+  }
+
+  private fun checkFilters(newProperty: Property): Filter? {
+    val user = userService.findLogged()
+    return propertyFilterService.checkFilters(newProperty, user)
   }
 
   override fun dislike(id: String): Property {

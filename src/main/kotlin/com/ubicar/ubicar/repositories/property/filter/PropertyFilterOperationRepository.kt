@@ -45,7 +45,7 @@ class PropertyFilterOperationRepository @Autowired constructor(
     return PageImpl(queryTasks, pageable, size.toLong())
   }
 
-  fun getFilteredProperties(filter: PropertyFilterDto, polygon: Polygon): List<Property> {
+  fun getFilteredProperties(filter: PropertyFilterDto, polygon: Polygon?): List<Property> {
     val cb = em.criteriaBuilder
     val cq: CriteriaQuery<Property> = cb.createQuery(Property::class.java)
     val root: Root<Property> = cq.from(Property::class.java)
@@ -61,7 +61,7 @@ class PropertyFilterOperationRepository @Autowired constructor(
     cb: CriteriaBuilder,
     root: Root<Property>,
     filter: PropertyFilterDto,
-    polygon: Polygon,
+    polygon: Polygon?,
     cq: CriteriaQuery<Property>
   ) {
     val predicates: MutableList<Predicate> = mutableListOf()
@@ -158,14 +158,52 @@ class PropertyFilterOperationRepository @Autowired constructor(
       predicates.add(cb.lessThanOrEqualTo(propertyGeoDataJoin.get("dSubway"), filter.maxDistanceSubway!!))
     }
 
-    val coords: Path<Geometry> = root.get<Address>("address").get("coordinates")!!
-    val containsPredicate = ContainsPredicate(cb as CriteriaBuilderImpl, polygon, coords)
-    predicates.add(containsPredicate)
+    if (polygon != null) {
+      val coords: Path<Geometry> = root.get<Address>("address").get("coordinates")!!
+      val containsPredicate = ContainsPredicate(cb as CriteriaBuilderImpl, polygon, coords)
+      predicates.add(containsPredicate)
+    }
 
     //        Sorting and orders
     //        val orders: List<Order> = ArrayList()
 
     cq.where(*predicates.toTypedArray())
     //            .orderBy(orders)
+  }
+
+  fun checkFilters(property: Property, filters: List<Filter>): Filter? {
+    var best = 0
+    var filterSelected: Filter? = null
+    for (filter in filters) {
+      var actual = 0
+      if (filter.condition != null && filter.condition!!.name == property.condition.name)
+        actual += 1
+      if (filter.typeProperty != null && filter.typeProperty!!.name == property.type.name)
+        actual += 1
+      if (filter.style != null && filter.style!!.label == property.style!!.label)
+        actual += 1
+      if (filter.minPrice != null && filter.minPrice!! >= property.price)
+        actual += 1
+      if (filter.maxPrice != null && filter.maxPrice!! <= property.price)
+        actual += 1
+      if (filter.minAmountRoom != null && filter.minAmountRoom!! >= property.rooms!!)
+        actual += 1
+      if (filter.maxAmountRoom != null && filter.maxAmountRoom!! <= property.rooms!!)
+        actual += 1
+      if (filter.minAmountBathroom != null && filter.minAmountBathroom!! >= (property.fullBaths!! + property.toilets!!))
+        actual += 1
+      if (filter.maxAmountBathroom != null && filter.maxAmountBathroom!! <= (property.fullBaths!! + property.toilets!!))
+        actual += 1
+      if (filter.minAmountSquareMeter != null && filter.minAmountSquareMeter!! >= property.squareFoot!!)
+        actual += 1
+      if (filter.maxAmountSquareMeter != null && filter.maxAmountSquareMeter!! <= property.squareFoot!!)
+        actual += 1
+
+      if (actual > best) {
+        best = actual
+        filterSelected = filter
+      }
+    }
+    return filterSelected
   }
 }

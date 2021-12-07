@@ -3,11 +3,13 @@ package com.ubicar.ubicar.controllers
 import com.ubicar.ubicar.dtos.*
 import com.ubicar.ubicar.factories.property.PropertyFactory
 import com.ubicar.ubicar.factories.property.PropertyPreviewFactory
+import com.ubicar.ubicar.factories.recommendation.RecommendationFactory
 import com.ubicar.ubicar.factories.user.RoleFactory
 import com.ubicar.ubicar.factories.user.UserDtoFactory
 import com.ubicar.ubicar.repositories.user.UserRoleRepository
 import com.ubicar.ubicar.services.auth.AuthenticationService
 import com.ubicar.ubicar.services.property.PropertyService
+import com.ubicar.ubicar.services.recommendation.RecommendationService
 import com.ubicar.ubicar.services.user.RecentlyViewedService
 import com.ubicar.ubicar.services.user.UserService
 import javassist.NotFoundException
@@ -28,7 +30,9 @@ class HomePageController(
   private val recentlyViewedService: RecentlyViewedService,
   private val userService: UserService,
   private val propertyFactory: PropertyFactory,
-  private val propertyService: PropertyService
+  private val propertyService: PropertyService,
+  private val recommendationService: RecommendationService,
+  private val recommendationFactory: RecommendationFactory
 ) {
 
   @GetMapping("/recentlyViewed")
@@ -39,6 +43,11 @@ class HomePageController(
   @GetMapping("/mostLiked")
   fun getMostLiked(): List<PropertyDTO> {
     return propertyService.mostLiked().map { propertyFactory.convert(it) }
+  }
+
+  @GetMapping("/recommendations")
+  fun getRecommendations(): List<RecommendationDTO> {
+    return recommendationService.getRecommendations(3).map { recommendationFactory.convert(it) }
   }
 
   @GetMapping("/all-recently-viewed")
