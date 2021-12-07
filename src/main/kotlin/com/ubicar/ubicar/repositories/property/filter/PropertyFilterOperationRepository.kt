@@ -198,6 +198,8 @@ class PropertyFilterOperationRepository @Autowired constructor(
         actual += 1
       if (filter.maxAmountSquareMeter != null && filter.maxAmountSquareMeter!! <= property.squareFoot!!)
         actual += 1
+      if (filter.city != null && filter.city!!.id == property.address!!.city.id)
+        actual += 1
 
       if (actual > best) {
         best = actual

@@ -41,6 +41,6 @@ class Filter(
   var user: User?,
 
   @ManyToOne
-  var city: City?,
+  var city: City?
 
 ) : AbstractEntity()
