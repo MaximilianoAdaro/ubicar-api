@@ -40,8 +40,8 @@ class RecommendationServiceImpl(
     sendMailRecommendations(
       velocityEngine,
       session,
-      "Encontramos una oportunidad que podría interesarte",
-      "opportunity.html",
+      "Tenemos algunas recomendaciones para vos en base a tus busquedas",
+      "recommendation.html",
       properties,
       userService.findLogged().email
     )
