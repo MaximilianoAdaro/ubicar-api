@@ -19,8 +19,7 @@ class PropertyController(
   private val propertyFactory: PropertyFactory,
   private val createPropertyFactory: CreatePropertyFactory,
   private val predictorService: PredictorService,
-  private val imageFactory: ImageFactory,
-  private val geoSpatialService: GeoSpatialService
+  private val imageFactory: ImageFactory
 ) {
 
   @PostMapping("/create")

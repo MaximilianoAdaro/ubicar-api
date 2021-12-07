@@ -47,7 +47,8 @@ class HomePageController(
 
   @GetMapping("/recommendations")
   fun getRecommendations(): List<RecommendationDTO> {
-    return recommendationService.getRecommendations(3).map { recommendationFactory.convert(it) }
+    val list = recommendationService.getRecommendations(3).map { recommendationFactory.convert(it) }
+    return list
   }
 
   @GetMapping("/all-recently-viewed")

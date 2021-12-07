@@ -40,7 +40,6 @@ class Filter(
   @ManyToOne(cascade = [CascadeType.ALL])
   var user: User?,
 
-  @ManyToOne
-  var city: City?
+  var location: String?
 
 ) : AbstractEntity()

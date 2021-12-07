@@ -17,6 +17,9 @@ class Recommendation(
   var properties: MutableList<Property> = mutableListOf(),
 
   @OneToOne
-  var filter: Filter
+  var filter: Filter,
+
+  @OneToOne
+   var liked: Property
 
 ) : AbstractEntity()

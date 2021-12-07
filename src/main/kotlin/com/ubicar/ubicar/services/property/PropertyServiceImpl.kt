@@ -169,10 +169,10 @@ class PropertyServiceImpl(
     val filter = checkFilters(newProperty)
     if(filter != null) {
       var list = propertyFilterService.filterProperties(filterFactory.convert(filter)).reversed().toMutableList()
-      list = list.filter { it.id == newProperty.id }.toMutableList()
+      list = list.filter { it.id != newProperty.id }.toMutableList()
       list.sortByDescending { it.likes.size }
       val properties = if (list.size > 10) list.subList(0, 10) else list
-      recommendationService.save(Recommendation(properties, filter))
+      recommendationService.save(Recommendation(properties, filter, newProperty))
       // Ahora se manda automaticamente despues de que se likea pero lo mejor sería esperar un tiempo
       recommendationService.recommendationsMail()
     }

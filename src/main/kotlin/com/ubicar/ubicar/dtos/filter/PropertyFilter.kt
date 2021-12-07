@@ -1,6 +1,5 @@
 package com.ubicar.ubicar.dtos.filter
 
-import com.ubicar.ubicar.entities.City
 import com.ubicar.ubicar.entities.Condition
 import com.ubicar.ubicar.entities.TypeOfProperty
 import org.springframework.data.domain.Sort
@@ -30,7 +29,7 @@ data class PropertyFilterDto(
   var maxDistanceFireStation: Double?,
   var minDistanceSubway: Double?,
   var maxDistanceSubway: Double?,
-  var city: City?
+  var location: String?
 )
 
 enum class PropertySort {
