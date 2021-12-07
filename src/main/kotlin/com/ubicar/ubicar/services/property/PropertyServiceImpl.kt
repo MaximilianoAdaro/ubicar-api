@@ -168,7 +168,8 @@ class PropertyServiceImpl(
   private fun generateRecommendations(newProperty: Property) {
     val filter = checkFilters(newProperty)
     if(filter != null) {
-      val list = propertyFilterService.filterProperties(filterFactory.convert(filter)).reversed().toMutableList()
+      var list = propertyFilterService.filterProperties(filterFactory.convert(filter)).reversed().toMutableList()
+      list = list.filter { it.id == newProperty.id }.toMutableList()
       list.sortByDescending { it.likes.size }
       val properties = if (list.size > 10) list.subList(0, 10) else list
       recommendationService.save(Recommendation(properties, filter))

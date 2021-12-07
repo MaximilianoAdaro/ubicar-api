@@ -122,7 +122,11 @@ class Property(
 
   @OneToOne
   @JoinColumn(name = "geo_data_property_id", referencedColumnName = "id")
-  var geoData: GeoDataProperty?
+  var geoData: GeoDataProperty?,
+
+  @ManyToMany(mappedBy = "properties")
+  @JsonBackReference
+  var recommendations: MutableList<Recommendation> = mutableListOf(),
 
 ) : AbstractEntity()
 

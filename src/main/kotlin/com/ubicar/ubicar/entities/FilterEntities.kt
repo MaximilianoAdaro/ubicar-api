@@ -38,6 +38,9 @@ class Filter(
   var maxDistanceSubway: Double?,
 
   @ManyToOne(cascade = [CascadeType.ALL])
-  var user: User?
+  var user: User?,
+
+  @ManyToOne
+  var city: City?,
 
 ) : AbstractEntity()

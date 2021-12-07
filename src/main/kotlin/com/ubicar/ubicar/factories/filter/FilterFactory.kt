@@ -69,7 +69,8 @@ class FilterFactory(
       filterDto.maxDistanceFireStation,
       filterDto.minDistanceSubway,
       filterDto.maxDistanceSubway,
-      userService.findLogged()
+      userService.findLogged(),
+      null
     )
   }
 }
