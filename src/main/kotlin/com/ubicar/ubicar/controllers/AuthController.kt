@@ -1,11 +1,14 @@
 package com.ubicar.ubicar.controllers
 
 import com.ubicar.ubicar.dtos.*
+import com.ubicar.ubicar.dtos.filter.PropertyFilterDto
+import com.ubicar.ubicar.factories.filter.FilterFactory
 import com.ubicar.ubicar.factories.user.RoleFactory
 import com.ubicar.ubicar.factories.user.UserDtoFactory
 import com.ubicar.ubicar.factories.user.UserDtoProfileFactory
 import com.ubicar.ubicar.repositories.user.UserRoleRepository
 import com.ubicar.ubicar.services.auth.AuthenticationService
+import com.ubicar.ubicar.services.filter.FilterService
 import com.ubicar.ubicar.services.user.UserService
 import javassist.NotFoundException
 import org.springframework.http.ResponseEntity
@@ -27,7 +30,9 @@ class AuthController(
   private val userDtoFactory: UserDtoFactory,
   private val userDtoProfileFactory: UserDtoProfileFactory,
   private val userRoleRepository: UserRoleRepository,
-  private val roleFactory: RoleFactory
+  private val roleFactory: RoleFactory,
+  private val filterService: FilterService,
+  private val filterFactory: FilterFactory
 ) {
 
   @PostMapping("/login")
@@ -47,6 +52,11 @@ class AuthController(
   @PostMapping("/register")
   fun register(@RequestBody userCreation: UserCreationDTO): UserDTO {
     return userDtoFactory.convert(userService.saveUser(userCreation))
+  }
+
+  @PostMapping("/save-filters")
+  fun saveFilters(@RequestBody filter: PropertyFilterDto) {
+    filterService.save(filterFactory.from(filter))
   }
 
   @GetMapping("/me")

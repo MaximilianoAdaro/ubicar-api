@@ -35,8 +35,6 @@ class PropertyPublicController(
   private val propertyService: PropertyService,
   private val propertyFactory: PropertyFactory,
   private val propertyPreviewFactory: PropertyPreviewFactory,
-  private val filterService: FilterService,
-  private val filterFactory: FilterFactory,
   private val recentlyViewedService: RecentlyViewedService,
   private val userService: UserService,
   private val csvPropertyService: CsvPropertyService,
@@ -72,8 +70,7 @@ class PropertyPublicController(
     @RequestParam(value = "direction", required = false) direction: Optional<Sort.Direction>,
     @RequestParam(value = "property", required = false) property: Optional<PropertySort>,
   ): Page<PropertyPreviewDTO> {
-    if (SecurityContextHolder.getContext().authentication.principal != "anonymousUser") filterService.save(filterFactory.from(filter))
-    val propertyLazyTableDto = PropertyLazyTableDto(
+      val propertyLazyTableDto = PropertyLazyTableDto(
       page.orElse(0),
       size.orElse(16),
       direction.orElse(Sort.Direction.ASC),
