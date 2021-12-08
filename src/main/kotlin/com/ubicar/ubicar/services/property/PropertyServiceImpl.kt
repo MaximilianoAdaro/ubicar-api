@@ -172,9 +172,9 @@ class PropertyServiceImpl(
       list = list.filter { it.id != newProperty.id }.toMutableList()
       list.sortByDescending { it.likes.size }
       val properties = if (list.size > 10) list.subList(0, 10) else list
-      recommendationService.save(Recommendation(properties, filter, newProperty))
+      val recommendation = recommendationService.save(Recommendation(properties, filter, newProperty))
       // Ahora se manda automaticamente despues de que se likea pero lo mejor sería esperar un tiempo
-      recommendationService.recommendationsMail()
+      recommendationService.recommendationsMail(recommendation)
     }
   }
 

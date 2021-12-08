@@ -10,5 +10,5 @@ interface RecommendationService {
 
   fun getRecommendations(size: Int): List<Recommendation>
 
-  fun recommendationsMail()
+  fun recommendationsMail(recommendation: Recommendation)
 }

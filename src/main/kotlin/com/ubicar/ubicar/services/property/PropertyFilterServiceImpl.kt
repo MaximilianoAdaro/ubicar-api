@@ -46,7 +46,11 @@ class PropertyFilterServiceImpl(
     return propertyFilterRepository.findByUser(user.id)
   }
 
+  private fun findAvailable(user: User): List<Filter> {
+    return propertyFilterRepository.findAvailable(user.id).asReversed()
+  }
+
   override fun checkFilters(property: Property, user: User): Filter? {
-    return filterRepository.checkFilters(property, findByUser(user).reversed())
+    return filterRepository.checkFilters(property, findAvailable(user).reversed())
   }
 }

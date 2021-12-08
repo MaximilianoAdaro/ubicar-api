@@ -34,15 +34,14 @@ class RecommendationServiceImpl(
     return if(list.size >= size) list.subList(0,size) else list
   }
 
-  override fun recommendationsMail() {
+  override fun recommendationsMail(recommendation: Recommendation) {
     val session: Session? = setProperties()
-    val properties = if(getRecommendations(1)[0].properties.size < 5) getRecommendations(1)[0].properties else getRecommendations(1)[0].properties.subList(0, 5)
     sendMailRecommendations(
       velocityEngine,
       session,
       "Tenemos algunas recomendaciones para vos en base a tus busquedas",
       "recommendation.html",
-      properties,
+      recommendation.properties,
       userService.findLogged().email
     )
   }

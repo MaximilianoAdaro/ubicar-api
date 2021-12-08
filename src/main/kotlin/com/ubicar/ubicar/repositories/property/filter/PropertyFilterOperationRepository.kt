@@ -182,21 +182,21 @@ class PropertyFilterOperationRepository @Autowired constructor(
         actual += 1
       if (filter.style != null && filter.style!!.label == property.style!!.label)
         actual += 1
-      if (filter.minPrice != null && filter.minPrice!! >= property.price)
+      if (filter.minPrice != null && filter.minPrice!! <= property.price)
         actual += 1
-      if (filter.maxPrice != null && filter.maxPrice!! <= property.price)
+      if (filter.maxPrice != null && filter.maxPrice!! >= property.price)
         actual += 1
-      if (filter.minAmountRoom != null && filter.minAmountRoom!! >= property.rooms!!)
+      if (filter.minAmountRoom != null && filter.minAmountRoom!! <= property.rooms!!)
         actual += 1
-      if (filter.maxAmountRoom != null && filter.maxAmountRoom!! <= property.rooms!!)
+      if (filter.maxAmountRoom != null && filter.maxAmountRoom!! >= property.rooms!!)
         actual += 1
-      if (filter.minAmountBathroom != null && filter.minAmountBathroom!! >= (property.fullBaths!! + property.toilets!!))
+      if (filter.minAmountBathroom != null && filter.minAmountBathroom!! <= (property.fullBaths!! + property.toilets!!))
         actual += 1
-      if (filter.maxAmountBathroom != null && filter.maxAmountBathroom!! <= (property.fullBaths!! + property.toilets!!))
+      if (filter.maxAmountBathroom != null && filter.maxAmountBathroom!! >= (property.fullBaths!! + property.toilets!!))
         actual += 1
-      if (filter.minAmountSquareMeter != null && filter.minAmountSquareMeter!! >= property.squareFoot!!)
+      if (filter.minAmountSquareMeter != null && filter.minAmountSquareMeter!! <= property.squareFoot!!)
         actual += 1
-      if (filter.maxAmountSquareMeter != null && filter.maxAmountSquareMeter!! <= property.squareFoot!!)
+      if (filter.maxAmountSquareMeter != null && filter.maxAmountSquareMeter!! >= property.squareFoot!!)
         actual += 1
       if (filter.location != null) {
         val separated = filter.location!!.split(", ")
