@@ -23,6 +23,8 @@ interface PropertyFilterService {
 
   fun filterProperties(filter: PropertyFilterDto): List<Property>
 
+  fun filterPropertiesForRecommendations(filter: PropertyFilterDto): List<Property>
+
   fun findByUser(user: User): List<Filter>
 
   fun checkFilters(property: Property, user: User): Filter?

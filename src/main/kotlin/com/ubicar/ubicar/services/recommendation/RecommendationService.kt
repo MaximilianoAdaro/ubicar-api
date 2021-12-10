@@ -1,5 +1,6 @@
 package com.ubicar.ubicar.services.recommendation
 
+import com.ubicar.ubicar.entities.Property
 import com.ubicar.ubicar.entities.Recommendation
 
 interface RecommendationService {
@@ -11,4 +12,6 @@ interface RecommendationService {
   fun getRecommendations(size: Int): List<Recommendation>
 
   fun recommendationsMail(recommendation: Recommendation)
+
+  fun deleteByProperty(newProperty: Property)
 }

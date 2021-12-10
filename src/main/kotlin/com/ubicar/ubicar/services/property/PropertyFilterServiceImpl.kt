@@ -42,6 +42,10 @@ class PropertyFilterServiceImpl(
     return filterRepository.getFilteredProperties(filter, null)
   }
 
+  override fun filterPropertiesForRecommendations(filter: PropertyFilterDto): List<Property> {
+    return filterRepository.getFilteredPropertiesForRecommendations(filter)
+  }
+
   override fun findByUser(user: User): List<Filter> {
     return propertyFilterRepository.findByUser(user.id)
   }
@@ -51,6 +55,6 @@ class PropertyFilterServiceImpl(
   }
 
   override fun checkFilters(property: Property, user: User): Filter? {
-    return filterRepository.checkFilters(property, findAvailable(user).reversed())
+    return filterRepository.checkFilters(property, findAvailable(user))
   }
 }

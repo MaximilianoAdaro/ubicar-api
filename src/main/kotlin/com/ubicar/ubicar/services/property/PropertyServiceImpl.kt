@@ -168,9 +168,10 @@ class PropertyServiceImpl(
   private fun generateRecommendations(newProperty: Property) {
     val filter = checkFilters(newProperty)
     if(filter != null) {
-      var list = propertyFilterService.filterProperties(filterFactory.convert(filter)).reversed().toMutableList()
+      var list = propertyFilterService.filterPropertiesForRecommendations(filterFactory.convert(filter)).reversed().toMutableList()
       list = list.filter { it.id != newProperty.id }.toMutableList()
       list.sortByDescending { it.likes.size }
+      list.distinctBy { it.title }
       val properties = if (list.size > 10) list.subList(0, 10) else list
       val recommendation = recommendationService.save(Recommendation(properties, filter, newProperty))
       // Ahora se manda automaticamente despues de que se likea pero lo mejor sería esperar un tiempo
@@ -188,7 +189,9 @@ class PropertyServiceImpl(
     val logged = sessionUtils.getTokenUserInformation()
     if (!property.likes.contains(logged)) throw BadRequestException("You never liked this property")
     property.likes.remove(logged)
-    return propertyRepository.save(property)
+    val newProperty = propertyRepository.save(property)
+    recommendationService.deleteByProperty(newProperty)
+    return newProperty
   }
 
   override fun getAllByFilterPageable(

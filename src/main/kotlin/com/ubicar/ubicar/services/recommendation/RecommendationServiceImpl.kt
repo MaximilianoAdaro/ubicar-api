@@ -36,14 +36,24 @@ class RecommendationServiceImpl(
 
   override fun recommendationsMail(recommendation: Recommendation) {
     val session: Session? = setProperties()
+    val properties = recommendation.properties
+    val html = if (properties.size >= 3) "recommendation.html" else if (properties.size == 2) "recommendation2.html" else "recommendation1.html"
     sendMailRecommendations(
       velocityEngine,
       session,
       "Tenemos algunas recomendaciones para vos en base a tus busquedas",
-      "recommendation.html",
-      recommendation.properties,
+      html,
+      properties,
       userService.findLogged().email
     )
+  }
+
+  override fun deleteByProperty(newProperty: Property) {
+    val recommendation = recommendationRepository.findByProperty(newProperty.id)
+    if (recommendation != null) {
+      recommendation.properties.clear()
+      recommendationRepository.delete(recommendationRepository.save(recommendation))
+    }
   }
 
   fun setProperties(): Session? {

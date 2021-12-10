@@ -11,4 +11,7 @@ interface RecommendationRepository : CrudRepository<Recommendation, String> {
 
   @Query(value = "select r from Recommendation r where r.filter.user.id = :#{#id}")
   fun findByUser(id: String): List<Recommendation>
+
+  @Query(value = "select r from Recommendation r where r.liked.id = :#{#id}")
+  fun findByProperty(id: String): Recommendation?
 }
