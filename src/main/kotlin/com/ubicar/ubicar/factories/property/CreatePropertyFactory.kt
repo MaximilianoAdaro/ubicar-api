@@ -1,17 +1,13 @@
 package com.ubicar.ubicar.factories.property
 
 import com.ubicar.ubicar.dtos.CreatePropertyDTO
-import com.ubicar.ubicar.entities.Amenity
-import com.ubicar.ubicar.entities.Condition
-import com.ubicar.ubicar.entities.ConstructionMaterial
-import com.ubicar.ubicar.entities.Property
-import com.ubicar.ubicar.entities.SecurityMeasure
-import com.ubicar.ubicar.entities.TypeOfProperty
+import com.ubicar.ubicar.entities.*
 import com.ubicar.ubicar.factories.location.AddressFactory
 import com.ubicar.ubicar.repositories.property.AmenityRepository
 import com.ubicar.ubicar.repositories.property.MaterialRepository
 import com.ubicar.ubicar.repositories.property.SecurityRepository
 import com.ubicar.ubicar.repositories.property.StyleRepository
+import com.ubicar.ubicar.services.geoSpatialService.GeoSpatialService
 import com.ubicar.ubicar.services.user.UserService
 import com.ubicar.ubicar.utils.NotFoundException
 import org.springframework.stereotype.Component
@@ -76,7 +72,8 @@ class CreatePropertyFactory(
       LocalDate.now(),
       mutableListOf(),
       userService.findLogged(),
-      input.step
+      input.step,
+      geoData = null
     )
     property.id = if(input.id.isNullOrBlank()) "" else input.id
     return property

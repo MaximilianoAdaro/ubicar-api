@@ -5,6 +5,8 @@ import com.ubicar.ubicar.dtos.PropertyDTO
 import com.ubicar.ubicar.factories.image.ImageFactory
 import com.ubicar.ubicar.factories.property.CreatePropertyFactory
 import com.ubicar.ubicar.factories.property.PropertyFactory
+import com.ubicar.ubicar.services.geoSpatialService.GeoSpatialService
+import com.ubicar.ubicar.services.predictor.PredictorService
 import com.ubicar.ubicar.services.property.PropertyService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
@@ -16,7 +18,9 @@ class PropertyController(
   private val propertyService: PropertyService,
   private val propertyFactory: PropertyFactory,
   private val createPropertyFactory: CreatePropertyFactory,
-  val imageFactory: ImageFactory
+  private val predictorService: PredictorService,
+  private val imageFactory: ImageFactory,
+  private val geoSpatialService: GeoSpatialService
 ) {
 
   @PostMapping("/create")
@@ -45,8 +49,9 @@ class PropertyController(
   ): PropertyDTO {
     val images = files?.map { imageFactory.convert(it) }.orEmpty()
     val property = createPropertyFactory.convert(propertyDTO)
-
     val savedProperty = propertyService.save(property, images)
+    val result = predictorService.requestPrediction(savedProperty)
+    if (result.toDouble() > savedProperty.price) propertyService.isOpportunity(savedProperty.id)
     return propertyFactory.convert(savedProperty)
   }
 
@@ -71,8 +76,12 @@ class PropertyController(
   ): PropertyDTO {
     val property = createPropertyFactory.convert(propertyDTO)
     val images = files?.map { imageFactory.convert(it) }.orEmpty()
-
     val updatedProperty = propertyService.update(id, property, images, imagesToDelete.orEmpty())
     return propertyFactory.convert(updatedProperty)
+  }
+
+  @PutMapping("/opportunity/{id}")
+  fun isOpportunity(@PathVariable id: String): PropertyDTO {
+    return propertyFactory.convert(propertyService.isOpportunity(id))
   }
 }

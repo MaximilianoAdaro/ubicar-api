@@ -11,7 +11,11 @@ import com.ubicar.ubicar.factories.filter.FilterFactory
 import com.ubicar.ubicar.factories.property.PropertyFactory
 import com.ubicar.ubicar.factories.property.PropertyPreviewFactory
 import com.ubicar.ubicar.services.filter.FilterService
+import com.ubicar.ubicar.services.predictor.PredictorService
+import com.ubicar.ubicar.services.property.CsvPropertyService
 import com.ubicar.ubicar.services.property.PropertyService
+import com.ubicar.ubicar.services.user.RecentlyViewedService
+import com.ubicar.ubicar.services.user.UserService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -32,7 +36,11 @@ class PropertyPublicController(
   private val propertyFactory: PropertyFactory,
   private val propertyPreviewFactory: PropertyPreviewFactory,
   private val filterService: FilterService,
-  private val filterFactory: FilterFactory
+  private val filterFactory: FilterFactory,
+  private val recentlyViewedService: RecentlyViewedService,
+  private val userService: UserService,
+  private val csvPropertyService: CsvPropertyService,
+  private val predictorService: PredictorService
 ) {
 
   @GetMapping("/preview")
@@ -64,7 +72,11 @@ class PropertyPublicController(
     @RequestParam(value = "direction", required = false) direction: Optional<Sort.Direction>,
     @RequestParam(value = "property", required = false) property: Optional<PropertySort>,
   ): Page<PropertyPreviewDTO> {
-    if (SecurityContextHolder.getContext().authentication.principal != "anonymousUser") filterService.save(filterFactory.from(filter))
+    if (SecurityContextHolder.getContext().authentication.principal != "anonymousUser") filterService.save(
+      filterFactory.from(
+        filter
+      )
+    )
     val propertyLazyTableDto = PropertyLazyTableDto(
       page.orElse(0),
       size.orElse(16),
@@ -78,11 +90,30 @@ class PropertyPublicController(
 
   @GetMapping("/{id}")
   fun getProperty(@PathVariable id: String): PropertyDTO {
-    return propertyFactory.convert(propertyService.findById(id))
+    val property = propertyService.findById(id)
+    if (SecurityContextHolder.getContext().authentication.principal != "anonymousUser")
+      recentlyViewedService.addRecentlyViewed(property, userService.findLogged())
+    return propertyFactory.convert(property)
   }
 
   @PostMapping("/contact/{id}")
   fun contactPropertyOwner(@PathVariable id: String, @RequestBody contactDto: UserContactDto) {
     propertyService.contactOwner(id, contactDto)
+  }
+
+  @PostMapping("/csv/{propertyId}")
+  fun createCsvFromProperty(@PathVariable propertyId: String) {
+    csvPropertyService.createCsvFromProperty(propertyId)
+  }
+
+  @GetMapping("/set-geodata")
+  fun setGeoData() {
+    propertyService.runAllSetGeoDataToProperties()
+  }
+
+  @GetMapping("/predict/{propertyId}")
+  fun predictProperty(@PathVariable propertyId: String) {
+    val property = propertyService.findById(propertyId)
+    predictorService.requestPrediction(property)
   }
 }

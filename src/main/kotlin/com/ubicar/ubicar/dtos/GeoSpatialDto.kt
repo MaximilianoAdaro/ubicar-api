@@ -12,5 +12,6 @@ enum class GeoType {
   POLICE,
   JAIL,
   IND,
-  TRAINSTATION
+  TRAINSTATION,
+  SUBWAY_STATION
 }

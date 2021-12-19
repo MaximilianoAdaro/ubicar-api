@@ -10,10 +10,14 @@ import com.ubicar.ubicar.dtos.GeoType.POLICE
 import com.ubicar.ubicar.dtos.GeoType.PORT
 import com.ubicar.ubicar.dtos.GeoType.RAIL
 import com.ubicar.ubicar.dtos.GeoType.SCHOOL
+import com.ubicar.ubicar.dtos.GeoType.SUBWAY_STATION
 import com.ubicar.ubicar.dtos.GeoType.TRAINSTATION
 import com.ubicar.ubicar.dtos.GeoType.UNIV
 import com.ubicar.ubicar.dtos.ViewBoxCoordinatesDTOFloat
+import com.ubicar.ubicar.entities.GeoDataProperty
+import com.ubicar.ubicar.entities.Property
 import com.ubicar.ubicar.factories.geoSpatial.PolygonFactory
+import com.ubicar.ubicar.repositories.geoData.GeoDataPropertyRepository
 import com.ubicar.ubicar.repositories.geoSpatial.AirportRepository
 import com.ubicar.ubicar.repositories.geoSpatial.EducationalStablishmentRepository
 import com.ubicar.ubicar.repositories.geoSpatial.FireStationRepository
@@ -23,9 +27,11 @@ import com.ubicar.ubicar.repositories.geoSpatial.PenitenciaryRepository
 import com.ubicar.ubicar.repositories.geoSpatial.PoliceRepository
 import com.ubicar.ubicar.repositories.geoSpatial.PortRepository
 import com.ubicar.ubicar.repositories.geoSpatial.RailwayRepository
+import com.ubicar.ubicar.repositories.geoSpatial.SubwayRepository
 import com.ubicar.ubicar.repositories.geoSpatial.TrainStationRepository
 import com.ubicar.ubicar.repositories.geoSpatial.UniversityRepository
 import com.ubicar.ubicar.utils.BadRequestException
+import com.vividsolutions.jts.geom.Point
 import org.springframework.stereotype.Service
 
 @Service
@@ -40,7 +46,9 @@ class GeoSpatialServiceImpl(
   val policeRepository: PoliceRepository,
   val penitenciaryRepository: PenitenciaryRepository,
   val industrialZoneRepository: IndustrialZoneRepository,
-  val trainStationRepository: TrainStationRepository
+  val trainStationRepository: TrainStationRepository,
+  val subwayRepository: SubwayRepository,
+  val geoDataPropertyRepository: GeoDataPropertyRepository
 ) : GeoSpatialService {
 
   override fun findAllInViewBox(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTOFloat, geoType: GeoType): List<String> {
@@ -58,7 +66,51 @@ class GeoSpatialServiceImpl(
       JAIL -> penitenciaryRepository.findAllInViewBox(polygon)
       IND -> industrialZoneRepository.findAllInViewBox(polygon)
       TRAINSTATION -> trainStationRepository.findAllInViewBox(polygon)
+      SUBWAY_STATION -> subwayRepository.findAllInViewBox(polygon)
       else -> throw BadRequestException("Not available ${geoType.name} geo type")
     }
+  }
+
+  override fun runGeoDataUpdate(property: Property): GeoDataProperty {
+    val coordinates = property.address!!.coordinates
+    return GeoDataProperty(
+      railwayRepository.calculateMinDistanceFromCoords(coordinates),
+      industrialZoneRepository.calculateMinDistanceFromCoords(coordinates),
+      airportRepository.calculateMinDistanceFromCoords(coordinates),
+      educationalStablishmentRepository.calculateMinDistanceFromCoords(coordinates),
+      fireStationRepository.calculateMinDistanceFromCoords(coordinates),
+      healthBuildingRepository.calculateMinDistanceFromCoords(coordinates),
+      penitenciaryRepository.calculateMinDistanceFromCoords(coordinates),
+      portRepository.calculateMinDistanceFromCoords(coordinates),
+      policeRepository.calculateMinDistanceFromCoords(coordinates),
+      trainStationRepository.calculateMinDistanceFromCoords(coordinates),
+      universityRepository.calculateMinDistanceFromCoords(coordinates),
+      subwayRepository.calculateMinDistanceFromCoords(coordinates)
+    )
+  }
+
+  override fun storeGeodataOfProperty(property: Property): GeoDataProperty {
+    return geoDataPropertyRepository.save(runGeoDataUpdate(property))
+  }
+
+  override fun runGeoDataUpdate(coordinates: Point): List<Double> {
+    return listOf(
+      railwayRepository.calculateMinDistanceFromCoords(coordinates),
+      industrialZoneRepository.calculateMinDistanceFromCoords(coordinates),
+      airportRepository.calculateMinDistanceFromCoords(coordinates),
+      educationalStablishmentRepository.calculateMinDistanceFromCoords(coordinates),
+      fireStationRepository.calculateMinDistanceFromCoords(coordinates),
+      healthBuildingRepository.calculateMinDistanceFromCoords(coordinates),
+      penitenciaryRepository.calculateMinDistanceFromCoords(coordinates),
+      portRepository.calculateMinDistanceFromCoords(coordinates),
+      policeRepository.calculateMinDistanceFromCoords(coordinates),
+      trainStationRepository.calculateMinDistanceFromCoords(coordinates),
+      universityRepository.calculateMinDistanceFromCoords(coordinates),
+      subwayRepository.calculateMinDistanceFromCoords(coordinates)
+    )
+  }
+
+  override fun save(geoDataProperty: GeoDataProperty): GeoDataProperty {
+    return geoDataPropertyRepository.save(geoDataProperty)
   }
 }

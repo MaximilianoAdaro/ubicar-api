@@ -17,7 +17,8 @@ import java.util.Optional
 class UserServiceImpl(
   private val userRepository: UserRepository,
   private val userCreationFactory: UserCreationFactory,
-  private val userCreationGoogleFactory: UserCreationGoogleFactory
+  private val userCreationGoogleFactory: UserCreationGoogleFactory,
+  private val recentlyViewedService: RecentlyViewedService
 ) : UserService {
 
   private val passwordEncoder = BCryptPasswordEncoder()
@@ -28,7 +29,9 @@ class UserServiceImpl(
 
   override fun saveUser(userCreationDto: UserCreationDTO): User {
     userCreationDto.password = passwordEncoder.encode(userCreationDto.password)
-    return userRepository.save(userCreationFactory.from(userCreationDto))
+    val user = userRepository.save(userCreationFactory.from(userCreationDto))
+    recentlyViewedService.save(user)
+    return user
   }
 
   override fun saveUserWithGoogle(userCreationDto: GoogleLoginUserDTO): User {
@@ -36,7 +39,9 @@ class UserServiceImpl(
       userCreationDto,
       passwordEncoder.encode("password".plus(userCreationDto.email.plus("password")))
     )
-    return userRepository.save(from)
+    val user = userRepository.save(from)
+    recentlyViewedService.save(user)
+    return user
   }
 
   override fun findById(id: String): User {
@@ -68,16 +73,14 @@ class UserServiceImpl(
     return userRepository
       .findById(id)
       .map {
-        old ->
+          old ->
         old.userName = user.userName
-        old.email = user.email
-        save(old)
+        userRepository.save(old)
       }
       .orElseThrow { NotFoundException("User not found") }
   }
 
-  private fun save(user: User): User {
-    if (userRepository.existsByEmail(user.email)) throw NotFoundException("This email is already registered")
-    return userRepository.save(user)
+  override fun getInversores(): List<User> {
+    return userRepository.findByRoleInversor()
   }
 }

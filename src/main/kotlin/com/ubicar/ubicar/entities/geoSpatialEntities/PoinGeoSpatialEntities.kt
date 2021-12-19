@@ -56,3 +56,13 @@ class Port : PointGeomData()
 @Table(name = "point_university")
 @Entity
 class University : PointGeomData()
+
+@Table(name = "point_subway_station")
+@Entity
+class Subway(
+  @Column(unique = true)
+  var gid: Int = 0,
+  var station: String? = null,
+  var line: String? = null,
+  var geom: Point? = null
+) : AbstractGeomEntity()

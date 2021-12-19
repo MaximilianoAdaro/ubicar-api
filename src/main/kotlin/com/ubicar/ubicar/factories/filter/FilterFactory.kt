@@ -26,7 +26,19 @@ class FilterFactory(
       input.maxAmountBathroom,
       input.minAmountSquareMeter,
       input.maxAmountSquareMeter,
-      input.containsYard
+      input.containsYard,
+      input.minDistanceSchool,
+      input.maxDistanceSchool,
+      input.minDistanceUniversity,
+      input.maxDistanceUniversity,
+      input.minDistanceHospital,
+      input.maxDistanceHospital,
+      input.minDistancePenitentiary,
+      input.maxDistanceCommissary,
+      input.minDistanceFireStation,
+      input.maxDistanceFireStation,
+      input.minDistanceSubway,
+      input.maxDistanceSubway
     )
   }
 
@@ -45,6 +57,18 @@ class FilterFactory(
       filterDto.minAmountSquareMeter,
       filterDto.maxAmountSquareMeter,
       filterDto.containsYard,
+      filterDto.minDistanceSchool,
+      filterDto.maxDistanceSchool,
+      filterDto.minDistanceUniversity,
+      filterDto.maxDistanceUniversity,
+      filterDto.minDistanceHospital,
+      filterDto.maxDistanceHospital,
+      filterDto.minDistancePenitentiary,
+      filterDto.maxDistanceCommissary,
+      filterDto.minDistanceFireStation,
+      filterDto.maxDistanceFireStation,
+      filterDto.minDistanceSubway,
+      filterDto.maxDistanceSubway,
       userService.findLogged()
     )
   }

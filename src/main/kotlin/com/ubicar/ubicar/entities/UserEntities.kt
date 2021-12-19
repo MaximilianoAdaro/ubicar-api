@@ -4,17 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import org.hibernate.annotations.CreationTimestamp
 import java.time.LocalDate
-import javax.persistence.CascadeType
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
-import javax.persistence.FetchType
-import javax.persistence.JoinColumn
-import javax.persistence.JoinTable
-import javax.persistence.ManyToMany
-import javax.persistence.ManyToOne
-import javax.persistence.Table
+import javax.persistence.*
 
 @Table(name = "user_data")
 @Entity
@@ -50,7 +40,8 @@ class UserRole(
   var active: Boolean = true,
   @CreationTimestamp var creationDate: LocalDate,
 
-  @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL]) @JsonManagedReference
+  @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+  @JsonManagedReference
   var permissions: MutableList<Permission> = mutableListOf()
 ) : AbstractEntity()
 
@@ -64,6 +55,25 @@ class Permission(
   var active: Boolean = true,
   @CreationTimestamp var creationDate: LocalDate,
 
-  @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL]) @JsonBackReference
+  @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+  @JsonBackReference
   var userRoles: MutableList<UserRole> = mutableListOf()
+) : AbstractEntity()
+
+@Table(name = "recently_viewed")
+@Entity
+class RecentlyViewed(
+
+  @OneToOne
+  var user: User,
+
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(
+    name = "recently_viewed_property",
+    joinColumns = [JoinColumn(name = "recently_viewed_id", referencedColumnName = "id")],
+    inverseJoinColumns = [JoinColumn(name = "property_id", referencedColumnName = "id")]
+  )
+  @JsonManagedReference
+  var properties: MutableList<Property> = mutableListOf()
+
 ) : AbstractEntity()

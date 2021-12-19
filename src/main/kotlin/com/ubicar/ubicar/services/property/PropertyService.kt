@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable
 
 interface PropertyService {
 
+  fun findAll(): List<Property>
+
   fun findAll(pageable: Pageable): Page<Property>
 
   fun findAllInViewBox(viewBoxCoordinatesDTO: ViewBoxCoordinatesDTOFloat): List<String>
@@ -38,4 +40,10 @@ interface PropertyService {
   fun getAllFavoritePropertiesByUser(user: User): List<Property>
   fun getAllPropertiesOfUser(user: User): List<Property>
   fun contactOwner(id: String, contactDto: UserContactDto)
+  fun mostLiked(): List<Property>
+  fun createCsvProperty(property: Property)
+  fun getOpportunities(): List<Property>
+  fun isOpportunity(id: String): Property
+
+  fun runAllSetGeoDataToProperties()
 }

@@ -13,6 +13,7 @@ import com.ubicar.ubicar.factories.geoSpatial.PolygonFactory
 import com.ubicar.ubicar.repositories.property.PropertyRepository
 import com.ubicar.ubicar.services.address.AddressService
 import com.ubicar.ubicar.services.contact.ContactService
+import com.ubicar.ubicar.services.geoSpatialService.GeoSpatialService
 import com.ubicar.ubicar.services.image.ImageService
 import com.ubicar.ubicar.services.openHouseDate.OpenHouseDateService
 import com.ubicar.ubicar.services.user.UserService
@@ -38,12 +39,19 @@ class PropertyServiceImpl(
   private val addressService: AddressService,
   private val contactService: ContactService,
   private val openHouseDateService: OpenHouseDateService,
-  private val userService: UserService,
   private val propertyFilterService: PropertyFilterService,
   private val velocityEngine: VelocityEngine,
   private val sessionUtils: SessionUtils,
-  val imageService: ImageService
+  private val imageService: ImageService,
+  private val csvPropertyService: CsvPropertyService,
+  private val tagsLikedService: TagsLikedService,
+  private val userService: UserService,
+  private val geoSpatialService: GeoSpatialService
 ) : PropertyService {
+
+  override fun findAll(): List<Property> {
+    return propertyRepository.findAll()
+  }
 
   override fun findAll(pageable: Pageable): Page<Property> {
     return propertyRepository.findAll(pageable)
@@ -59,7 +67,10 @@ class PropertyServiceImpl(
     return propertyRepository.findAllInViewBoxProperty(createPolygon)
   }
 
-  override fun findAllInViewBoxFiltered(filter: PropertyFilterDto, viewBoxCoordinatesDTOFloat: ViewBoxCoordinatesDTOFloat): List<String> {
+  override fun findAllInViewBoxFiltered(
+    filter: PropertyFilterDto,
+    viewBoxCoordinatesDTOFloat: ViewBoxCoordinatesDTOFloat
+  ): List<String> {
     val polygon = PolygonFactory.createPolygon(viewBoxCoordinatesDTOFloat.toDto().toPointList())
     return propertyFilterService.filterPropertiesViewBox(filter, polygon)
   }
@@ -72,10 +83,18 @@ class PropertyServiceImpl(
   override fun save(property: Property, images: List<Image>): Property {
     val savedImages = imageService.saveAll(images)
     property.images = savedImages.toMutableList()
-    if (property.step > 1) addressService.save(property.address!!)
+    if (property.step > 1) {
+      addressService.save(property.address!!)
+      property.geoData = geoSpatialService.save(geoSpatialService.runGeoDataUpdate(property))
+    }
     property.contacts.map { contactService.save(it) }
     property.openHouse.map { openHouseDateService.save(it) }
     return propertyRepository.save(property)
+  }
+
+  override fun createCsvProperty(property: Property) {
+    if (property.step == 7)
+      csvPropertyService.createCsvFromProperty(property)
   }
 
   override fun findById(id: String): Property {
@@ -83,7 +102,7 @@ class PropertyServiceImpl(
   }
 
   override fun update(id: String, property: Property, images: List<Image>, imagesToDelete: List<String>): Property {
-    return propertyRepository
+    val propertySaved = propertyRepository
       .findById(id)
       .map { old ->
 
@@ -126,6 +145,8 @@ class PropertyServiceImpl(
         propertyRepository.save(old)
       }
       .orElseThrow { NotFoundException("Property not found") }
+    createCsvProperty(propertySaved)
+    return propertySaved
   }
 
   override fun delete(id: String) = propertyRepository.delete(findById(id))
@@ -135,7 +156,10 @@ class PropertyServiceImpl(
     val logged = sessionUtils.getTokenUserInformation()
     if (property.likes.contains(logged)) throw BadRequestException("You already liked this property")
     property.likes.add(logged)
-    return propertyRepository.save(property)
+    val newProperty = propertyRepository.save(property)
+    if (tagsLikedService.findByPropertyIdAndUserId(newProperty.id, logged.id) == null)
+      tagsLikedService.create(newProperty, logged)
+    return newProperty
   }
 
   override fun dislike(id: String): Property {
@@ -183,6 +207,48 @@ class PropertyServiceImpl(
     )
   }
 
+  override fun mostLiked(): List<Property> {
+    val properties = propertyRepository.findAll()
+    properties.sortByDescending { it.likes.size }
+    return if (properties.size > 10) properties.subList(0, 10)
+    else properties
+  }
+
+  private fun opportunityMail(property: Property) {
+    val session: Session? = setProperties()
+    val list = userService.getInversores()
+    for (user in list) {
+      sendMailOpportunity(
+        velocityEngine,
+        session,
+        "Encontramos una oportunidad que podría interesarte",
+        "opportunity.html",
+        property,
+        user.email
+      )
+    }
+  }
+
+  override fun getOpportunities(): List<Property> {
+    return propertyRepository.getAllOpportunities()
+  }
+
+  override fun isOpportunity(id: String): Property {
+    val property = findById(id)
+    property.isOpportunity = true
+    opportunityMail(property)
+    return propertyRepository.save(property)
+  }
+
+  override fun runAllSetGeoDataToProperties() {
+    val list = this.findAll()
+    for (element in list) {
+      val geo = geoSpatialService.storeGeodataOfProperty(element)
+      element.geoData = geo
+      propertyRepository.save(element)
+    }
+  }
+
   fun setProperties(): Session? {
     val props = System.getProperties()
     props["mail.smtp.host"] = "smtp.gmail.com"
@@ -192,6 +258,55 @@ class PropertyServiceImpl(
     props["mail.smtp.starttls.enable"] = "true"
     props["mail.smtp.port"] = "587"
     return Session.getDefaultInstance(props)
+  }
+
+  private fun setConfigurations(
+    velocityEngine: VelocityEngine,
+    message: MimeMessage,
+    session: Session?,
+    template: String?,
+    velocityContext: VelocityContext
+  ) {
+    val stringWriter = StringWriter()
+    velocityEngine.mergeTemplate(template, "UTF-8", velocityContext, stringWriter)
+    message.setContent(stringWriter.toString(), "text/html; charset=utf-8")
+    val transport = session?.getTransport("smtp")
+    transport?.connect("smtp.gmail.com", "ubicar.austral2021", "Lab3Ubicar2021")
+    transport?.sendMessage(message, message.allRecipients)
+    transport?.close()
+  }
+
+  fun sendMailOpportunity(
+    velocityEngine: VelocityEngine,
+    session: Session?,
+    subject: String?,
+    template: String?,
+    property: Property,
+    recipient: String
+  ) {
+    val message = MimeMessage(session)
+    try {
+      message.setFrom(InternetAddress("ubicar.austral2021"))
+      message.addRecipient(Message.RecipientType.TO, InternetAddress(recipient))
+      message.subject = subject
+      val velocityContext = VelocityContext()
+      val condition = if (property.condition.name == "SALE") "En Venta" else "En Alquiler"
+      velocityContext.put("id", property.id)
+      velocityContext.put("title", property.title)
+      velocityContext.put("department", property.address?.city?.department)
+      velocityContext.put("number", property.address?.number)
+      velocityContext.put("street", property.address?.street?.toLowerCase()?.capitalize())
+      velocityContext.put("state", property.address?.city?.state?.name?.toLowerCase()?.capitalize())
+      velocityContext.put("city", property.address?.city?.name?.toLowerCase()?.capitalize())
+      velocityContext.put("rooms", property.rooms)
+      velocityContext.put("baths", property.fullBaths)
+      velocityContext.put("squared", property.coveredSquareFoot)
+      velocityContext.put("condition", condition)
+      velocityContext.put("price", property.price)
+      setConfigurations(velocityEngine, message, session, template, velocityContext)
+    } catch (me: MessagingException) {
+      me.printStackTrace()
+    }
   }
 
   fun sendMail(
@@ -212,13 +327,7 @@ class PropertyServiceImpl(
       velocityContext.put("email", contactDTO.email)
       velocityContext.put("cellphone", contactDTO.cellphone)
       velocityContext.put("message", contactDTO.message)
-      val stringWriter = StringWriter()
-      velocityEngine.mergeTemplate(template, "UTF-8", velocityContext, stringWriter)
-      message.setContent(stringWriter.toString(), "text/html; charset=utf-8")
-      val transport = session?.getTransport("smtp")
-      transport?.connect("smtp.gmail.com", "ubicar.austral2021", "Lab3Ubicar2021")
-      transport?.sendMessage(message, message.allRecipients)
-      transport?.close()
+      setConfigurations(velocityEngine, message, session, template, velocityContext)
     } catch (me: MessagingException) {
       me.printStackTrace()
     }

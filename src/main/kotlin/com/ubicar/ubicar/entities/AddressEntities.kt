@@ -41,6 +41,45 @@ class City(
   var centroid: Point,
 
   @ManyToOne
+  var state: State,
+
+  @ManyToOne
+  var department: Department?
+) : AbstractEntity()
+
+@Table(name = "municipality")
+@Entity
+class Municipality(
+
+  @Column(nullable = false)
+  var name: String,
+
+  @Column(nullable = false, unique = true)
+  var gid: Double,
+
+  var category: String,
+
+  var centroid: Point,
+
+  @ManyToOne
+  var state: State
+) : AbstractEntity()
+
+@Table(name = "department")
+@Entity
+class Department(
+
+  @Column(nullable = false)
+  var name: String,
+
+  @Column(nullable = false, unique = true)
+  var gid: Double,
+
+  var category: String,
+
+  var centroid: Point,
+
+  @ManyToOne
   var state: State
 ) : AbstractEntity()
 

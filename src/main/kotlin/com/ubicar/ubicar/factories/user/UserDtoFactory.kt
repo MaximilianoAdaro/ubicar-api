@@ -1,9 +1,6 @@
 package com.ubicar.ubicar.factories.user
 
-import com.ubicar.ubicar.dtos.GoogleLoginUserDTO
-import com.ubicar.ubicar.dtos.UserCreationDTO
-import com.ubicar.ubicar.dtos.UserDTO
-import com.ubicar.ubicar.dtos.UserRoleDto
+import com.ubicar.ubicar.dtos.*
 import com.ubicar.ubicar.entities.User
 import com.ubicar.ubicar.entities.UserOrigin
 import com.ubicar.ubicar.entities.UserRole
@@ -20,7 +17,21 @@ class UserDtoFactory : AbstractFactory<User, UserDTO> {
     return UserDTO(
       input.id,
       input.email,
-      input.userName
+      input.userName,
+      input.userRole.slug == "ROLE_inversor"
+    )
+  }
+}
+
+@Component
+class UserDtoProfileFactory : AbstractFactory<User, UserDTOProfile> {
+
+  override fun convert(input: User): UserDTOProfile {
+    return UserDTOProfile(
+      input.id,
+      input.email,
+      input.userName,
+      input.userRole.slug == "ROLE_inversor"
     )
   }
 }

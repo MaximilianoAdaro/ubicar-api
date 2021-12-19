@@ -5,20 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference
 import org.hibernate.annotations.CreationTimestamp
 import java.time.LocalDate
 import java.time.LocalTime
-import javax.persistence.CascadeType
-import javax.persistence.Column
-import javax.persistence.ElementCollection
-import javax.persistence.Entity
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
-import javax.persistence.FetchType
-import javax.persistence.JoinColumn
-import javax.persistence.JoinTable
-import javax.persistence.ManyToMany
-import javax.persistence.ManyToOne
-import javax.persistence.OneToMany
-import javax.persistence.OneToOne
-import javax.persistence.Table
+import javax.persistence.*
 
 @Table(name = "property")
 @Entity
@@ -125,9 +112,17 @@ class Property(
 
   //images
   @OneToMany(cascade = [CascadeType.ALL])
-  var images: MutableList<Image> = mutableListOf()
+  var images: MutableList<Image> = mutableListOf(),
 
+  @ManyToMany(mappedBy = "properties")
+  @JsonBackReference
+  var recentlyViewed: MutableList<RecentlyViewed> = mutableListOf(),
 
+  var isOpportunity: Boolean = false,
+
+  @OneToOne
+  @JoinColumn(name = "geo_data_property_id", referencedColumnName = "id")
+  var geoData: GeoDataProperty?
 
 ) : AbstractEntity()
 
@@ -193,4 +188,20 @@ class OpenHouseDate(
 
   @Column(nullable = false)
   var finalTime: LocalTime
+) : AbstractEntity()
+
+@Table(name = "tags_liked")
+@Entity
+class TagsLiked(
+
+  @ManyToOne(cascade = [CascadeType.ALL])
+  var property: Property,
+
+  @ManyToOne(cascade = [CascadeType.ALL])
+  var user: User,
+
+  @ElementCollection
+  @Column(name = "tags")
+  var tags: MutableList<String> = mutableListOf()
+
 ) : AbstractEntity()
